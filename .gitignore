@@ -17,7 +17,6 @@
 
 # Gradle:
 .idea/**/gradle.xml
-.idea/**/libraries
 
 # CMake
 cmake-build-debug/
@@ -32,6 +31,7 @@ cmake-build-debug/
 
 # IntelliJ
 out/
+.idea
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -48,8 +48,5 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-.idea/inspectionProfiles/
-.idea/misc.xml
-.idea/modules.xml
-.idea/rollbits.iml
-.idea/vcs.xml
+/classes/
+
