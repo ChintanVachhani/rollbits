@@ -8,24 +8,3 @@ message Route {
     required string path = 2;
     optional string payload = 3;
 }
-
-message NetworkDiscoveryPacket{
-
-    enum Sender{
-        SERVER_NODE=0;
-        END_USER_CLIENT=1;
-    }
-
-    required string nodeid = 1; //node id of the sender
-    required Sender sender =2 [default = SERVER_NODE];
-    optional string group = 3; //If sender is a server node, then this field can contain its group id. If sender is end user client, then this field is not required.
-
-}
-
-message ServerNodeDiscoveryResponse{
-
-    required string group = 1;
-    required string ip = 2;
-    required string nodeid = 3;
-
-}

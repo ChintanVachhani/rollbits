@@ -60,8 +60,6 @@ public class MessageServer {
         DiscoveryClient dc = new DiscoveryClient();
         dc.client();
 
-        // displaying server map
-        logger.info(String.valueOf(ServerMap.servers));
 
         // start communication over channel
         StartCommunication comm = new StartCommunication(conf);

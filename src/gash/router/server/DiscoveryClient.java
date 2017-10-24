@@ -70,7 +70,10 @@ public class DiscoveryClient {
             if (message.equals("DISCOVER_FUIFSERVER_RESPONSE")) {
                 //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your controller)
                 //Controller_Base.setServerIp(receivePacket.getAddress());
+
+                // add server to the map
                 ServerMap.servers.add(receivePacket.getAddress());
+
                 System.out.println(receivePacket.getAddress());
             }
 

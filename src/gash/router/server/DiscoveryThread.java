@@ -3,6 +3,8 @@
  */
 package gash.router.server;
 
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -11,6 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DiscoveryThread implements Runnable {
+
+    protected static org.slf4j.Logger logger = LoggerFactory.getLogger("server");
 
     DatagramSocket socket;
 
@@ -32,11 +36,17 @@ public class DiscoveryThread implements Runnable {
                 //Packet received
                 System.out.println(getClass().getName() + ">>>Discovery packet received from: " + packet.getAddress().getHostAddress());
                 System.out.println(getClass().getName() + ">>>Packet received; data: " + new String(packet.getData()));
-                ServerMap.servers.add(packet.getAddress());
+
 
                 //See if the packet holds the right command (message)
                 String message = new String(packet.getData()).trim();
                 if (message.equals("DISCOVER_FUIFSERVER_REQUEST")) {
+                    // add server to the map
+                    ServerMap.servers.add(packet.getAddress());
+
+                    // displaying server map
+                    logger.info(String.valueOf(ServerMap.servers));
+
                     byte[] sendData = "DISCOVER_FUIFSERVER_RESPONSE".getBytes();
 
                     //Send a response

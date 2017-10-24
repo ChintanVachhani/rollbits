@@ -32,6 +32,7 @@ cmake-build-debug/
 # IntelliJ
 out/
 .idea
+*.iml
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -49,4 +50,3 @@ crashlytics-build.properties
 fabric.properties
 
 /classes/
-
