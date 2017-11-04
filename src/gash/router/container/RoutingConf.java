@@ -1,12 +1,12 @@
 /**
  * Copyright 2012 Gash.
- *
+ * <p>
  * This file and intellectual content is protected under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
  * License.  You may obtain a copy of the License at:
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -25,80 +25,125 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Routing information for the server - internal use only
- * 
+ *
  * @author gash
- * 
+ *
  */
 @XmlRootElement(name = "conf")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RoutingConf {
-	private int port;
-	private List<RoutingEntry> routing;
+    private int internalCommunicationPort;
+    private int externalCommunicationPort;
+    private int internalDiscoveryPort;
+    private int externalDiscoveryPort;
+    private String groupTag;
+    private String secret;
+    private List<RoutingEntry> routing;
 
-	public HashMap<String, String> asHashMap() {
-		HashMap<String, String> map = new HashMap<String, String>();
-		if (routing != null) {
-			for (RoutingEntry entry : routing) {
-				map.put(entry.path, entry.clazz);
-			}
-		}
-		return map;
-	}
+    public HashMap<String, String> asHashMap() {
+        HashMap<String, String> map = new HashMap<String, String>();
+        if (routing != null) {
+            for (RoutingEntry entry : routing) {
+                map.put(entry.path, entry.clazz);
+            }
+        }
+        return map;
+    }
 
-	public void addEntry(RoutingEntry entry) {
-		if (entry == null)
-			return;
+    public void addEntry(RoutingEntry entry) {
+        if (entry == null)
+            return;
 
-		if (routing == null)
-			routing = new ArrayList<RoutingEntry>();
+        if (routing == null)
+            routing = new ArrayList<RoutingEntry>();
 
-		routing.add(entry);
-	}
+        routing.add(entry);
+    }
 
-	public int getPort() {
-		return port;
-	}
+    public int getInternalCommunicationPort() {
+        return internalCommunicationPort;
+    }
 
-	public void setPort(int port) {
-		this.port = port;
-	}
+    public void setInternalCommunicationPort(int internalCommunicationPort) {
+        this.internalCommunicationPort = internalCommunicationPort;
+    }
 
-	public List<RoutingEntry> getRouting() {
-		return routing;
-	}
+    public int getExternalCommunicationPort() {
+        return externalCommunicationPort;
+    }
 
-	public void setRouting(List<RoutingEntry> conf) {
-		this.routing = conf;
-	}
+    public void setExternalCommunicationPort(int externalCommunicationPort) {
+        this.externalCommunicationPort = externalCommunicationPort;
+    }
 
-	@XmlRootElement(name = "entry")
-	@XmlAccessorType(XmlAccessType.PROPERTY)
-	public static final class RoutingEntry {
-		public RoutingEntry() {
-		}
+    public int getInternalDiscoveryPort() {
+        return internalDiscoveryPort;
+    }
 
-		public RoutingEntry(String path, String clazz) {
-			this.path = path;
-			this.clazz = clazz;
-		}
+    public void setInternalDiscoveryPort(int internalDiscoveryPort) {
+        this.internalDiscoveryPort = internalDiscoveryPort;
+    }
 
-		public String getPath() {
-			return path;
-		}
+    public int getExternalDiscoveryPort() {
+        return externalDiscoveryPort;
+    }
 
-		public void setPath(String path) {
-			this.path = path;
-		}
+    public void setExternalDiscoveryPort(int externalDiscoveryPort) {
+        this.externalDiscoveryPort = externalDiscoveryPort;
+    }
 
-		public String getClazz() {
-			return clazz;
-		}
+    public String getGroupTag() {
+        return groupTag;
+    }
 
-		public void setClazz(String clazz) {
-			this.clazz = clazz;
-		}
+    public void setGroupTag(String groupTag) {
+        this.groupTag = groupTag;
+    }
 
-		private String path;
-		private String clazz;
-	}
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    public List<RoutingEntry> getRouting() {
+        return routing;
+    }
+
+    public void setRouting(List<RoutingEntry> conf) {
+        this.routing = conf;
+    }
+
+    @XmlRootElement(name = "entry")
+    @XmlAccessorType(XmlAccessType.PROPERTY)
+    public static final class RoutingEntry {
+        public RoutingEntry() {
+        }
+
+        public RoutingEntry(String path, String clazz) {
+            this.path = path;
+            this.clazz = clazz;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public void setPath(String path) {
+            this.path = path;
+        }
+
+        public String getClazz() {
+            return clazz;
+        }
+
+        public void setClazz(String clazz) {
+            this.clazz = clazz;
+        }
+
+        private String path;
+        private String clazz;
+    }
 }

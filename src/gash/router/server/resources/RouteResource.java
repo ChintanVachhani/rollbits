@@ -15,6 +15,9 @@
  */
 package gash.router.server.resources;
 
+import gash.router.container.RoutingConf;
+import routing.Pipe.Route;
+
 /**
  * template for route handlers
  * 
@@ -39,4 +42,6 @@ public interface RouteResource {
 	 * @return The string representation of the response
 	 */
 	String process(String body);
+
+	Route process(Route route, RoutingConf conf) throws Exception;
 }

@@ -21,6 +21,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+import gash.router.server.discovery.DiscoveryClient;
+import gash.router.server.discovery.DiscoveryServer;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,12 +56,14 @@ public class MessageServer {
     public void startServer() {
         // network discovery mechanism using UDP
         // listening for discovery request by other servers
-        Thread discoveryThread = new Thread(DiscoveryThread.getInstance());
-        discoveryThread.start();
-        // finding all the active servers
-        DiscoveryClient dc = new DiscoveryClient();
-        dc.client();
+        DiscoveryServer discoveryServer = new DiscoveryServer(conf);
+        Thread dsthread = new Thread(discoveryServer);
+        dsthread.start();
 
+        // finding all the active servers
+        DiscoveryClient discoveryClient = new DiscoveryClient(conf);
+        Thread dcthread = new Thread(discoveryClient);
+        dcthread.start();
 
         // start communication over channel
         StartCommunication comm = new StartCommunication(conf);
@@ -122,8 +126,7 @@ public class MessageServer {
     /**
      * initialize netty communication
      *
-     * @param port
-     *            The port to listen to
+     * @param port The port to listen to
      */
     private static class StartCommunication implements Runnable {
         RoutingConf conf;
@@ -140,21 +143,21 @@ public class MessageServer {
 
             try {
                 ServerBootstrap b = new ServerBootstrap();
-                bootstrap.put(conf.getPort(), b);
+                bootstrap.put(conf.getInternalCommunicationPort(), b);
 
                 b.group(bossGroup, workerGroup);
                 b.channel(NioServerSocketChannel.class);
                 b.option(ChannelOption.SO_BACKLOG, 100);
-                b.option(ChannelOption.TCP_NODELAY, true);
-                b.option(ChannelOption.SO_KEEPALIVE, true);
+                //b.option(ChannelOption.TCP_NODELAY, true);
+                //b.option(ChannelOption.SO_KEEPALIVE, true);
                 // b.option(ChannelOption.MESSAGE_SIZE_ESTIMATOR);
 
                 boolean compressComm = false;
                 b.childHandler(new ServerInit(conf, compressComm));
 
                 // Start the server.
-                logger.info("Starting server, listening on port = " + conf.getPort());
-                ChannelFuture f = b.bind(conf.getPort()).syncUninterruptibly();
+                logger.info("Starting server, listening on port = " + conf.getInternalCommunicationPort());
+                ChannelFuture f = b.bind(conf.getInternalCommunicationPort()).syncUninterruptibly();
 
                 logger.info(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "
                         + f.channel().isWritable() + ", act: " + f.channel().isActive());
@@ -177,7 +180,6 @@ public class MessageServer {
      * help with processing the configuration information
      *
      * @author gash
-     *
      */
     public static class JsonUtil {
         private static JsonUtil instance;

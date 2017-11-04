@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * @author gash
  * 
  */
-public class MessageResource implements RouteResource {
+public abstract class MessageResource implements RouteResource {
 	protected static Logger logger = LoggerFactory.getLogger("message");
 
 	@Override

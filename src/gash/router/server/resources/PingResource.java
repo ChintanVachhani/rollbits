@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * @author gash
  * 
  */
-public class PingResource implements RouteResource {
+public abstract class PingResource implements RouteResource {
 	protected static Logger logger = LoggerFactory.getLogger("ping");
 
 	@Override

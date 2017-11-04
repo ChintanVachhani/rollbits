@@ -13,35 +13,40 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package gash.router.server;
+package gash.router.server.discovery;
+
+import gash.router.container.RoutingConf;
+import gash.router.server.resources.RouteResource;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.socket.DatagramPacket;
+import io.netty.util.CharsetUtil;
+import io.netty.util.internal.SocketUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import routing.Pipe;
+import routing.Pipe.Route;
 
 import java.beans.Beans;
 import java.util.HashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import gash.router.container.RoutingConf;
-import gash.router.server.resources.RouteResource;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
-import routing.Pipe.Route;
-
 /**
- * The message handler processes json messages that are delimited by a 'newline'
+ * The networkDiscovery handler processes json messages that are delimited by a 'newline'
  *
  * TODO replace println with logging!
  *
  * @author gash
  *
  */
-public class ServerHandler extends SimpleChannelInboundHandler<Route> {
-	protected static Logger logger = LoggerFactory.getLogger("connect");
-
+public class DiscoveryServerHandler extends SimpleChannelInboundHandler<Route> {
+	protected static Logger logger = LoggerFactory.getLogger("discovery");
+	RoutingConf conf;
 	private HashMap<String, String> routing;
 
-	public ServerHandler(RoutingConf conf) {
+	public DiscoveryServerHandler(RoutingConf conf) {
+		this.conf = conf;
 		if (conf != null)
 			routing = conf.asHashMap();
 	}
@@ -60,26 +65,25 @@ public class ServerHandler extends SimpleChannelInboundHandler<Route> {
 			return;
 		}
 
-		System.out.println("---> " + msg.getId() + ": " + msg.getPath() + ", " + msg.getPayload());
+		System.out.println("---> " + msg.getId() + ": " + msg.getPath());
 
 		try {
+			System.out.println("/" + msg.getPath().toString().toLowerCase());
 			String clazz = routing.get("/" + msg.getPath().toString().toLowerCase());
 			if (clazz != null) {
 				RouteResource rsc = (RouteResource) Beans.instantiate(RouteResource.class.getClassLoader(), clazz);
 				try {
-					String reply = rsc.process(msg.getPayload());
-					System.out.println("---> reply: " + reply);
-					if (reply != null) {
-						Route.Builder rb = Route.newBuilder(msg);
-						rb.setPayload(reply);
-						//channel.write(rb.build());
-                        channel.writeAndFlush(rb.build());  // edited by Chintan Vachhani
+					Route response = rsc.process(msg, conf);
+					System.out.println("---> reply: " + response + " to: " + msg.getNetworkDiscoveryPacket().getNodeAddress());
+					if (response != null) {
+
+						channel.writeAndFlush(new DatagramPacket(
+								Unpooled.copiedBuffer(response.toByteArray()),
+								SocketUtils.socketAddress(msg.getNetworkDiscoveryPacket().getNodeAddress(), conf.getInternalDiscoveryPort()))).sync();
+
 					}
 				} catch (Exception e) {
-					// TODO add logging
-					Route.Builder rb = Route.newBuilder(msg);
-					rb.setPayload("Error: " + e.getMessage());
-					channel.write(rb.build());
+					logger.error("Failed to read route.", e);
 				}
 			} else {
 				// TODO add logging
