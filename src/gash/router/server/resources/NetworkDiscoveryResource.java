@@ -38,12 +38,8 @@ public class NetworkDiscoveryResource implements RouteResource {
     }
 
     @Override
-    public String process(String body) {
-        if (body == null || body.trim().length() == 0)
-            throw new RuntimeException("Missing/Null data");
-
-        logger.info(body);
-        return "good";
+    public String process(Route route) {
+        return null;
     }
 
     public Route process(Route route, RoutingConf conf) throws Exception {
@@ -82,9 +78,9 @@ public class NetworkDiscoveryResource implements RouteResource {
         rb.setNetworkDiscoveryPacket(ndpb);
 
         if (request.getNetworkDiscoveryPacket().getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE) && !request.getNetworkDiscoveryPacket().getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()))
-            RoutingMap.internalServers.add(InetAddress.getByAddress(request.getNetworkDiscoveryPacket().getNodeAddress().getBytes()));
+            RoutingMap.internalServers.add(request.getNetworkDiscoveryPacket().getNodeAddress());
         else if (request.getNetworkDiscoveryPacket().getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !request.getNetworkDiscoveryPacket().getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()))
-            RoutingMap.externalServers.add(InetAddress.getByAddress(request.getNetworkDiscoveryPacket().getNodeAddress().getBytes()));
+            RoutingMap.externalServers.add(request.getNetworkDiscoveryPacket().getNodeAddress());
 
         System.out.println(RoutingMap.internalServers);
 
@@ -93,9 +89,9 @@ public class NetworkDiscoveryResource implements RouteResource {
 
     private Route processResponse(Route response, RoutingConf conf) throws Exception {
         if (response.getNetworkDiscoveryPacket().getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE) && !response.getNetworkDiscoveryPacket().getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()))
-            RoutingMap.internalServers.add(InetAddress.getByAddress(response.getNetworkDiscoveryPacket().getNodeAddress().getBytes()));
+            RoutingMap.internalServers.add(response.getNetworkDiscoveryPacket().getNodeAddress());
         else if (response.getNetworkDiscoveryPacket().getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !response.getNetworkDiscoveryPacket().getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()))
-            RoutingMap.externalServers.add(InetAddress.getByAddress(response.getNetworkDiscoveryPacket().getNodeAddress().getBytes()));
+            RoutingMap.externalServers.add(response.getNetworkDiscoveryPacket().getNodeAddress());
 
         System.out.println(RoutingMap.internalServers);
 

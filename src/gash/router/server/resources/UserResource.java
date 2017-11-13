@@ -36,11 +36,10 @@ import gash.router.server.dao.UserDAO;
 public class UserResource implements RouteResource {
     protected static Logger logger = LoggerFactory.getLogger("user");
 
-    private MorphiaService morphiaService;
     private UserDAO userDAO;
 
     UserResource() {
-        this.morphiaService = new MorphiaService();
+        MorphiaService morphiaService = new MorphiaService();
         this.userDAO = new UserDAOImpl(User.class, morphiaService.getDatastore());
     }
 
