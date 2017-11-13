@@ -15,8 +15,10 @@
  */
 package gash.router.server.resources;
 
+import gash.router.container.RoutingConf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import routing.Pipe;
 
 /**
  * responds to request for pinging the service
@@ -24,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * @author gash
  * 
  */
-public abstract class PingResource implements RouteResource {
+public class PingResource implements RouteResource {
 	protected static Logger logger = LoggerFactory.getLogger("ping");
 
 	@Override
@@ -33,9 +35,14 @@ public abstract class PingResource implements RouteResource {
 	}
 
 	@Override
-	public String process(String body) {
-		logger.info(body);
-		return "success";
+	public String process(Pipe.Route route) {
+		return null;
 	}
+
+	@Override
+	public Pipe.Route process(Pipe.Route route, RoutingConf conf) throws Exception {
+		return null;
+	}
+
 
 }

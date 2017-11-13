@@ -18,7 +18,15 @@ public class User {
 
     public User() {
     }
-    
+
+
+    public User(String email, String recentActiveTime) {
+        super();
+        this.email = email;
+        this.recentActiveTime = recentActiveTime;
+    }
+
+
     public User(String email, String password, String recentActiveTime) {
         super();
         this.email = email;

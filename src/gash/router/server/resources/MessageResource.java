@@ -15,8 +15,11 @@
  */
 package gash.router.server.resources;
 
+import gash.router.container.RoutingConf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import routing.Pipe;
+import routing.Pipe.Route;
 
 /**
  * processes requests of message passing - demonstration
@@ -24,7 +27,7 @@ import org.slf4j.LoggerFactory;
  * @author gash
  * 
  */
-public abstract class MessageResource implements RouteResource {
+public class MessageResource implements RouteResource {
 	protected static Logger logger = LoggerFactory.getLogger("message");
 
 	@Override
@@ -33,12 +36,12 @@ public abstract class MessageResource implements RouteResource {
 	}
 
 	@Override
-	public String process(String body) {
-		if (body == null || body.trim().length() == 0)
-			throw new RuntimeException("Missing/Null data");
-
-		logger.info(body);
-		return "good";
+	public String process(Route route) {
+		return null;
 	}
 
+	@Override
+	public Route process(Route route, RoutingConf conf) throws Exception {
+		return null;
+	}
 }
