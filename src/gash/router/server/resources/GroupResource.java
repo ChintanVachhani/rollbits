@@ -65,7 +65,7 @@ public class GroupResource implements RouteResource {
 
     private String create(Pipe.Group group) {
         Group newGroup = new Group(group.getGname(), group.getGid());
-        groupDAO.save(newGroup);
+        groupDAO.createGroup(newGroup);
         return null;
     }
 

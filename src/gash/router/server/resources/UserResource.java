@@ -70,7 +70,7 @@ public class UserResource implements RouteResource {
 
     private String register(Pipe.User user) {
         User newUser = new User(user.getEmail(), new Date().toString());
-        userDAO.save(newUser);
+        userDAO.createUser(newUser);
         return null;
     }
 
