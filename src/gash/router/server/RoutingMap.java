@@ -9,9 +9,9 @@ public class RoutingMap {
         return ourInstance;
     }
 
-    private HashSet<String> internalServers;
-    private HashSet<String> externalServers;
-    private HashSet<String> clients;
+    private HashSet<Node> internalServers;
+    private HashSet<Node> externalServers;
+    private HashSet<Node> clients;
 
     private RoutingMap() {
         internalServers = new HashSet<>();
@@ -19,27 +19,27 @@ public class RoutingMap {
         clients = new HashSet<>();
     }
 
-    public HashSet<String> getInternalServers() {
+    public HashSet<Node> getInternalServers() {
         return internalServers;
     }
 
-    public void setInternalServers(HashSet<String> internalServers) {
+    public void setInternalServers(HashSet<Node> internalServers) {
         this.internalServers = internalServers;
     }
 
-    public HashSet<String> getExternalServers() {
+    public HashSet<Node> getExternalServers() {
         return externalServers;
     }
 
-    public void setExternalServers(HashSet<String> externalServers) {
+    public void setExternalServers(HashSet<Node> externalServers) {
         this.externalServers = externalServers;
     }
 
-    public HashSet<String> getClients() {
+    public HashSet<Node> getClients() {
         return clients;
     }
 
-    public void setClients(HashSet<String> clients) {
+    public void setClients(HashSet<Node> clients) {
         this.clients = clients;
     }
 }
