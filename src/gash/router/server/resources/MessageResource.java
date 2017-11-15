@@ -49,13 +49,18 @@ public class MessageResource implements RouteResource {
     }
 
     @Override
-    public String process(Route route) {
+    public Route process(Route route) {
+
+        String response;
+
         if (route.hasMessage()) {
             switch (route.getMessage().getAction()) {
                 case POST:
-                    return post(route.getMessage());
+                    response = post(route.getMessage());
             }
         }
+
+
         return null;
     }
 

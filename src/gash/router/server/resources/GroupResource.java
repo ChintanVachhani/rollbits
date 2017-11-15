@@ -46,13 +46,13 @@ public class GroupResource implements RouteResource {
     }
 
     @Override
-    public String process(Route route) {
+    public Route process(Route route) {
         if (route.hasGroup()) {
             switch (route.getGroup().getAction()) {
                 case CREATE:
-                    return create(route.getGroup());
+                    create(route.getGroup());
                 case DELETE:
-                    return delete(route.getGroup());
+                    delete(route.getGroup());
             }
         }
         return null;

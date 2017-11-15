@@ -40,7 +40,7 @@ public class NetworkDiscoveryResource implements RouteResource {
     }
 
     @Override
-    public String process(Route route) {
+    public Route process(Route route) {
         return null;
     }
 
@@ -89,9 +89,9 @@ public class NetworkDiscoveryResource implements RouteResource {
         else if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !requestNetworkDiscoveryPacket.getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()))
             routingMap.addExternalServer(node);
 
-        logger.info("Internal Servers: " + routingMap.getInternalServers().toString());
-        logger.info("External Servers: " + routingMap.getExternalServers().toString());
-        logger.info("Clients: " + routingMap.getClients().toString());
+        System.out.println("Internal Servers: " + routingMap.getInternalServers());
+        System.out.println("External Servers: " + routingMap.getExternalServers().toString());
+        System.out.println("Clients: " + routingMap.getClients().toString());
 
         return rb.build();
     }
@@ -107,9 +107,9 @@ public class NetworkDiscoveryResource implements RouteResource {
         else if (responseNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !responseNetworkDiscoveryPacket.getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()))
             routingMap.addExternalServer(node);
 
-        logger.info("Internal Servers: " + routingMap.getInternalServers().toString());
-        logger.info("External Servers: " + routingMap.getExternalServers().toString());
-        logger.info("Clients: " + routingMap.getClients().toString());
+        System.out.println("Internal Servers: " + routingMap.getInternalServers());
+        System.out.println("External Servers: " + routingMap.getExternalServers().toString());
+        System.out.println("Clients: " + routingMap.getClients().toString());
 
         return null;
     }

@@ -72,10 +72,10 @@ public class ServerHandler extends SimpleChannelInboundHandler<Route> {
             if (clazz != null) {
                 RouteResource rsc = (RouteResource) Beans.instantiate(RouteResource.class.getClassLoader(), clazz);
                 try {
-                    String response = rsc.process(msg);
-                    System.out.println("---> reply: " + response + " to: " + msg.getNetworkDiscoveryPacket().getNodeAddress());
+                    Route response = rsc.process(msg);
+                    System.out.println("---> reply: " + response);
                     if (response != null) {
-
+                        channel.writeAndFlush(response);
                     }
                 } catch (Exception e) {
                     logger.error("Failed to read route.", e);
@@ -89,7 +89,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Route> {
             System.out.println("ERROR: processing request - " + ex.getMessage());
         }
 
-        System.out.flush();
+        //System.out.flush();
     }
 
     /**

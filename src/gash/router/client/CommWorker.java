@@ -23,7 +23,7 @@ public class CommWorker extends Thread {
 
 	@Override
 	public void run() {
-		System.out.println("--> starting worker thread");
+		//System.out.println("--> starting worker thread");pin
 		System.out.flush();
 
 		Channel ch = conn.connect();
@@ -57,7 +57,7 @@ public class CommWorker extends Thread {
 				ie.printStackTrace();
 				break;
 			} catch (Exception e) {
-				CommConnection.logger.error("Unexpected communcation failure", e);
+				CommConnection.logger.error("Unexpected communication failure", e);
 				break;
 			}
 		}

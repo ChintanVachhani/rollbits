@@ -71,7 +71,8 @@ public class CommHandler extends SimpleChannelInboundHandler<Route> {
 	 */
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Route msg) throws Exception {
-		System.out.println("--> got incoming message");
+		//System.out.println("--> got incoming message");
+		//System.out.println("------------------------------------------------------------\n");
 		for (String id : listeners.keySet()) {
 			CommListener cl = listeners.get(id);
 

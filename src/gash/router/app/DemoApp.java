@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 Gash.
- *
+ * <p>
  * This file and intellectual content is protected under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
  * License.  You may obtain a copy of the License at:
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -20,84 +20,86 @@ import gash.router.client.CommListener;
 import gash.router.client.MessageClient;
 import routing.Pipe.Route;
 
+import java.util.Scanner;
+
 public class DemoApp implements CommListener {
-	private MessageClient mc;
+    private MessageClient mc;
 
-	public DemoApp(MessageClient mc) {
-		init(mc);
-	}
+    private volatile boolean waitingForReply;
 
-	private void init(MessageClient mc) {
-		this.mc = mc;
-		this.mc.addListener(this);
-	}
+    public DemoApp(MessageClient mc) {
+        waitingForReply = false;
+        init(mc);
+    }
 
-	private void ping(int N) {
-		// test round-trip overhead (note overhead for initial connection)
-		final int maxN = 10;
-		long[] dt = new long[N];
-		long st = System.nanoTime(), ft = 0;
-		for (int n = 0; n < N; n++) {
-			mc.ping();
-			ft = System.nanoTime();
-			dt[n] = ft - st;
-			st = ft;
-		}
+    private void init(MessageClient mc) {
+        this.mc = mc;
+        this.mc.addListener(this);
+    }
 
-		System.out.println("Round-trip ping times (msec)");
-		for (int n = 0; n < N; n++)
-			System.out.print(dt[n] + " ");
-		System.out.println("");
+    private void waitForReply() {
+        waitingForReply = true;
+        while (waitingForReply) {
 
-		// send a message
-		st = System.nanoTime();
-		ft = 0;
-		for (int n = 0; n < N; n++) {
-			mc.postMessage("hello world " + n);
-			ft = System.nanoTime();
-			dt[n] = ft - st;
-			st = ft;
-		}
+        }
+    }
 
-		System.out.println("Round-trip post times (msec)");
-		for (int n = 0; n < N; n++)
-			System.out.print(dt[n] + " ");
-		System.out.println("");
-	}
+    private void handleCmd(String cmd) {
+        String[] parsedCmd = cmd.split("\\s+");
 
-	@Override
-	public String getListenerID() {
-		return "demo";
-	}
+        //[0] is the command
+        switch (parsedCmd[0]) {
+            case "ping":
+                mc.ping();
+                waitForReply();
+                break;
+            default:
+                System.out.println("Invalid command.\n");
+        }
+    }
 
-	@Override
-	public void onMessage(Route msg) {
-		System.out.println("---> " + msg);
-	}
+    @Override
+    public String getListenerID() {
+        return "demo";
+    }
 
-	/**
-	 * sample application (client) use of our messaging service
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		String host = "127.0.0.1";
-		int port = 4567;
+    @Override
+    public void onMessage(Route msg) {
+        System.out.println(msg);
+        //System.out.println("------------------------------------------------------------");
+        waitingForReply = false;
+    }
 
-		try {
-			MessageClient mc = new MessageClient(host, port);
-			DemoApp da = new DemoApp(mc);
+    /**
+     * sample application (client) use of our messaging service
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        String host = "127.0.0.1";
+        int port = 4444;
 
-			// do stuff w/ the connection
-			da.ping(10);
+        Scanner input = new Scanner(System.in);
+        String cmd = null;
 
-			System.out.println("\n** exiting in 10 seconds. **");
-			System.out.flush();
-			Thread.sleep(10 * 1000);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			CommConnection.getInstance().release();
-		}
-	}
+        try {
+            MessageClient mc = new MessageClient(host, port);
+            DemoApp da = new DemoApp(mc);
+
+            // do stuff w/ the connection
+            while (true) {
+                System.out.print("> ");
+                cmd = input.nextLine();
+                da.handleCmd(cmd);
+            }
+
+			/*System.out.println("\n** exiting in 60 seconds. **");
+            System.out.flush();
+			Thread.sleep(60 * 1000);*/
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            CommConnection.getInstance().release();
+        }
+    }
 }

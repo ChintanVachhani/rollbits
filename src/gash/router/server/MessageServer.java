@@ -23,7 +23,6 @@ import java.util.HashMap;
 
 import gash.router.server.discovery.DiscoveryClient;
 import gash.router.server.discovery.DiscoveryServer;
-import gash.router.server.raft.Raft;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +56,6 @@ public class MessageServer {
     public void startServer() {
         // network discovery mechanism using UDP
         // listening for discovery request by other servers
-        Raft.getInstance().setConf(conf);
         DiscoveryServer discoveryServer = new DiscoveryServer(conf);
         Thread dsthread = new Thread(discoveryServer);
         dsthread.start();
@@ -158,8 +156,8 @@ public class MessageServer {
                 b.childHandler(new ServerInit(conf, compressComm));
 
                 // Start the server.
-                logger.info("Starting server, listening on port = " + conf.getInternalCommunicationPort());
-                ChannelFuture f = b.bind(conf.getInternalCommunicationPort()).syncUninterruptibly();
+                logger.info("Starting server, listening on port = " + conf.getExternalCommunicationPort());
+                ChannelFuture f = b.bind(conf.getExternalCommunicationPort()).syncUninterruptibly();
 
                 logger.info(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "
                         + f.channel().isWritable() + ", act: " + f.channel().isActive());

@@ -39,7 +39,7 @@ public interface RouteResource {
      * @param route the request package
      * @return The string representation of the response
      */
-    String process(Route route);
+    Route process(Route route);
 
     Route process(Route route, RoutingConf conf) throws Exception;
 }

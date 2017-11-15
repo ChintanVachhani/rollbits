@@ -57,20 +57,6 @@ public class MessageClient {
         }
     }
 
-    public void postMessage(String msg) {
-        // construct the message to send
-        Route.Builder rb = Route.newBuilder();
-        rb.setId(nextId());
-        rb.setPath(Route.Path.MESSAGE);
-        rb.setPayload(msg);
-
-        try {
-            CommConnection.getInstance().enqueue(rb.build());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void release() {
         CommConnection.getInstance().release();
     }

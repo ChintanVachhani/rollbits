@@ -49,18 +49,29 @@ public class UserResource implements RouteResource {
     }
 
     @Override
-    public String process(Route route) {
+    public Route process(Route route) {
+
+        String response = null;
+
         if (route.hasUser()) {
             switch (route.getUser().getAction()) {
                 case REGISTER:
-                    return register(route.getUser());
+                    response = register(route.getUser());
                 case ACCESS:
-                    return access(route.getUser());
+                    response = access(route.getUser());
                 case DELETE:
-                    return delete(route.getUser());
+                    response = delete(route.getUser());
+                default:
+                    response = "Invalid Action.";
             }
         }
-        return null;
+
+        Route.Builder responseRoute = Route.newBuilder();
+        responseRoute.setId(route.getId());
+        responseRoute.setPath(Route.Path.RESPONSE);
+        responseRoute.setPayload(response);
+
+        return responseRoute.build();
     }
 
     @Override
@@ -70,8 +81,11 @@ public class UserResource implements RouteResource {
 
     private String register(Pipe.User user) {
         User newUser = new User(user.getEmail(), new Date().toString());
-        userDAO.createUser(newUser);
-        return null;
+        if(userDAO.getUserByEmail(newUser.getEmail()) == null){
+            userDAO.createUser(newUser);
+            return "User Registered.";
+        }
+        return "User already exists.";
     }
 
     private String access(Pipe.User user) {

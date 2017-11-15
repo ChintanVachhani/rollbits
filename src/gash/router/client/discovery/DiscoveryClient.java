@@ -1,4 +1,4 @@
-package gash.router.server.discovery;
+package gash.router.client.discovery;
 
 import gash.router.container.RoutingConf;
 import io.netty.bootstrap.Bootstrap;
@@ -59,11 +59,6 @@ public final class DiscoveryClient implements Runnable {
             ch.writeAndFlush(new DatagramPacket(
                     Unpooled.copiedBuffer(rb.build().toByteArray()),
                     SocketUtils.socketAddress("255.255.255.255", conf.getInternalDiscoveryPort()))).sync();
-
-            // Broadcast the NetworkDiscovery request to external discovery port.
-            ch.writeAndFlush(new DatagramPacket(
-                    Unpooled.copiedBuffer(rb.build().toByteArray()),
-                    SocketUtils.socketAddress("255.255.255.255", conf.getExternalDiscoveryPort()))).sync();
 
             // DiscoveryClientHandler will close the DatagramChannel when a
             // response is received.  If the channel is not closed within 5 seconds,

@@ -369,6 +369,10 @@ public final class Pipe {
        * <code>HEADER = 7;</code>
        */
       HEADER(7),
+      /**
+       * <code>RESPONSE = 8;</code>
+       */
+      RESPONSE(8),
       ;
 
       /**
@@ -403,6 +407,10 @@ public final class Pipe {
        * <code>HEADER = 7;</code>
        */
       public static final int HEADER_VALUE = 7;
+      /**
+       * <code>RESPONSE = 8;</code>
+       */
+      public static final int RESPONSE_VALUE = 8;
 
 
       public final int getNumber() {
@@ -427,6 +435,7 @@ public final class Pipe {
           case 5: return MESSAGES_REQUEST;
           case 6: return MESSAGES_RESPONSE;
           case 7: return HEADER;
+          case 8: return RESPONSE;
           default: return null;
         }
       }
@@ -10564,47 +10573,47 @@ public final class Pipe {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\npipe.proto\"\264\003\n\005Route\022\n\n\002id\030\001 \002(\003\022\031\n\004pa" +
+      "\n\npipe.proto\"\302\003\n\005Route\022\n\n\002id\030\001 \002(\003\022\031\n\004pa" +
       "th\030\002 \002(\0162\013.Route.Path\022\017\n\007payload\030\003 \001(\t\0227" +
       "\n\026networkDiscoveryPacket\030\004 \001(\0132\027.Network" +
       "DiscoveryPacket\022\023\n\004user\030\005 \001(\0132\005.User\022\031\n\007" +
       "message\030\006 \001(\0132\010.Message\022\025\n\005group\030\007 \001(\0132\006" +
       ".Group\022)\n\017messagesRequest\030\010 \001(\0132\020.Messag" +
       "esRequest\022*\n\020messagesResponse\030\t \001(\0132\020.Me" +
-      "ssagesRequest\022\027\n\006header\030\n \001(\0132\007.Header\"\202" +
+      "ssagesRequest\022\027\n\006header\030\n \001(\0132\007.Header\"\220" +
       "\001\n\004Path\022\010\n\004PING\020\000\022\025\n\021NETWORK_DISCOVERY\020\001" +
       "\022\010\n\004USER\020\002\022\013\n\007MESSAGE\020\003\022\t\n\005GROUP\020\004\022\024\n\020ME",
       "SSAGES_REQUEST\020\005\022\025\n\021MESSAGES_RESPONSE\020\006\022" +
-      "\n\n\006HEADER\020\007\"\246\001\n\004User\022\r\n\005uname\030\001 \001(\t\022\r\n\005e" +
-      "mail\030\002 \001(\t\022\020\n\010password\030\003 \001(\t\022\030\n\020recentAc" +
-      "tiveTime\030\004 \001(\t\022 \n\006action\030\005 \002(\0162\020.User.Ac" +
-      "tionType\"2\n\nActionType\022\014\n\010REGISTER\020\000\022\n\n\006" +
-      "ACCESS\020\001\022\n\n\006DELETE\020\002\"l\n\005Group\022\r\n\005gname\030\001" +
-      " \002(\t\022\013\n\003gid\030\002 \002(\003\022!\n\006action\030\003 \002(\0162\021.Grou" +
-      "p.ActionType\"$\n\nActionType\022\n\n\006CREATE\020\000\022\n" +
-      "\n\006DELETE\020\001\"\232\002\n\007Message\022\033\n\004type\030\001 \002(\0162\r.M" +
-      "essage.Type\022\014\n\004from\030\002 \002(\t\022\017\n\007payload\030\003 \002",
-      "(\t\022\n\n\002to\030\004 \002(\t\022\021\n\ttimestamp\030\005 \002(\t\022\037\n\006sta" +
-      "tus\030\006 \002(\0162\017.Message.Status\022#\n\006action\030\007 \002" +
-      "(\0162\023.Message.ActionType\".\n\nActionType\022\010\n" +
-      "\004POST\020\000\022\n\n\006UPDATE\020\001\022\n\n\006DELETE\020\002\"\035\n\004Type\022" +
-      "\n\n\006SINGLE\020\000\022\t\n\005GROUP\020\001\"\037\n\006Status\022\n\n\006ACTI" +
-      "VE\020\000\022\t\n\005STALE\020\001\"_\n\017MessagesRequest\022#\n\004ty" +
-      "pe\030\001 \002(\0162\025.MessagesRequest.Type\022\n\n\002id\030\002 " +
-      "\002(\t\"\033\n\004Type\022\010\n\004USER\020\000\022\t\n\005GROUP\020\001\"}\n\020Mess" +
-      "agesResponse\022$\n\004type\030\001 \002(\0162\026.MessagesRes" +
-      "ponse.Type\022\n\n\002id\030\002 \002(\t\022\032\n\010messages\030\003 \003(\013",
-      "2\010.Message\"\033\n\004Type\022\010\n\004USER\020\000\022\t\n\005GROUP\020\001\"" +
-      "\331\002\n\026NetworkDiscoveryPacket\022*\n\004mode\030\001 \002(\016" +
-      "2\034.NetworkDiscoveryPacket.Mode\022D\n\006sender" +
-      "\030\002 \002(\0162\036.NetworkDiscoveryPacket.Sender:\024" +
-      "INTERNAL_SERVER_NODE\022\020\n\010groupTag\030\003 \001(\t\022\016" +
-      "\n\006nodeId\030\004 \001(\t\022\023\n\013nodeAddress\030\005 \002(\t\022\020\n\010n" +
-      "odePort\030\006 \002(\003\022\016\n\006secret\030\007 \002(\t\"Q\n\006Sender\022" +
-      "\030\n\024EXTERNAL_SERVER_NODE\020\000\022\030\n\024INTERNAL_SE" +
-      "RVER_NODE\020\001\022\023\n\017END_USER_CLIENT\020\002\"!\n\004Mode" +
-      "\022\013\n\007REQUEST\020\000\022\014\n\010RESPONSE\020\001\"\026\n\006Header\022\014\n",
-      "\004type\030\001 \002(\tB\013\n\007routingH\001"
+      "\n\n\006HEADER\020\007\022\014\n\010RESPONSE\020\010\"\246\001\n\004User\022\r\n\005un" +
+      "ame\030\001 \001(\t\022\r\n\005email\030\002 \001(\t\022\020\n\010password\030\003 \001" +
+      "(\t\022\030\n\020recentActiveTime\030\004 \001(\t\022 \n\006action\030\005" +
+      " \002(\0162\020.User.ActionType\"2\n\nActionType\022\014\n\010" +
+      "REGISTER\020\000\022\n\n\006ACCESS\020\001\022\n\n\006DELETE\020\002\"l\n\005Gr" +
+      "oup\022\r\n\005gname\030\001 \002(\t\022\013\n\003gid\030\002 \002(\003\022!\n\006actio" +
+      "n\030\003 \002(\0162\021.Group.ActionType\"$\n\nActionType" +
+      "\022\n\n\006CREATE\020\000\022\n\n\006DELETE\020\001\"\232\002\n\007Message\022\033\n\004" +
+      "type\030\001 \002(\0162\r.Message.Type\022\014\n\004from\030\002 \002(\t\022",
+      "\017\n\007payload\030\003 \002(\t\022\n\n\002to\030\004 \002(\t\022\021\n\ttimestam" +
+      "p\030\005 \002(\t\022\037\n\006status\030\006 \002(\0162\017.Message.Status" +
+      "\022#\n\006action\030\007 \002(\0162\023.Message.ActionType\".\n" +
+      "\nActionType\022\010\n\004POST\020\000\022\n\n\006UPDATE\020\001\022\n\n\006DEL" +
+      "ETE\020\002\"\035\n\004Type\022\n\n\006SINGLE\020\000\022\t\n\005GROUP\020\001\"\037\n\006" +
+      "Status\022\n\n\006ACTIVE\020\000\022\t\n\005STALE\020\001\"_\n\017Message" +
+      "sRequest\022#\n\004type\030\001 \002(\0162\025.MessagesRequest" +
+      ".Type\022\n\n\002id\030\002 \002(\t\"\033\n\004Type\022\010\n\004USER\020\000\022\t\n\005G" +
+      "ROUP\020\001\"}\n\020MessagesResponse\022$\n\004type\030\001 \002(\016" +
+      "2\026.MessagesResponse.Type\022\n\n\002id\030\002 \002(\t\022\032\n\010",
+      "messages\030\003 \003(\0132\010.Message\"\033\n\004Type\022\010\n\004USER" +
+      "\020\000\022\t\n\005GROUP\020\001\"\331\002\n\026NetworkDiscoveryPacket" +
+      "\022*\n\004mode\030\001 \002(\0162\034.NetworkDiscoveryPacket." +
+      "Mode\022D\n\006sender\030\002 \002(\0162\036.NetworkDiscoveryP" +
+      "acket.Sender:\024INTERNAL_SERVER_NODE\022\020\n\010gr" +
+      "oupTag\030\003 \001(\t\022\016\n\006nodeId\030\004 \001(\t\022\023\n\013nodeAddr" +
+      "ess\030\005 \002(\t\022\020\n\010nodePort\030\006 \002(\003\022\016\n\006secret\030\007 " +
+      "\002(\t\"Q\n\006Sender\022\030\n\024EXTERNAL_SERVER_NODE\020\000\022" +
+      "\030\n\024INTERNAL_SERVER_NODE\020\001\022\023\n\017END_USER_CL" +
+      "IENT\020\002\"!\n\004Mode\022\013\n\007REQUEST\020\000\022\014\n\010RESPONSE\020",
+      "\001\"\026\n\006Header\022\014\n\004type\030\001 \002(\tB\013\n\007routingH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
