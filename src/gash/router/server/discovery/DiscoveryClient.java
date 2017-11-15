@@ -46,7 +46,7 @@ public final class DiscoveryClient implements Runnable {
             //ndpb.setGroupTag("weCAN");
             ndpb.setNodeAddress(InetAddress.getLocalHost().getHostAddress());
             ndpb.setNodePort(conf.getInternalDiscoveryPort());
-            //ndpb.setNodePort(8887);
+            //ndpb.setNodePort(4444);
             ndpb.setSecret(conf.getSecret());
             //ndpb.setSecret("secret");
 

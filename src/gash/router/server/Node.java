@@ -1,12 +1,8 @@
 package gash.router.server;
 
-import routing.Pipe;
-
 public class Node {
 
-    private Pipe.NetworkDiscoveryPacket.Mode mode;
-
-    private Pipe.NetworkDiscoveryPacket.Sender sender;
+    private String nodeType;
 
     private String groupTag;
 
@@ -16,35 +12,23 @@ public class Node {
 
     private int nodePort;
 
-    private String secret;
-
     public Node() {}
 
-    public Node(Pipe.NetworkDiscoveryPacket.Mode mode, Pipe.NetworkDiscoveryPacket.Sender sender, String groupTag, String nodeId, String nodeAddress, int nodePort, String secret) {
+    public Node(String nodeType, String groupTag, String nodeId, String nodeAddress, int nodePort) {
         super();
-        this.mode = mode;
-        this.sender = sender;
+        this.nodeType = nodeType;
         this.groupTag = groupTag;
         this.nodeId = nodeId;
         this.nodeAddress = nodeAddress;
         this.nodePort = nodePort;
-        this.secret = secret;
     }
 
-    public Pipe.NetworkDiscoveryPacket.Mode getMode() {
-        return mode;
+    public String getNodeType() {
+        return nodeType;
     }
 
-    public void setMode(Pipe.NetworkDiscoveryPacket.Mode mode) {
-        this.mode = mode;
-    }
-
-    public Pipe.NetworkDiscoveryPacket.Sender getSender() {
-        return sender;
-    }
-
-    public void setSender(Pipe.NetworkDiscoveryPacket.Sender sender) {
-        this.sender = sender;
+    public void setNodeType(String nodeType) {
+        this.nodeType = nodeType;
     }
 
     public String getGroupTag() {
@@ -79,11 +63,14 @@ public class Node {
         this.nodePort = nodePort;
     }
 
-    public String getSecret() {
-        return secret;
-    }
-
-    public void setSecret(String secret) {
-        this.secret = secret;
+    @Override
+    public String toString() {
+        return "Node{" +
+                "nodeType='" + nodeType + '\'' +
+                ", groupTag='" + groupTag + '\'' +
+                ", nodeId='" + nodeId + '\'' +
+                ", nodeAddress='" + nodeAddress + '\'' +
+                ", nodePort=" + nodePort +
+                '}';
     }
 }

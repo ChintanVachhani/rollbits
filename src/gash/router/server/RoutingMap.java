@@ -1,6 +1,6 @@
 package gash.router.server;
 
-import java.util.HashSet;
+import java.util.HashMap;
 
 public class RoutingMap {
     private static RoutingMap ourInstance = new RoutingMap();
@@ -9,37 +9,49 @@ public class RoutingMap {
         return ourInstance;
     }
 
-    private HashSet<Node> internalServers;
-    private HashSet<Node> externalServers;
-    private HashSet<Node> clients;
+    private HashMap<String, Node> internalServers;
+    private HashMap<String, Node> externalServers;
+    private HashMap<String, Node> clients;
 
     private RoutingMap() {
-        internalServers = new HashSet<>();
-        externalServers = new HashSet<>();
-        clients = new HashSet<>();
+        internalServers = new HashMap<>();
+        externalServers = new HashMap<>();
+        clients = new HashMap<>();
     }
 
-    public HashSet<Node> getInternalServers() {
+    public HashMap<String, Node> getInternalServers() {
         return internalServers;
     }
 
-    public void setInternalServers(HashSet<Node> internalServers) {
-        this.internalServers = internalServers;
+    public void addInternalServer(Node node) {
+        this.internalServers.put(node.getNodeAddress(), node);
     }
 
-    public HashSet<Node> getExternalServers() {
+    public HashMap<String, Node> getExternalServers() {
         return externalServers;
     }
 
-    public void setExternalServers(HashSet<Node> externalServers) {
-        this.externalServers = externalServers;
+    public void addExternalServer(Node node) {
+        this.externalServers.put(node.getNodeAddress(), node);
     }
 
-    public HashSet<Node> getClients() {
+    public HashMap<String, Node> getClients() {
         return clients;
     }
 
-    public void setClients(HashSet<Node> clients) {
-        this.clients = clients;
+    public void addClient(Node node) {
+        this.clients.put(node.getNodeAddress(), node);
+    }
+
+    public void removeInternalServer(String nodeAddress) {
+        this.internalServers.remove(nodeAddress);
+    }
+
+    public void removeExternalServer(String nodeAddress) {
+        this.externalServers.remove(nodeAddress);
+    }
+
+    public void removeClient(String nodeAddress) {
+        this.clients.remove(nodeAddress);
     }
 }

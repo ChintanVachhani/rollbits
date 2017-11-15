@@ -16,6 +16,7 @@
 package gash.router.server.resources;
 
 import gash.router.container.RoutingConf;
+import gash.router.server.Node;
 import gash.router.server.RoutingMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,7 @@ import java.net.InetAddress;
  */
 public class NetworkDiscoveryResource implements RouteResource {
     protected static Logger logger = LoggerFactory.getLogger("networkDiscovery");
+    RoutingMap routingMap = RoutingMap.getInstance();
 
     @Override
     public String getPath() {
@@ -42,6 +44,7 @@ public class NetworkDiscoveryResource implements RouteResource {
         return null;
     }
 
+    @Override
     public Route process(Route route, RoutingConf conf) throws Exception {
         if (route.hasNetworkDiscoveryPacket()) {
             if (route.getNetworkDiscoveryPacket().getSecret().equals(conf.getSecret())) {
@@ -60,16 +63,18 @@ public class NetworkDiscoveryResource implements RouteResource {
 
     private Route processRequest(Route request, RoutingConf conf) throws Exception {
 
+        NetworkDiscoveryPacket requestNetworkDiscoveryPacket = request.getNetworkDiscoveryPacket();
+
         NetworkDiscoveryPacket.Builder ndpb = NetworkDiscoveryPacket.newBuilder();
         ndpb.setMode(NetworkDiscoveryPacket.Mode.RESPONSE);
-        ndpb.setSender(request.getNetworkDiscoveryPacket().getSender());
+        ndpb.setSender(requestNetworkDiscoveryPacket.getSender());
         ndpb.setGroupTag(conf.getGroupTag());
         ndpb.setNodeAddress(InetAddress.getLocalHost().getHostAddress());
 
-        if (request.getNetworkDiscoveryPacket().getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE))
-            ndpb.setNodePort(conf.getInternalDiscoveryPort());
-        else if (request.getNetworkDiscoveryPacket().getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE))
-            ndpb.setNodePort(conf.getExternalDiscoveryPort());
+        if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE))
+            ndpb.setNodePort(conf.getInternalCommunicationPort());
+        else if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE))
+            ndpb.setNodePort(conf.getExternalCommunicationPort());
 
         ndpb.setSecret(conf.getSecret());
 
@@ -77,23 +82,34 @@ public class NetworkDiscoveryResource implements RouteResource {
         rb.setPath(Route.Path.NETWORK_DISCOVERY);
         rb.setNetworkDiscoveryPacket(ndpb);
 
-        if (request.getNetworkDiscoveryPacket().getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE) && !request.getNetworkDiscoveryPacket().getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()))
-            RoutingMap.internalServers.add(request.getNetworkDiscoveryPacket().getNodeAddress());
-        else if (request.getNetworkDiscoveryPacket().getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !request.getNetworkDiscoveryPacket().getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()))
-            RoutingMap.externalServers.add(request.getNetworkDiscoveryPacket().getNodeAddress());
+        Node node = new Node(requestNetworkDiscoveryPacket.getSender().toString(), requestNetworkDiscoveryPacket.getGroupTag(), requestNetworkDiscoveryPacket.getNodeId(), requestNetworkDiscoveryPacket.getNodeAddress(), (int) requestNetworkDiscoveryPacket.getNodePort());
 
-        System.out.println(RoutingMap.internalServers);
+        if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE) && !requestNetworkDiscoveryPacket.getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()) && requestNetworkDiscoveryPacket.getGroupTag().equals(conf.getGroupTag()))
+            routingMap.addInternalServer(node);
+        else if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !requestNetworkDiscoveryPacket.getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()))
+            routingMap.addExternalServer(node);
+
+        logger.info("Internal Servers: " + routingMap.getInternalServers().toString());
+        logger.info("External Servers: " + routingMap.getExternalServers().toString());
+        logger.info("Clients: " + routingMap.getClients().toString());
 
         return rb.build();
     }
 
     private Route processResponse(Route response, RoutingConf conf) throws Exception {
-        if (response.getNetworkDiscoveryPacket().getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE) && !response.getNetworkDiscoveryPacket().getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()))
-            RoutingMap.internalServers.add(response.getNetworkDiscoveryPacket().getNodeAddress());
-        else if (response.getNetworkDiscoveryPacket().getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !response.getNetworkDiscoveryPacket().getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()))
-            RoutingMap.externalServers.add(response.getNetworkDiscoveryPacket().getNodeAddress());
 
-        System.out.println(RoutingMap.internalServers);
+        NetworkDiscoveryPacket responseNetworkDiscoveryPacket = response.getNetworkDiscoveryPacket();
+
+        Node node = new Node(responseNetworkDiscoveryPacket.getSender().toString(), responseNetworkDiscoveryPacket.getGroupTag(), responseNetworkDiscoveryPacket.getNodeId(), responseNetworkDiscoveryPacket.getNodeAddress(), (int) responseNetworkDiscoveryPacket.getNodePort());
+
+        if (responseNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE) && !responseNetworkDiscoveryPacket.getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()))
+            routingMap.addInternalServer(node);
+        else if (responseNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !responseNetworkDiscoveryPacket.getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()))
+            routingMap.addExternalServer(node);
+
+        logger.info("Internal Servers: " + routingMap.getInternalServers().toString());
+        logger.info("External Servers: " + routingMap.getExternalServers().toString());
+        logger.info("Clients: " + routingMap.getClients().toString());
 
         return null;
     }
