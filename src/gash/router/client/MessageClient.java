@@ -59,7 +59,7 @@ public class MessageClient {
         }
     }
 
-    public void user(String action, String uname) {
+    public void user(String action, String uname, String password) {
         // construct the message to send
         Pipe.User.Builder user = Pipe.User.newBuilder();
         user.setUname(uname);

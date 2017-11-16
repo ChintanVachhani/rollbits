@@ -54,9 +54,9 @@ public class DemoApp implements CommListener {
                 waitForReply();
                 break;
             case "user": // ex. user [register|access|delete] <username>
-                if ((parsedCmd[1].equals("register") || parsedCmd[1].equals("access") || parsedCmd[1].equals("delete")) && parsedCmd[2] != null) {
+                if ((parsedCmd[1].equals("register") || parsedCmd[1].equals("access") || parsedCmd[1].equals("delete")) && parsedCmd[2] != null && parsedCmd[3] != null) {
                     clientUname = parsedCmd[2];
-                    mc.user(parsedCmd[1], parsedCmd[2]);
+                    mc.user(parsedCmd[1], parsedCmd[2], parsedCmd[3]);
                     waitForReply();
                 } else {
                     System.out.println("Invalid command.\n");
