@@ -10,9 +10,9 @@ public interface UserDAO extends DAO<User, ObjectId> {
 
     void createUser(User user);
 
-    User getUserByEmail(String email);
+    User getUserByUsername(String username);
 
-    void deleteUserByEmail(String email);
+    void deleteUserByUsername(String username);
 
     List<User> getAllUsers();
 

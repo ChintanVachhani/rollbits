@@ -56,10 +56,13 @@ public class UserResource implements RouteResource {
             switch (route.getUser().getAction()) {
                 case REGISTER:
                     response = register(route.getUser());
+                    break;
                 case ACCESS:
                     response = access(route.getUser());
+                    break;
                 case DELETE:
                     response = delete(route.getUser());
+                    break;
                 default:
                     response = "Invalid Action.";
             }
@@ -82,7 +85,7 @@ public class UserResource implements RouteResource {
 
     private String register(Pipe.User user) {
         User newUser = new User(user.getUname(), new Date().toString());
-        if (userDAO.getUserByEmail(newUser.getEmail()) == null) {
+        if (userDAO.getUserByUsername(newUser.getUsername()) == null) {
             userDAO.createUser(newUser);
             return "User Registered.";
         }
@@ -90,12 +93,18 @@ public class UserResource implements RouteResource {
     }
 
     private String access(Pipe.User user) {
-
-        return null;
+        User existingUser = userDAO.getUserByUsername(user.getUname());
+        if (existingUser != null) {
+            return "User Found.";
+        }
+        return "User not found.";
     }
 
     private String delete(Pipe.User user) {
-
-        return null;
+        if (userDAO.getUserByUsername(user.getUname()) != null) {
+            userDAO.deleteUserByUsername(user.getUname());
+            return "User Deleted.";
+        }
+        return "User not found.";
     }
 }

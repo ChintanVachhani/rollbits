@@ -19,16 +19,16 @@ public class UserDAOImpl extends BasicDAO<User, ObjectId> implements UserDAO {
         save(user);
     }
 
-    public User getUserByEmail(String email) {
+    public User getUserByUsername(String username) {
         Query<User> query = createQuery().
-                field("email").equal(email);
+                field("username").equal(username);
 
         return query.get();
     }
 
-    public void deleteUserByEmail(String email) {
+    public void deleteUserByUsername(String username) {
         Query<User> query = createQuery().
-                field("email").equal(email);
+                field("username").equal(username);
 
         deleteByQuery(query);
     }
