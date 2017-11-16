@@ -50,5 +50,4 @@ public class PingResource implements RouteResource {
         return null;
     }
 
-
 }

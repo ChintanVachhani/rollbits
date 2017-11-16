@@ -31,7 +31,6 @@ import java.util.Date;
  * processes requests of message passing - demonstration
  *
  * @author gash
- *
  */
 public class MessageResource implements RouteResource {
     protected static Logger logger = LoggerFactory.getLogger("message");
@@ -70,7 +69,7 @@ public class MessageResource implements RouteResource {
     }
 
     private String post(Pipe.Message message) {
-        Message newMessage = new Message(message.getType(), message.getFrom(), message.getPayload(), message.getTo(), new Date().toString(), message.getStatus());
+        Message newMessage = new Message(message.getType().toString(), message.getSenderId(), message.getPayload(), message.getReceiverId(), new Date().toString(), false);
         messageDAO.postMessage(newMessage);
         return null;
     }

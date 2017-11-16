@@ -64,16 +64,15 @@ public class ServerHandler extends SimpleChannelInboundHandler<Route> {
             return;
         }
 
-        System.out.println("---> " + msg.getId() + ": " + msg.getPath());
+        System.out.println("---> request: \n" + msg);
 
         try {
-            System.out.println("/" + msg.getPath().toString().toLowerCase());
             String clazz = routing.get("/" + msg.getPath().toString().toLowerCase());
             if (clazz != null) {
                 RouteResource rsc = (RouteResource) Beans.instantiate(RouteResource.class.getClassLoader(), clazz);
                 try {
                     Route response = rsc.process(msg);
-                    System.out.println("---> reply: " + response);
+                    System.out.println("<--- reply: \n" + response);
                     if (response != null) {
                         channel.writeAndFlush(response);
                     }

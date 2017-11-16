@@ -143,7 +143,7 @@ public class MessageServer {
 
             try {
                 ServerBootstrap b = new ServerBootstrap();
-                bootstrap.put(conf.getInternalCommunicationPort(), b);
+                bootstrap.put(conf.getExternalCommunicationPort(), b);
 
                 b.group(bossGroup, workerGroup);
                 b.channel(NioServerSocketChannel.class);

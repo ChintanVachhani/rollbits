@@ -38,7 +38,7 @@ public class UserResource implements RouteResource {
 
     private UserDAO userDAO;
 
-    UserResource() {
+    public UserResource() {
         MorphiaService morphiaService = new MorphiaService();
         this.userDAO = new UserDAOImpl(User.class, morphiaService.getDatastore());
     }
@@ -50,7 +50,6 @@ public class UserResource implements RouteResource {
 
     @Override
     public Route process(Route route) {
-
         String response = null;
 
         if (route.hasUser()) {
@@ -82,7 +81,7 @@ public class UserResource implements RouteResource {
     }
 
     private String register(Pipe.User user) {
-        User newUser = new User(user.getEmail(), new Date().toString());
+        User newUser = new User(user.getUname(), new Date().toString());
         if (userDAO.getUserByEmail(newUser.getEmail()) == null) {
             userDAO.createUser(newUser);
             return "User Registered.";

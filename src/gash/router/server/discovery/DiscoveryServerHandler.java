@@ -63,16 +63,15 @@ public class DiscoveryServerHandler extends SimpleChannelInboundHandler<Route> {
             return;
         }
 
-        System.out.println("---> " + msg.getId() + ": " + msg.getPath());
+        System.out.println("---> request: \n" + msg);
 
         try {
-            System.out.println("/" + msg.getPath().toString().toLowerCase());
             String clazz = routing.get("/" + msg.getPath().toString().toLowerCase());
             if (clazz != null) {
                 RouteResource rsc = (RouteResource) Beans.instantiate(RouteResource.class.getClassLoader(), clazz);
                 try {
                     Route response = rsc.process(msg, conf);
-                    System.out.println("---> reply: " + response + " to: " + msg.getNetworkDiscoveryPacket().getNodeAddress());
+                    System.out.println("<--- reply: \n" + response + " to: " + msg.getNetworkDiscoveryPacket().getNodeAddress());
                     if (response != null) {
                         if (response.getNetworkDiscoveryPacket().getSender().equals(Pipe.NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE)) {
                             channel.writeAndFlush(new DatagramPacket(
@@ -109,7 +108,6 @@ public class DiscoveryServerHandler extends SimpleChannelInboundHandler<Route> {
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Route msg) throws Exception {
-        System.out.println("------------");
         handleMessage(msg, ctx.channel());
     }
 

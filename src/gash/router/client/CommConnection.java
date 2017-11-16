@@ -94,7 +94,7 @@ public class CommConnection {
      * inject behavior, routing, and optimization
      *
      * @param req The request
-     * @throws An exception is raised if the message cannot be enqueued.
+     * @throws Exception is raised if the message cannot be enqueued.
      */
     public void enqueue(Route req) throws Exception {
         // enqueue message
@@ -121,7 +121,7 @@ public class CommConnection {
         // connection. For the demonstration, we don't need it
         ChannelFuture cf = connect().writeAndFlush(msg);
         if (cf.isDone() && !cf.isSuccess()) {
-            logger.error("failed to send message to server - " + msg.getPayload());
+            logger.error("failed to send message to server - " + msg);
             return false;
         }
 

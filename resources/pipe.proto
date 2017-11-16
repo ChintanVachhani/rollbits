@@ -26,6 +26,7 @@ message Route {
         Group group = 6;
         MessagesRequest messagesRequest = 7;
         MessagesResponse messagesResponse = 8;
+        string payloadMessage = 11;
     }
     optional Header header = 9;
     optional Response response=10;
@@ -51,19 +52,16 @@ message Group {
     enum ActionType {
         CREATE = 0;
         DELETE = 1;
+        ADD_USER = 2;
+        REMOVE_USER = 4;
     }
     required string gname = 1;
-    required int64 gid = 2;
-    required ActionType action = 3;
+    optional int64 gid = 2;
+    optional string uname = 3;
+    required ActionType action = 4;
 }
 
 message Message {
-
-    enum ActionType {
-        POST = 0;
-        UPDATE = 1;
-        DELETE = 2;
-    }
 
     enum Type {
         SINGLE = 0;
@@ -80,9 +78,8 @@ message Message {
     required string senderId = 2;
     required string payload = 3;
     required string receiverId = 4; //would be groupId if the type is GROUP or else userId if the type is SINGLE
-    required string timestamp = 5;
+    optional string timestamp = 5;
     optional Status status = 6;
-    required ActionType action = 7;
 }
 
 message MessagesRequest {

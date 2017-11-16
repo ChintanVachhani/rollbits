@@ -11,7 +11,7 @@ public class Message {
     @Id
     private ObjectId objectId;
 
-    private Pipe.Message.Type type;
+    private String type;
 
     private String from;
 
@@ -21,19 +21,19 @@ public class Message {
 
     private String timestamp;
 
-    private Pipe.Message.Status status;
+    private boolean read;
 
     public Message() {
     }
 
-    public Message(Pipe.Message.Type type, String from, String payload, String to, String timestamp, Pipe.Message.Status status) {
+    public Message(String type, String from, String payload, String to, String timestamp, boolean read) {
         super();
         this.type = type;
         this.from = from;
         this.payload = payload;
         this.to = to;
         this.timestamp = timestamp;
-        this.status = status;
+        this.read = read;
     }
 
     public ObjectId getObjectId() {
@@ -44,11 +44,11 @@ public class Message {
         this.objectId = objectId;
     }
 
-    public Pipe.Message.Type getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Pipe.Message.Type type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -84,11 +84,11 @@ public class Message {
         this.timestamp = timestamp;
     }
 
-    public Pipe.Message.Status getStatus() {
-        return status;
+    public boolean isRead() {
+        return read;
     }
 
-    public void setStatus(Pipe.Message.Status status) {
-        this.status = status;
+    public void setRead(boolean read) {
+        this.read = read;
     }
 }
