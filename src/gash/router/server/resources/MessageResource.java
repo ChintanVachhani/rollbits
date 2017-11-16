@@ -59,7 +59,6 @@ public class MessageResource implements RouteResource {
             }
         }
 
-
         return null;
     }
 

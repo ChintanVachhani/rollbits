@@ -6,6 +6,7 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
 
 import java.util.List;
 
@@ -31,6 +32,26 @@ public class UserDAOImpl extends BasicDAO<User, ObjectId> implements UserDAO {
                 field("username").equal(username);
 
         deleteByQuery(query);
+    }
+
+    public void addGroupToUser(long groupId, String username) {
+        Query<User> updateQuery = createQuery().
+                field("username").equal(username);
+
+        UpdateOperations<User> ops = createUpdateOperations()
+                .addToSet("groupIds", groupId);
+
+        update(updateQuery, ops);
+    }
+
+    public void removeGroupFromUser(long groupId, String username) {
+        Query<User> updateQuery = createQuery().
+                field("username").equal(username);
+
+        UpdateOperations<User> ops = createUpdateOperations()
+                .removeAll("groupIds", groupId);
+
+        update(updateQuery, ops);
     }
 
     public List<User> getAllUsers() {

@@ -14,6 +14,10 @@ public interface UserDAO extends DAO<User, ObjectId> {
 
     void deleteUserByUsername(String username);
 
+    void addGroupToUser(long groupId, String username);
+
+    void removeGroupFromUser(long groupId, String username);
+
     List<User> getAllUsers();
 
 }

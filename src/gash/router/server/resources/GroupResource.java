@@ -18,8 +18,11 @@ package gash.router.server.resources;
 import gash.router.container.RoutingConf;
 import gash.router.server.dao.GroupDAO;
 import gash.router.server.dao.MorphiaService;
+import gash.router.server.dao.UserDAO;
 import gash.router.server.dao.impl.GroupDAOImpl;
+import gash.router.server.dao.impl.UserDAOImpl;
 import gash.router.server.entity.Group;
+import gash.router.server.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import routing.Pipe;
@@ -34,10 +37,12 @@ public class GroupResource implements RouteResource {
     protected static Logger logger = LoggerFactory.getLogger("group");
 
     private GroupDAO groupDAO;
+    private UserDAO userDAO;
 
     GroupResource() {
         MorphiaService morphiaService = new MorphiaService();
         this.groupDAO = new GroupDAOImpl(Group.class, morphiaService.getDatastore());
+        this.userDAO = new UserDAOImpl(User.class, morphiaService.getDatastore());
     }
 
     @Override
@@ -53,6 +58,10 @@ public class GroupResource implements RouteResource {
                     create(route.getGroup());
                 case DELETE:
                     delete(route.getGroup());
+                case ADD_USER:
+                    addUser(route.getGroup(), route.getUser());
+                case REMOVE_USER:
+                    removeUser(route.getGroup(), route.getUser());
             }
         }
         return null;
@@ -71,6 +80,16 @@ public class GroupResource implements RouteResource {
 
     private String delete(Pipe.Group group) {
         groupDAO.deleteGroupByName(group.getGname());
+        return null;
+    }
+
+    private String addUser(Pipe.Group group, Pipe.User user) {
+        userDAO.addGroupToUser(group.getGid(), user.getUname());
+        return null;
+    }
+
+    private String removeUser(Pipe.Group group, Pipe.User user) {
+        userDAO.removeGroupFromUser(group.getGid(), user.getUname());
         return null;
     }
 }

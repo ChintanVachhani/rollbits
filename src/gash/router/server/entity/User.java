@@ -4,6 +4,9 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity("user")
 public class User {
 
@@ -12,32 +15,19 @@ public class User {
 
     private String username;
 
-    private String email;
-
     private String password;
 
     private String recentActiveTime;
 
+    private List<Long> groupIds = new ArrayList<>();
+
     public User() {
     }
 
-    public User(String username) {
+    public User(String username, String password) {
         super();
         this.username = username;
-    }
-
-    public User(String email, String recentActiveTime) {
-        super();
-        this.email = email;
-        this.recentActiveTime = recentActiveTime;
-    }
-
-    public User(String username, String email, String password, String recentActiveTime) {
-        super();
-        this.username = username;
-        this.email = email;
         this.password = password;
-        this.recentActiveTime = recentActiveTime;
     }
 
     public String getUsername() {
@@ -56,14 +46,6 @@ public class User {
         this.objectId = objectId;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -78,6 +60,14 @@ public class User {
 
     public void setRecentActiveTime(String recentActiveTime) {
         this.recentActiveTime = recentActiveTime;
+    }
+
+    public List<Long> getGroupIds() {
+        return groupIds;
+    }
+
+    public void setGroupIds(List<Long> groupIds) {
+        this.groupIds = groupIds;
     }
 
 }
