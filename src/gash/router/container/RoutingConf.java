@@ -27,7 +27,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Routing information for the server - internal use only
  *
  * @author gash
- *
  */
 @XmlRootElement(name = "conf")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -36,6 +35,9 @@ public class RoutingConf {
     private int externalCommunicationPort;
     private int internalDiscoveryPort;
     private int externalDiscoveryPort;
+    private String nodeBroadcastAddress;
+    private String nodeAddress;
+    private String nodeId;
     private String groupTag;
     private String secret;
     private List<RoutingEntry> routing;
@@ -90,6 +92,30 @@ public class RoutingConf {
 
     public void setExternalDiscoveryPort(int externalDiscoveryPort) {
         this.externalDiscoveryPort = externalDiscoveryPort;
+    }
+
+    public String getNodeBroadcastAddress() {
+        return nodeBroadcastAddress;
+    }
+
+    public void setNodeBroadcastAddress(String nodeBroadcastAddress) {
+        this.nodeBroadcastAddress = nodeBroadcastAddress;
+    }
+
+    public String getNodeAddress() {
+        return nodeAddress;
+    }
+
+    public void setNodeAddress(String nodeAddress) {
+        this.nodeAddress = nodeAddress;
+    }
+
+    public String getNodeId() {
+        return nodeId;
+    }
+
+    public void setNodeId(String nodeId) {
+        this.nodeId = nodeId;
     }
 
     public String getGroupTag() {

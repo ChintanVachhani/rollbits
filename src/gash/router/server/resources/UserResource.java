@@ -69,7 +69,9 @@ public class UserResource implements RouteResource {
         Route.Builder responseRoute = Route.newBuilder();
         responseRoute.setId(route.getId());
         responseRoute.setPath(Route.Path.RESPONSE);
-        responseRoute.setPayload(response);
+        Pipe.Response.Builder rb = Pipe.Response.newBuilder();
+        rb.setMessage(response);
+        responseRoute.setResponse(rb);
 
         return responseRoute.build();
     }
@@ -81,7 +83,7 @@ public class UserResource implements RouteResource {
 
     private String register(Pipe.User user) {
         User newUser = new User(user.getEmail(), new Date().toString());
-        if(userDAO.getUserByEmail(newUser.getEmail()) == null){
+        if (userDAO.getUserByEmail(newUser.getEmail()) == null) {
             userDAO.createUser(newUser);
             return "User Registered.";
         }

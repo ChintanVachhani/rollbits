@@ -24,7 +24,6 @@ import routing.Pipe;
  * responds to request for pinging the service
  *
  * @author gash
- *
  */
 public class PingResource implements RouteResource {
     protected static Logger logger = LoggerFactory.getLogger("ping");
@@ -39,7 +38,10 @@ public class PingResource implements RouteResource {
         Pipe.Route.Builder rb = Pipe.Route.newBuilder();
         rb.setId(route.getId());
         rb.setPath(Pipe.Route.Path.PING);
-        rb.setPayload("ping");
+        Pipe.Response.Builder res = Pipe.Response.newBuilder();
+        res.setMessage("ping");
+        rb.setResponse(res);
+
         return rb.build();
     }
 

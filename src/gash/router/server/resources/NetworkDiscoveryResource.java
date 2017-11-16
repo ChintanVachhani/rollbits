@@ -69,11 +69,14 @@ public class NetworkDiscoveryResource implements RouteResource {
         ndpb.setMode(NetworkDiscoveryPacket.Mode.RESPONSE);
         ndpb.setSender(requestNetworkDiscoveryPacket.getSender());
         ndpb.setGroupTag(conf.getGroupTag());
-        ndpb.setNodeAddress(InetAddress.getLocalHost().getHostAddress());
+        //ndpb.setNodeAddress(InetAddress.getLocalHost().getHostAddress());
+        ndpb.setNodeAddress("10.0.0.50");
 
         if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE))
             ndpb.setNodePort(conf.getInternalCommunicationPort());
         else if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE))
+            ndpb.setNodePort(conf.getExternalCommunicationPort());
+        else if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.END_USER_CLIENT))
             ndpb.setNodePort(conf.getExternalCommunicationPort());
 
         ndpb.setSecret(conf.getSecret());
@@ -84,10 +87,12 @@ public class NetworkDiscoveryResource implements RouteResource {
 
         Node node = new Node(requestNetworkDiscoveryPacket.getSender().toString(), requestNetworkDiscoveryPacket.getGroupTag(), requestNetworkDiscoveryPacket.getNodeId(), requestNetworkDiscoveryPacket.getNodeAddress(), (int) requestNetworkDiscoveryPacket.getNodePort());
 
-        if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE) && !requestNetworkDiscoveryPacket.getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()) && requestNetworkDiscoveryPacket.getGroupTag().equals(conf.getGroupTag()))
+        if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE) && !requestNetworkDiscoveryPacket.getNodeAddress().equals("10.0.0.50") && requestNetworkDiscoveryPacket.getGroupTag().equals(conf.getGroupTag()))
             routingMap.addInternalServer(node);
-        else if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !requestNetworkDiscoveryPacket.getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()))
+        else if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !requestNetworkDiscoveryPacket.getNodeAddress().equals("10.0.0.50"))
             routingMap.addExternalServer(node);
+        else if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.END_USER_CLIENT))
+            routingMap.addClient(node);
 
         System.out.println("Internal Servers: " + routingMap.getInternalServers());
         System.out.println("External Servers: " + routingMap.getExternalServers().toString());
@@ -102,10 +107,12 @@ public class NetworkDiscoveryResource implements RouteResource {
 
         Node node = new Node(responseNetworkDiscoveryPacket.getSender().toString(), responseNetworkDiscoveryPacket.getGroupTag(), responseNetworkDiscoveryPacket.getNodeId(), responseNetworkDiscoveryPacket.getNodeAddress(), (int) responseNetworkDiscoveryPacket.getNodePort());
 
-        if (responseNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE) && !responseNetworkDiscoveryPacket.getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()))
+        if (responseNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE) && !responseNetworkDiscoveryPacket.getNodeAddress().equals("10.0.0.50"))
             routingMap.addInternalServer(node);
-        else if (responseNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !responseNetworkDiscoveryPacket.getNodeAddress().equals(InetAddress.getLocalHost().getHostAddress()))
+        else if (responseNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !responseNetworkDiscoveryPacket.getNodeAddress().equals("10.0.0.50"))
             routingMap.addExternalServer(node);
+        else if (responseNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.END_USER_CLIENT))
+            routingMap.addClient(node);
 
         System.out.println("Internal Servers: " + routingMap.getInternalServers());
         System.out.println("External Servers: " + routingMap.getExternalServers().toString());

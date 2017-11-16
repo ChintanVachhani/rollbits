@@ -72,7 +72,7 @@ public class DiscoveryServerHandler extends SimpleChannelInboundHandler<Route> {
 				RouteResource rsc = (RouteResource) Beans.instantiate(RouteResource.class.getClassLoader(), clazz);
 				try {
 					Route response = rsc.process(msg, conf);
-					System.out.println("---> reply: " + response + " to: " + msg.getNetworkDiscoveryPacket().getNodeAddress());
+					//System.out.println("---> reply: " + response + " to: " + msg.getNetworkDiscoveryPacket().getNodeAddress());
 					if (response != null) {
 
 						channel.writeAndFlush(new DatagramPacket(
