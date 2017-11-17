@@ -52,19 +52,35 @@ public class GroupResource implements RouteResource {
 
     @Override
     public Route process(Route route) {
+        String response = null;
+
         if (route.hasGroup()) {
             switch (route.getGroup().getAction()) {
                 case CREATE:
-                    create(route.getGroup());
+                    response = create(route.getGroup());
+                    break;
                 case DELETE:
-                    delete(route.getGroup());
+                    response = delete(route.getGroup());
+                    break;
                 case ADD_USER:
-                    addUser(route.getGroup(), route.getUser());
+                    response = addUser(route.getGroup(), route.getUser());
+                    break;
                 case REMOVE_USER:
-                    removeUser(route.getGroup(), route.getUser());
+                    response = removeUser(route.getGroup(), route.getUser());
+                    break;
+                default:
+                    response = "Invalid Action.";
             }
         }
-        return null;
+
+        Route.Builder responseRoute = Route.newBuilder();
+        responseRoute.setId(route.getId());
+        responseRoute.setPath(Route.Path.RESPONSE);
+        Pipe.Response.Builder rb = Pipe.Response.newBuilder();
+        rb.setMessage(response);
+        responseRoute.setResponse(rb);
+
+        return responseRoute.build();
     }
 
     @Override
@@ -75,21 +91,28 @@ public class GroupResource implements RouteResource {
     private String create(Pipe.Group group) {
         Group newGroup = new Group(group.getGname(), group.getGid());
         groupDAO.createGroup(newGroup);
-        return null;
+        if (groupDAO.getGroupByName(newGroup.getName()) == null) {
+            groupDAO.createGroup(newGroup);
+            return "Group Created.";
+        }
+        return "Group already exists.";
     }
 
     private String delete(Pipe.Group group) {
-        groupDAO.deleteGroupByName(group.getGname());
-        return null;
+        if (groupDAO.getGroupByName(group.getGname()) != null) {
+            groupDAO.deleteGroupByName(group.getGname());
+            return "Group Deleted.";
+        }
+        return "Group not found.";
     }
 
     private String addUser(Pipe.Group group, Pipe.User user) {
         userDAO.addGroupToUser(group.getGid(), user.getUname());
-        return null;
+        return "User added to group.";
     }
 
     private String removeUser(Pipe.Group group, Pipe.User user) {
         userDAO.removeGroupFromUser(group.getGid(), user.getUname());
-        return null;
+        return "User removed from group.";
     }
 }

@@ -50,7 +50,7 @@ public class MessageResource implements RouteResource {
     @Override
     public Route process(Route route) {
 
-        String response;
+        String response = null;
 
         if (route.hasMessage()) {
             switch (route.getMessage().getAction()) {
@@ -59,7 +59,14 @@ public class MessageResource implements RouteResource {
             }
         }
 
-        return null;
+        Route.Builder responseRoute = Route.newBuilder();
+        responseRoute.setId(route.getId());
+        responseRoute.setPath(Route.Path.RESPONSE);
+        Pipe.Response.Builder rb = Pipe.Response.newBuilder();
+        rb.setMessage(response);
+        responseRoute.setResponse(rb);
+
+        return responseRoute.build();
     }
 
     @Override
@@ -70,6 +77,6 @@ public class MessageResource implements RouteResource {
     private String post(Pipe.Message message) {
         Message newMessage = new Message(message.getType().toString(), message.getSenderId(), message.getPayload(), message.getReceiverId(), new Date().toString(), false);
         messageDAO.postMessage(newMessage);
-        return null;
+        return "Message Posted.";
     }
 }
