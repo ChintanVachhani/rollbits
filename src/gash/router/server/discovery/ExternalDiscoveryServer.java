@@ -10,19 +10,19 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class InternalDiscoveryServer implements Runnable {
+public class ExternalDiscoveryServer implements Runnable {
 
-    protected static Logger logger = LoggerFactory.getLogger("internalDiscovery");
+    protected static Logger logger = LoggerFactory.getLogger("externalDiscovery");
 
     private RoutingConf conf;
 
-    public InternalDiscoveryServer(RoutingConf conf) {
+    public ExternalDiscoveryServer(RoutingConf conf) {
         this.conf = conf;
     }
 
     @Override
     public void run() {
-        logger.info("Internal Discovery starting");
+        logger.info("External Discovery starting");
 
         EventLoopGroup group = new NioEventLoopGroup();
 
@@ -33,8 +33,8 @@ public class InternalDiscoveryServer implements Runnable {
                     .option(ChannelOption.SO_BROADCAST, true)
                     .handler(new DiscoveryInit(conf, false));
 
-            logger.info("Starting server, listening on port = " + conf.getInternalDiscoveryPort());
-            ChannelFuture f = b.bind(conf.getInternalDiscoveryPort()).sync();
+            logger.info("Starting server, listening on port = " + conf.getExternalDiscoveryPort());
+            ChannelFuture f = b.bind(conf.getExternalDiscoveryPort()).sync();
 
 
             logger.info(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "

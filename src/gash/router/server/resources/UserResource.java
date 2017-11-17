@@ -64,7 +64,7 @@ public class UserResource implements RouteResource {
                     response = delete(route.getUser());
                     break;
                 default:
-                    response = "Invalid Action.";
+                    response = "Invalid action.";
             }
         }
 
@@ -95,7 +95,7 @@ public class UserResource implements RouteResource {
     private String access(Pipe.User user) {
         User existingUser = userDAO.getUserByUsername(user.getUname());
         if (existingUser != null) {
-            return "User Found.";
+            return "User found.";
         }
         return "User not found.";
     }

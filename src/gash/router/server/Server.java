@@ -22,8 +22,8 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import gash.router.server.communication.ExternalCommServer;
-import gash.router.server.discovery.ExternalDiscoveryClient;
-import gash.router.server.discovery.ExternalDiscoveryServer;
+import gash.router.server.discovery.InternalDiscoveryClient;
+import gash.router.server.discovery.InternalDiscoveryServer;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,14 +52,13 @@ public class Server {
     public void startServer() {
         // network discovery mechanism using UDP
         // listening for discovery request by other servers
-        ExternalDiscoveryServer externalDiscoveryServer = new ExternalDiscoveryServer(conf);
-        Thread dsthread = new Thread(externalDiscoveryServer);
+        InternalDiscoveryServer internalDiscoveryServer = new InternalDiscoveryServer(conf);
+        Thread dsthread = new Thread(internalDiscoveryServer);
         dsthread.start();
-        logger.info("Discovery starting");
 
         // finding all the active servers
-        ExternalDiscoveryClient externalDiscoveryClient = new ExternalDiscoveryClient(conf);
-        Thread dcthread = new Thread(externalDiscoveryClient);
+        InternalDiscoveryClient internalDiscoveryClient = new InternalDiscoveryClient(conf);
+        Thread dcthread = new Thread(internalDiscoveryClient);
         dcthread.start();
 
         // start communication over channel

@@ -77,6 +77,6 @@ public class MessageResource implements RouteResource {
     private String post(Pipe.Message message) {
         Message newMessage = new Message(message.getType().toString(), message.getSenderId(), message.getPayload(), message.getReceiverId(), new Date().toString(), false);
         messageDAO.postMessage(newMessage);
-        return "Message Posted.";
+        return "Message posted.";
     }
 }
