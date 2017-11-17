@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
      * port The port to listen to
      */
     public class InternalCommServer implements Runnable {
-    protected static Logger logger = LoggerFactory.getLogger("externalCommServer");
+    protected static Logger logger = LoggerFactory.getLogger("internalCommServer");
     RoutingConf conf;
 
         public InternalCommServer(RoutingConf conf) {

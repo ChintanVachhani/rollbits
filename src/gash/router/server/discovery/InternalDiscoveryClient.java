@@ -65,7 +65,7 @@ public final class InternalDiscoveryClient implements Runnable {
         ndpb.setSender(sender);
         ndpb.setGroupTag(conf.getGroupTag());
         ndpb.setNodeAddress(conf.getNodeAddress());
-        ndpb.setNodePort(conf.getExternalDiscoveryPort());
+        ndpb.setNodePort(conf.getInternalCommunicationPort());
         ndpb.setSecret(conf.getSecret());
 
         Route.Builder rb = Route.newBuilder();

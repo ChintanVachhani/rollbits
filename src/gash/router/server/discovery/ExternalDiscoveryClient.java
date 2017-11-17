@@ -63,7 +63,7 @@ public final class ExternalDiscoveryClient implements Runnable {
         ndpb.setSender(sender);
         ndpb.setGroupTag(conf.getGroupTag());
         ndpb.setNodeAddress(conf.getNodeAddress());
-        ndpb.setNodePort(conf.getExternalDiscoveryPort());
+        ndpb.setNodePort(conf.getExternalCommunicationPort());
         ndpb.setSecret(conf.getSecret());
 
         Route.Builder rb = Route.newBuilder();

@@ -13,23 +13,26 @@ message Route {
         MESSAGES_REQUEST = 5;
         MESSAGES_RESPONSE = 6;
         RESPONSE = 7;
+        HEARTBEAT = 8;
     }
 
     //a node should not have a value though this is not enforced
     required int64 id = 1;
     required Path path = 2;
 
-    oneof payload{
+    oneof payload {
         NetworkDiscoveryPacket networkDiscoveryPacket = 3;
         User user = 4;
         Message message = 5;
         Group group = 6;
         MessagesRequest messagesRequest = 7;
         MessagesResponse messagesResponse = 8;
+        Response response = 10;
+        string payloadMessage = 11;
     }
     optional Header header = 9;
-    optional Response response=10;
-    optional string payloadMessage = 11;
+
+
 }
 
 message User {
@@ -128,18 +131,17 @@ message NetworkDiscoveryPacket {
 }
 
 message Header {
-    enum Type{
-        INTERNAL=0;
-        INTER_CLUSTER=1;
-        CLIENT=2;
+    enum Type {
+        INTERNAL = 0;
+        INTER_CLUSTER = 1;
+        CLIENT = 2;
     }
     required Type type = 1;
 }
 
 
-
-message Response{
-    optional bool success=1;
-    optional string message=2; //any response which needs to be sent
-    optional string error=3; //not required but can be used in case we set up common codes for errors
+message Response {
+    optional bool success = 1;
+    optional string message = 2; //any response which needs to be sent
+    optional string error = 3; //not required but can be used in case we set up common codes for errors
 }

@@ -35,6 +35,7 @@ public class RoutingConf {
     private int externalCommunicationPort;
     private int internalDiscoveryPort;
     private int externalDiscoveryPort;
+    private int heartbeatPort;
     private String nodeBroadcastAddress;
     private String nodeAddress;
     private String nodeId;
@@ -92,6 +93,14 @@ public class RoutingConf {
 
     public void setExternalDiscoveryPort(int externalDiscoveryPort) {
         this.externalDiscoveryPort = externalDiscoveryPort;
+    }
+
+    public int getHeartbeatPort() {
+        return heartbeatPort;
+    }
+
+    public void setHeartbeatPort(int heartbeatPort) {
+        this.heartbeatPort = heartbeatPort;
     }
 
     public String getNodeBroadcastAddress() {
