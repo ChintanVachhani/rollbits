@@ -21,7 +21,7 @@ import java.io.File;
  * @author gash1
  * 
  */
-public class MessageApp {
+public class ServerApp {
 
 	/**
 	 * @param args
@@ -34,7 +34,7 @@ public class MessageApp {
 
 		File cf = new File(args[0]);
 		try {
-			MessageServer svr = new MessageServer(cf);
+			Server svr = new Server(cf);
 			svr.startServer();
 		} catch (Exception e) {
 			e.printStackTrace();

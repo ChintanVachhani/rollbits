@@ -13,23 +13,19 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package gash.router.server;
-
-import java.beans.Beans;
-import java.util.HashMap;
-
-import io.netty.buffer.Unpooled;
-import io.netty.channel.socket.DatagramPacket;
-import io.netty.util.internal.SocketUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package gash.router.server.communication;
 
 import gash.router.container.RoutingConf;
 import gash.router.server.resources.RouteResource;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import routing.Pipe.Route;
+
+import java.beans.Beans;
+import java.util.HashMap;
 
 /**
  * The message handler processes json messages that are delimited by a 'newline'
@@ -38,13 +34,13 @@ import routing.Pipe.Route;
  *
  * @author gash
  */
-public class ServerHandler extends SimpleChannelInboundHandler<Route> {
+public class CommServerHandler extends SimpleChannelInboundHandler<Route> {
     protected static Logger logger = LoggerFactory.getLogger("connect");
 
     private HashMap<String, String> routing;
     private RoutingConf conf;
 
-    public ServerHandler(RoutingConf conf) {
+    public CommServerHandler(RoutingConf conf) {
         this.conf = conf;
         if (conf != null)
             routing = conf.asHashMap();

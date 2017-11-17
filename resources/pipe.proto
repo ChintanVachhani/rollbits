@@ -26,10 +26,10 @@ message Route {
         Group group = 6;
         MessagesRequest messagesRequest = 7;
         MessagesResponse messagesResponse = 8;
-        string payloadMessage = 11;
     }
     optional Header header = 9;
     optional Response response=10;
+    optional string payloadMessage = 11;
 }
 
 message User {

@@ -1,5 +1,6 @@
 package gash.router.server;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RoutingMap {
@@ -10,7 +11,7 @@ public class RoutingMap {
     }
 
     private HashMap<String, Node> internalServers;
-    private HashMap<String, Node> externalServers;
+    private HashMap<String, ArrayList<Node>> externalServers;
     private HashMap<String, Node> clients;
 
     private RoutingMap() {
@@ -27,12 +28,12 @@ public class RoutingMap {
         this.internalServers.put(node.getNodeAddress(), node);
     }
 
-    public HashMap<String, Node> getExternalServers() {
+    public HashMap<String, ArrayList<Node>> getExternalServers() {
         return externalServers;
     }
 
     public void addExternalServer(Node node) {
-        this.externalServers.put(node.getNodeAddress(), node);
+        this.externalServers.get(node.getGroupTag()).add(node);
     }
 
     public HashMap<String, Node> getClients() {
@@ -43,15 +44,15 @@ public class RoutingMap {
         this.clients.put(node.getNodeAddress(), node);
     }
 
-    public void removeInternalServer(String nodeAddress) {
-        this.internalServers.remove(nodeAddress);
+    public void removeInternalServer(Node node) {
+        this.internalServers.remove(node.getNodeAddress());
     }
 
-    public void removeExternalServer(String nodeAddress) {
-        this.externalServers.remove(nodeAddress);
+    public void removeExternalServer(Node node) {
+        this.externalServers.get(node.getGroupTag()).remove(node);
     }
 
-    public void removeClient(String nodeAddress) {
-        this.clients.remove(nodeAddress);
+    public void removeClient(Node node) {
+        this.clients.remove(node.getNodeAddress());
     }
 }

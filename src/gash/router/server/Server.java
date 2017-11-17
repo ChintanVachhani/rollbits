@@ -21,24 +21,20 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
-import gash.router.server.discovery.DiscoveryClient;
-import gash.router.server.discovery.DiscoveryServer;
+import gash.router.server.communication.ExternalCommServer;
+import gash.router.server.discovery.ExternalDiscoveryClient;
+import gash.router.server.discovery.ExternalDiscoveryServer;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gash.router.container.RoutingConf;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-public class MessageServer {
+public class Server {
     protected static Logger logger = LoggerFactory.getLogger("server");
 
-    protected static HashMap<Integer, ServerBootstrap> bootstrap = new HashMap<Integer, ServerBootstrap>();
+    public static HashMap<Integer, ServerBootstrap> bootstrap = new HashMap<Integer, ServerBootstrap>();
 
     public static final String sPort = "port";
     public static final String sPoolSize = "pool.size";
@@ -46,7 +42,7 @@ public class MessageServer {
     protected RoutingConf conf;
     protected boolean background = false;
 
-    public MessageServer(RoutingConf conf) {
+    public Server(RoutingConf conf) {
         this.conf = conf;
     }
 
@@ -56,17 +52,18 @@ public class MessageServer {
     public void startServer() {
         // network discovery mechanism using UDP
         // listening for discovery request by other servers
-        DiscoveryServer discoveryServer = new DiscoveryServer(conf);
-        Thread dsthread = new Thread(discoveryServer);
+        ExternalDiscoveryServer externalDiscoveryServer = new ExternalDiscoveryServer(conf);
+        Thread dsthread = new Thread(externalDiscoveryServer);
         dsthread.start();
+        logger.info("Discovery starting");
 
         // finding all the active servers
-        DiscoveryClient discoveryClient = new DiscoveryClient(conf);
-        Thread dcthread = new Thread(discoveryClient);
+        ExternalDiscoveryClient externalDiscoveryClient = new ExternalDiscoveryClient(conf);
+        Thread dcthread = new Thread(externalDiscoveryClient);
         dcthread.start();
 
         // start communication over channel
-        StartCommunication comm = new StartCommunication(conf);
+        ExternalCommServer comm = new ExternalCommServer(conf);
         logger.info("Communication starting");
 
         if (background) {
@@ -90,7 +87,7 @@ public class MessageServer {
      *
      * @param cfg
      */
-    public MessageServer(File cfg) {
+    public Server(File cfg) {
         init(cfg);
     }
 
@@ -121,59 +118,6 @@ public class MessageServer {
 
     private boolean verifyConf(RoutingConf conf) {
         return (conf != null);
-    }
-
-    /**
-     * initialize netty communication
-     *
-     * port The port to listen to
-     */
-    private static class StartCommunication implements Runnable {
-        RoutingConf conf;
-
-        public StartCommunication(RoutingConf conf) {
-            this.conf = conf;
-        }
-
-        public void run() {
-            // construct boss and worker threads (num threads = number of cores)
-
-            EventLoopGroup bossGroup = new NioEventLoopGroup();
-            EventLoopGroup workerGroup = new NioEventLoopGroup();
-
-            try {
-                ServerBootstrap b = new ServerBootstrap();
-                bootstrap.put(conf.getExternalCommunicationPort(), b);
-
-                b.group(bossGroup, workerGroup);
-                b.channel(NioServerSocketChannel.class);
-                b.option(ChannelOption.SO_BACKLOG, 100);
-                //b.option(ChannelOption.TCP_NODELAY, true);
-                //b.option(ChannelOption.SO_KEEPALIVE, true);
-                // b.option(ChannelOption.MESSAGE_SIZE_ESTIMATOR);
-
-                boolean compressComm = false;
-                b.childHandler(new ServerInit(conf, compressComm));
-
-                // Start the server.
-                logger.info("Starting server, listening on port = " + conf.getExternalCommunicationPort());
-                ChannelFuture f = b.bind(conf.getExternalCommunicationPort()).syncUninterruptibly();
-
-                logger.info(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "
-                        + f.channel().isWritable() + ", act: " + f.channel().isActive());
-
-                // block until the server socket is closed.
-                f.channel().closeFuture().sync();
-
-            } catch (Exception ex) {
-                // on bind().sync()
-                logger.error("Failed to setup handler.", ex);
-            } finally {
-                // Shut down all event loops to terminate all threads.
-                bossGroup.shutdownGracefully();
-                workerGroup.shutdownGracefully();
-            }
-        }
     }
 
     /**

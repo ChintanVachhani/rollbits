@@ -17,22 +17,22 @@ package gash.router.app;
 
 import gash.router.client.CommConnection;
 import gash.router.client.CommListener;
-import gash.router.client.MessageClient;
+import gash.router.client.Client;
 import routing.Pipe.Route;
 
 import java.util.Scanner;
 
-public class DemoApp implements CommListener {
-    private MessageClient mc;
+public class ClientApp implements CommListener {
+    private Client mc;
     private String clientUname;
     private volatile boolean waitingForReply;
 
-    public DemoApp(MessageClient mc) {
+    public ClientApp(Client mc) {
         waitingForReply = false;
         init(mc);
     }
 
-    private void init(MessageClient mc) {
+    private void init(Client mc) {
         this.mc = mc;
         this.mc.addListener(this);
     }
@@ -176,8 +176,8 @@ public class DemoApp implements CommListener {
         String cmd = null;
 
         try {
-            MessageClient mc = new MessageClient(host, port);
-            DemoApp da = new DemoApp(mc);
+            Client mc = new Client(host, port);
+            ClientApp da = new ClientApp(mc);
 
             System.out.println();
             printBox("\033[0;1mCOMMANDS\n",

@@ -21,7 +21,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import gash.router.server.ServerInit;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -167,15 +166,20 @@ public class CommConnection {
             System.out.println(channel.channel().localAddress() + " -> open: " + channel.channel().isOpen()
                     + ", write: " + channel.channel().isWritable() + ", reg: " + channel.channel().isRegistered());
 
+            // start outbound message processor
+            worker = new CommWorker(this);
+            worker.setDaemon(true);
+            worker.start();
+
         } catch (Throwable ex) {
             logger.error("failed to initialize the client connection", ex);
             ex.printStackTrace();
         }
 
-        // start outbound message processor
+        /*// start outbound message processor
         worker = new CommWorker(this);
         worker.setDaemon(true);
-        worker.start();
+        worker.start();*/
     }
 
     /**

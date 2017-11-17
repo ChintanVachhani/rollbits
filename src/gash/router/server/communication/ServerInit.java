@@ -1,4 +1,4 @@
-package gash.router.server;
+package gash.router.server.communication;
 
 import gash.router.container.RoutingConf;
 import io.netty.channel.ChannelInitializer;
@@ -48,6 +48,6 @@ public class ServerInit extends ChannelInitializer<SocketChannel> {
 
 
 		// our server processor (new instance for each connection)
-		pipeline.addLast("handler", new ServerHandler(conf));
+		pipeline.addLast("handler", new CommServerHandler(conf));
 	}
 }

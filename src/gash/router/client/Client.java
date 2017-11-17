@@ -25,11 +25,11 @@ import java.util.Date;
  *
  * @author gash
  */
-public class MessageClient {
+public class Client {
     // track requests
     private long curID = 0;
 
-    public MessageClient(String host, int port) {
+    public Client(String host, int port) {
         init(host, port);
     }
 
