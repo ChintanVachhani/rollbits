@@ -28,7 +28,6 @@ public class Raft{
     }
 
 
-
     public void setConf(RoutingConf conf) {
         this.conf = conf;
         myIP = conf.getNodeAddress();
@@ -97,7 +96,7 @@ public class Raft{
         if(ip1 > ip2){
             return 1;
         }
-        else if (ip1 == ip2){
+        else if (Objects.equals(ip1, ip2)){
             return 0;
         }
         else return -1;

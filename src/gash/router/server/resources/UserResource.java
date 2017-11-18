@@ -19,6 +19,7 @@ import gash.router.container.RoutingConf;
 import gash.router.server.dao.MorphiaService;
 import gash.router.server.dao.impl.UserDAOImpl;
 import gash.router.server.entity.User;
+import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import routing.Pipe;
@@ -76,6 +77,11 @@ public class UserResource implements RouteResource {
         responseRoute.setResponse(rb);
 
         return responseRoute.build();
+    }
+
+    @Override
+    public Route process(Route route, ChannelHandlerContext ctx) {
+        return null;
     }
 
     @Override

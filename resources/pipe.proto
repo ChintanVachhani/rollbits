@@ -160,5 +160,5 @@ message Heartbeat {
 message Response {
     optional bool success = 1;
     optional string message = 2; //any response which needs to be sent
-    optional string error = 3; //not required but can be used in case we set up common codes for errors
+    optional string errorCode = 3; //not required but can be used in case we set up common codes for errors
 }

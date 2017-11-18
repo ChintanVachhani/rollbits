@@ -16,6 +16,7 @@
 package gash.router.server.resources;
 
 import gash.router.container.RoutingConf;
+import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import routing.Pipe;
@@ -43,6 +44,11 @@ public class PingResource implements RouteResource {
         rb.setResponse(res);
 
         return rb.build();
+    }
+
+    @Override
+    public Pipe.Route process(Pipe.Route route, ChannelHandlerContext ctx) {
+        return null;
     }
 
     @Override

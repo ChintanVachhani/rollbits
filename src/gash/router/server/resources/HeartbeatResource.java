@@ -17,6 +17,7 @@ package gash.router.server.resources;
 
 import gash.router.container.RoutingConf;
 import gash.router.server.raft.Raft;
+import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import routing.Pipe;
@@ -32,7 +33,7 @@ import java.util.Objects;
 public class HeartbeatResource implements RouteResource {
     protected static Logger logger = LoggerFactory.getLogger("heartbeat");
 
-    HeartbeatResource() {
+    public HeartbeatResource() {
 
     }
 
@@ -43,6 +44,11 @@ public class HeartbeatResource implements RouteResource {
 
     @Override
     public Route process(Route route) {
+        return null;
+    }
+
+    @Override
+    public Route process(Route route, ChannelHandlerContext ctx) {
         return null;
     }
 

@@ -62,10 +62,10 @@ public class Server {
         Thread dcthread = new Thread(internalDiscoveryClient);
         dcthread.start();
 
-        // start communication over channel
-        //InternalCommServer comm = new InternalCommServer(conf);
+        // start internal communication over channel
+        InternalCommServer comm = new InternalCommServer(conf);
 
-        ExternalCommServer comm = new ExternalCommServer(conf);
+        //ExternalCommServer comm = new ExternalCommServer(conf);
 
         if (background) {
             Thread cthread = new Thread(comm);

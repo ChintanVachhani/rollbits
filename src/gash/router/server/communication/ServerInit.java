@@ -1,6 +1,7 @@
 package gash.router.server.communication;
 
 import gash.router.container.RoutingConf;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -13,41 +14,64 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import routing.Pipe.Route;
 
 public class ServerInit extends ChannelInitializer<SocketChannel> {
-	boolean compress = false;
-	RoutingConf conf;
+    boolean compress = false;
+    RoutingConf conf;
+    String handler;
 
-	public ServerInit(RoutingConf conf, boolean enableCompression) {
-		super();
-		compress = enableCompression;
-		this.conf = conf;
-	}
+    public ServerInit(RoutingConf conf, boolean enableCompression, String handler) {
+        super();
+        compress = enableCompression;
+        this.conf = conf;
+        this.handler = handler;
+    }
 
-	@Override
-	public void initChannel(SocketChannel ch) throws Exception {
-		ChannelPipeline pipeline = ch.pipeline();
+    private Route request;
+    private Route response;
+    ChannelHandlerContext clientChannel;
 
-		// Enable stream compression (you can remove these two if unnecessary)
-		if (compress) {
-			pipeline.addLast("deflater", ZlibCodecFactory.newZlibEncoder(ZlibWrapper.GZIP));
-			pipeline.addLast("inflater", ZlibCodecFactory.newZlibDecoder(ZlibWrapper.GZIP));
-		}
+    public ServerInit(Route request, Route response, ChannelHandlerContext clientChannel, String handler) {
+        this.request = request;
+        this.response = response;
+        this.clientChannel = clientChannel;
+        this.handler = handler;
+    }
 
-		/**
-		 * length (4 bytes).
-		 * 
-		 * Note: max message size is 64 Mb = 67108864 bytes this defines a
-		 * framer with a max of 64 Mb message, 4 bytes are the length, and strip
-		 * 4 bytes
-		 */
-		pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(67108864, 0, 4, 0, 4));
+    @Override
+    public void initChannel(SocketChannel ch) throws Exception {
+        ChannelPipeline pipeline = ch.pipeline();
 
-		// decoder must be first
-		pipeline.addLast("protobufDecoder", new ProtobufDecoder(Route.getDefaultInstance()));
-		pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
-		pipeline.addLast("protobufEncoder", new ProtobufEncoder());
+        // Enable stream compression (you can remove these two if unnecessary)
+        if (compress) {
+            pipeline.addLast("deflater", ZlibCodecFactory.newZlibEncoder(ZlibWrapper.GZIP));
+            pipeline.addLast("inflater", ZlibCodecFactory.newZlibDecoder(ZlibWrapper.GZIP));
+        }
+
+        /**
+         * length (4 bytes).
+         *
+         * Note: max message size is 64 Mb = 67108864 bytes this defines a
+         * framer with a max of 64 Mb message, 4 bytes are the length, and strip
+         * 4 bytes
+         */
+        pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(67108864, 0, 4, 0, 4));
+
+        // decoder must be first
+        pipeline.addLast("protobufDecoder", new ProtobufDecoder(Route.getDefaultInstance()));
+        pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
+        pipeline.addLast("protobufEncoder", new ProtobufEncoder());
 
 
-		// our server processor (new instance for each connection)
-		pipeline.addLast("handler", new CommServerHandler(conf));
-	}
+        // our server processor (new instance for each connection)
+        switch (handler) {
+            case "commServerHandler":
+                pipeline.addLast(handler, new CommServerHandler(conf));
+                break;
+            case "getMessagesClientHandler":
+                pipeline.addLast(handler, new GetMessagesClientHandler(request, response, clientChannel));
+                break;
+            default:
+                pipeline.addLast(handler, new CommServerHandler(conf));
+                break;
+        }
+    }
 }

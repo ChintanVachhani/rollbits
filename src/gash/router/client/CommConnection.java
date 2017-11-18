@@ -218,7 +218,7 @@ public class CommConnection {
         @Override
         public void operationComplete(ChannelFuture future) throws Exception {
             // we lost the connection or have shutdown.
-            System.out.println("--> client lost connection to the server");
+            System.out.println("\nLost connection to the server!");
             System.out.flush();
 
             // @TODO if lost, try to re-establish the connection

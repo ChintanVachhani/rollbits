@@ -80,6 +80,7 @@ public class Client {
         Route.Builder rb = Route.newBuilder();
         rb.setId(nextId());
         rb.setPath(Route.Path.USER);
+        rb.setHeader(Pipe.Header.newBuilder().setType(Pipe.Header.Type.CLIENT));
         rb.setUser(user.build());
 
         try {
@@ -114,6 +115,7 @@ public class Client {
         Route.Builder rb = Route.newBuilder();
         rb.setId(nextId());
         rb.setPath(Route.Path.GROUP);
+        rb.setHeader(Pipe.Header.newBuilder().setType(Pipe.Header.Type.CLIENT));
         rb.setGroup(group.build());
 
         try {
@@ -144,6 +146,7 @@ public class Client {
         Route.Builder rb = Route.newBuilder();
         rb.setId(nextId());
         rb.setPath(Route.Path.MESSAGE);
+        rb.setHeader(Pipe.Header.newBuilder().setType(Pipe.Header.Type.CLIENT));
         rb.setMessage(message.build());
 
         try {
@@ -163,6 +166,7 @@ public class Client {
         Route.Builder rb = Route.newBuilder();
         rb.setId(nextId());
         rb.setPath(Route.Path.MESSAGES_REQUEST);
+        rb.setHeader(Pipe.Header.newBuilder().setType(Pipe.Header.Type.CLIENT));
         rb.setMessagesRequest(messagesRequest.build());
 
         try {

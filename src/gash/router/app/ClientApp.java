@@ -153,7 +153,7 @@ public class ClientApp implements CommListener {
 
     @Override
     public String getListenerID() {
-        return "demo";
+        return "clientApp";
     }
 
     @Override

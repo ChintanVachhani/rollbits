@@ -16,6 +16,7 @@
 package gash.router.server.resources;
 
 import gash.router.container.RoutingConf;
+import io.netty.channel.ChannelHandlerContext;
 import routing.Pipe.Route;
 
 /**
@@ -40,6 +41,8 @@ public interface RouteResource {
      * @return The string representation of the response
      */
     Route process(Route route);
+
+    Route process(Route route, ChannelHandlerContext ctx);
 
     Route process(Route route, RoutingConf conf) throws Exception;
 }

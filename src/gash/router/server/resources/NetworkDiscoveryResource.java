@@ -18,8 +18,10 @@ package gash.router.server.resources;
 import gash.router.container.RoutingConf;
 import gash.router.server.Node;
 import gash.router.server.RoutingMap;
+import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import routing.Pipe;
 import routing.Pipe.NetworkDiscoveryPacket;
 import routing.Pipe.Route;
 
@@ -41,6 +43,11 @@ public class NetworkDiscoveryResource implements RouteResource {
 
     @Override
     public Route process(Route route) {
+        return null;
+    }
+
+    @Override
+    public Route process(Route route, ChannelHandlerContext ctx) {
         return null;
     }
 

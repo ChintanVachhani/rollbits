@@ -42,7 +42,7 @@ public class HeartbeatServer implements Runnable {
             // b.option(ChannelOption.MESSAGE_SIZE_ESTIMATOR);
 
             boolean compressComm = false;
-            b.childHandler(new ServerInit(conf, compressComm));
+            b.childHandler(new ServerInit(conf, compressComm, "commServerHandler"));
 
             // Start the server.
             logger.info("Starting server, listening on port = " + conf.getHeartbeatPort());

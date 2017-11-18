@@ -12180,26 +12180,26 @@ public final class Pipe {
      *not required but can be used in case we set up common codes for errors
      * </pre>
      *
-     * <code>optional string error = 3;</code>
+     * <code>optional string errorCode = 3;</code>
      */
-    boolean hasError();
+    boolean hasErrorCode();
     /**
      * <pre>
      *not required but can be used in case we set up common codes for errors
      * </pre>
      *
-     * <code>optional string error = 3;</code>
+     * <code>optional string errorCode = 3;</code>
      */
-    java.lang.String getError();
+    java.lang.String getErrorCode();
     /**
      * <pre>
      *not required but can be used in case we set up common codes for errors
      * </pre>
      *
-     * <code>optional string error = 3;</code>
+     * <code>optional string errorCode = 3;</code>
      */
     com.google.protobuf.ByteString
-        getErrorBytes();
+        getErrorCodeBytes();
   }
   /**
    * Protobuf type {@code Response}
@@ -12216,7 +12216,7 @@ public final class Pipe {
     private Response() {
       success_ = false;
       message_ = "";
-      error_ = "";
+      errorCode_ = "";
     }
 
     @java.lang.Override
@@ -12261,7 +12261,7 @@ public final class Pipe {
             case 26: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              error_ = bs;
+              errorCode_ = bs;
               break;
             }
           }
@@ -12358,16 +12358,16 @@ public final class Pipe {
       }
     }
 
-    public static final int ERROR_FIELD_NUMBER = 3;
-    private volatile java.lang.Object error_;
+    public static final int ERRORCODE_FIELD_NUMBER = 3;
+    private volatile java.lang.Object errorCode_;
     /**
      * <pre>
      *not required but can be used in case we set up common codes for errors
      * </pre>
      *
-     * <code>optional string error = 3;</code>
+     * <code>optional string errorCode = 3;</code>
      */
-    public boolean hasError() {
+    public boolean hasErrorCode() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
@@ -12375,10 +12375,10 @@ public final class Pipe {
      *not required but can be used in case we set up common codes for errors
      * </pre>
      *
-     * <code>optional string error = 3;</code>
+     * <code>optional string errorCode = 3;</code>
      */
-    public java.lang.String getError() {
-      java.lang.Object ref = error_;
+    public java.lang.String getErrorCode() {
+      java.lang.Object ref = errorCode_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
@@ -12386,7 +12386,7 @@ public final class Pipe {
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
-          error_ = s;
+          errorCode_ = s;
         }
         return s;
       }
@@ -12396,16 +12396,16 @@ public final class Pipe {
      *not required but can be used in case we set up common codes for errors
      * </pre>
      *
-     * <code>optional string error = 3;</code>
+     * <code>optional string errorCode = 3;</code>
      */
     public com.google.protobuf.ByteString
-        getErrorBytes() {
-      java.lang.Object ref = error_;
+        getErrorCodeBytes() {
+      java.lang.Object ref = errorCode_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        error_ = b;
+        errorCode_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -12431,7 +12431,7 @@ public final class Pipe {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, message_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, error_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, errorCode_);
       }
       unknownFields.writeTo(output);
     }
@@ -12449,7 +12449,7 @@ public final class Pipe {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, message_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, error_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, errorCode_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -12477,10 +12477,10 @@ public final class Pipe {
         result = result && getMessage()
             .equals(other.getMessage());
       }
-      result = result && (hasError() == other.hasError());
-      if (hasError()) {
-        result = result && getError()
-            .equals(other.getError());
+      result = result && (hasErrorCode() == other.hasErrorCode());
+      if (hasErrorCode()) {
+        result = result && getErrorCode()
+            .equals(other.getErrorCode());
       }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
@@ -12502,9 +12502,9 @@ public final class Pipe {
         hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
         hash = (53 * hash) + getMessage().hashCode();
       }
-      if (hasError()) {
-        hash = (37 * hash) + ERROR_FIELD_NUMBER;
-        hash = (53 * hash) + getError().hashCode();
+      if (hasErrorCode()) {
+        hash = (37 * hash) + ERRORCODE_FIELD_NUMBER;
+        hash = (53 * hash) + getErrorCode().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -12639,7 +12639,7 @@ public final class Pipe {
         bitField0_ = (bitField0_ & ~0x00000001);
         message_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
-        error_ = "";
+        errorCode_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
@@ -12676,7 +12676,7 @@ public final class Pipe {
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.error_ = error_;
+        result.errorCode_ = errorCode_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -12727,9 +12727,9 @@ public final class Pipe {
           message_ = other.message_;
           onChanged();
         }
-        if (other.hasError()) {
+        if (other.hasErrorCode()) {
           bitField0_ |= 0x00000004;
-          error_ = other.error_;
+          errorCode_ = other.errorCode_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -12892,15 +12892,15 @@ public final class Pipe {
         return this;
       }
 
-      private java.lang.Object error_ = "";
+      private java.lang.Object errorCode_ = "";
       /**
        * <pre>
        *not required but can be used in case we set up common codes for errors
        * </pre>
        *
-       * <code>optional string error = 3;</code>
+       * <code>optional string errorCode = 3;</code>
        */
-      public boolean hasError() {
+      public boolean hasErrorCode() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
@@ -12908,16 +12908,16 @@ public final class Pipe {
        *not required but can be used in case we set up common codes for errors
        * </pre>
        *
-       * <code>optional string error = 3;</code>
+       * <code>optional string errorCode = 3;</code>
        */
-      public java.lang.String getError() {
-        java.lang.Object ref = error_;
+      public java.lang.String getErrorCode() {
+        java.lang.Object ref = errorCode_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           if (bs.isValidUtf8()) {
-            error_ = s;
+            errorCode_ = s;
           }
           return s;
         } else {
@@ -12929,16 +12929,16 @@ public final class Pipe {
        *not required but can be used in case we set up common codes for errors
        * </pre>
        *
-       * <code>optional string error = 3;</code>
+       * <code>optional string errorCode = 3;</code>
        */
       public com.google.protobuf.ByteString
-          getErrorBytes() {
-        java.lang.Object ref = error_;
+          getErrorCodeBytes() {
+        java.lang.Object ref = errorCode_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          error_ = b;
+          errorCode_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -12949,15 +12949,15 @@ public final class Pipe {
        *not required but can be used in case we set up common codes for errors
        * </pre>
        *
-       * <code>optional string error = 3;</code>
+       * <code>optional string errorCode = 3;</code>
        */
-      public Builder setError(
+      public Builder setErrorCode(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000004;
-        error_ = value;
+        errorCode_ = value;
         onChanged();
         return this;
       }
@@ -12966,11 +12966,11 @@ public final class Pipe {
        *not required but can be used in case we set up common codes for errors
        * </pre>
        *
-       * <code>optional string error = 3;</code>
+       * <code>optional string errorCode = 3;</code>
        */
-      public Builder clearError() {
+      public Builder clearErrorCode() {
         bitField0_ = (bitField0_ & ~0x00000004);
-        error_ = getDefaultInstance().getError();
+        errorCode_ = getDefaultInstance().getErrorCode();
         onChanged();
         return this;
       }
@@ -12979,15 +12979,15 @@ public final class Pipe {
        *not required but can be used in case we set up common codes for errors
        * </pre>
        *
-       * <code>optional string error = 3;</code>
+       * <code>optional string errorCode = 3;</code>
        */
-      public Builder setErrorBytes(
+      public Builder setErrorCodeBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000004;
-        error_ = value;
+        errorCode_ = value;
         onChanged();
         return this;
       }
@@ -13147,9 +13147,9 @@ public final class Pipe {
       "e\022\014\n\010INTERNAL\020\000\022\021\n\rINTER_CLUSTER\020\001\022\n\n\006CL" +
       "IENT\020\002\"V\n\tHeartbeat\022\035\n\004mode\030\001 \002(\0162\017.Hear" +
       "tbeat.Mode\022\017\n\007address\030\002 \002(\t\"\031\n\004Mode\022\010\n\004P" +
-      "ING\020\000\022\007\n\003ACK\020\001\";\n\010Response\022\017\n\007success\030\001 " +
-      "\001(\010\022\017\n\007message\030\002 \001(\t\022\r\n\005error\030\003 \001(\tB\013\n\007r",
-      "outingH\001"
+      "ING\020\000\022\007\n\003ACK\020\001\"?\n\010Response\022\017\n\007success\030\001 " +
+      "\001(\010\022\017\n\007message\030\002 \001(\t\022\021\n\terrorCode\030\003 \001(\tB",
+      "\013\n\007routingH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -13222,7 +13222,7 @@ public final class Pipe {
     internal_static_Response_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Response_descriptor,
-        new java.lang.String[] { "Success", "Message", "Error", });
+        new java.lang.String[] { "Success", "Message", "ErrorCode", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
