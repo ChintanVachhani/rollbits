@@ -11385,15 +11385,24 @@ public final class Pipe {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required string address = 1;</code>
+     * <code>required .Heartbeat.Mode mode = 1;</code>
+     */
+    boolean hasMode();
+    /**
+     * <code>required .Heartbeat.Mode mode = 1;</code>
+     */
+    routing.Pipe.Heartbeat.Mode getMode();
+
+    /**
+     * <code>required string address = 2;</code>
      */
     boolean hasAddress();
     /**
-     * <code>required string address = 1;</code>
+     * <code>required string address = 2;</code>
      */
     java.lang.String getAddress();
     /**
-     * <code>required string address = 1;</code>
+     * <code>required string address = 2;</code>
      */
     com.google.protobuf.ByteString
         getAddressBytes();
@@ -11411,6 +11420,7 @@ public final class Pipe {
       super(builder);
     }
     private Heartbeat() {
+      mode_ = 0;
       address_ = "";
     }
 
@@ -11442,9 +11452,20 @@ public final class Pipe {
               }
               break;
             }
-            case 10: {
+            case 8: {
+              int rawValue = input.readEnum();
+              routing.Pipe.Heartbeat.Mode value = routing.Pipe.Heartbeat.Mode.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                mode_ = rawValue;
+              }
+              break;
+            }
+            case 18: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
+              bitField0_ |= 0x00000002;
               address_ = bs;
               break;
             }
@@ -11472,17 +11493,123 @@ public final class Pipe {
               routing.Pipe.Heartbeat.class, routing.Pipe.Heartbeat.Builder.class);
     }
 
-    private int bitField0_;
-    public static final int ADDRESS_FIELD_NUMBER = 1;
-    private volatile java.lang.Object address_;
     /**
-     * <code>required string address = 1;</code>
+     * Protobuf enum {@code Heartbeat.Mode}
      */
-    public boolean hasAddress() {
+    public enum Mode
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>PING = 0;</code>
+       */
+      PING(0),
+      /**
+       * <code>ACK = 1;</code>
+       */
+      ACK(1),
+      ;
+
+      /**
+       * <code>PING = 0;</code>
+       */
+      public static final int PING_VALUE = 0;
+      /**
+       * <code>ACK = 1;</code>
+       */
+      public static final int ACK_VALUE = 1;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static Mode valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static Mode forNumber(int value) {
+        switch (value) {
+          case 0: return PING;
+          case 1: return ACK;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Mode>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          Mode> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Mode>() {
+              public Mode findValueByNumber(int number) {
+                return Mode.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return routing.Pipe.Heartbeat.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final Mode[] VALUES = values();
+
+      public static Mode valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private Mode(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:Heartbeat.Mode)
+    }
+
+    private int bitField0_;
+    public static final int MODE_FIELD_NUMBER = 1;
+    private int mode_;
+    /**
+     * <code>required .Heartbeat.Mode mode = 1;</code>
+     */
+    public boolean hasMode() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required string address = 1;</code>
+     * <code>required .Heartbeat.Mode mode = 1;</code>
+     */
+    public routing.Pipe.Heartbeat.Mode getMode() {
+      routing.Pipe.Heartbeat.Mode result = routing.Pipe.Heartbeat.Mode.valueOf(mode_);
+      return result == null ? routing.Pipe.Heartbeat.Mode.PING : result;
+    }
+
+    public static final int ADDRESS_FIELD_NUMBER = 2;
+    private volatile java.lang.Object address_;
+    /**
+     * <code>required string address = 2;</code>
+     */
+    public boolean hasAddress() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string address = 2;</code>
      */
     public java.lang.String getAddress() {
       java.lang.Object ref = address_;
@@ -11499,7 +11626,7 @@ public final class Pipe {
       }
     }
     /**
-     * <code>required string address = 1;</code>
+     * <code>required string address = 2;</code>
      */
     public com.google.protobuf.ByteString
         getAddressBytes() {
@@ -11521,6 +11648,10 @@ public final class Pipe {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
+      if (!hasMode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       if (!hasAddress()) {
         memoizedIsInitialized = 0;
         return false;
@@ -11532,7 +11663,10 @@ public final class Pipe {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, address_);
+        output.writeEnum(1, mode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, address_);
       }
       unknownFields.writeTo(output);
     }
@@ -11543,7 +11677,11 @@ public final class Pipe {
 
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, address_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, mode_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, address_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -11561,6 +11699,10 @@ public final class Pipe {
       routing.Pipe.Heartbeat other = (routing.Pipe.Heartbeat) obj;
 
       boolean result = true;
+      result = result && (hasMode() == other.hasMode());
+      if (hasMode()) {
+        result = result && mode_ == other.mode_;
+      }
       result = result && (hasAddress() == other.hasAddress());
       if (hasAddress()) {
         result = result && getAddress()
@@ -11577,6 +11719,10 @@ public final class Pipe {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasMode()) {
+        hash = (37 * hash) + MODE_FIELD_NUMBER;
+        hash = (53 * hash) + mode_;
+      }
       if (hasAddress()) {
         hash = (37 * hash) + ADDRESS_FIELD_NUMBER;
         hash = (53 * hash) + getAddress().hashCode();
@@ -11710,8 +11856,10 @@ public final class Pipe {
       }
       public Builder clear() {
         super.clear();
-        address_ = "";
+        mode_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
+        address_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -11738,6 +11886,10 @@ public final class Pipe {
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
+        }
+        result.mode_ = mode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
         }
         result.address_ = address_;
         result.bitField0_ = to_bitField0_;
@@ -11782,8 +11934,11 @@ public final class Pipe {
 
       public Builder mergeFrom(routing.Pipe.Heartbeat other) {
         if (other == routing.Pipe.Heartbeat.getDefaultInstance()) return this;
+        if (other.hasMode()) {
+          setMode(other.getMode());
+        }
         if (other.hasAddress()) {
-          bitField0_ |= 0x00000001;
+          bitField0_ |= 0x00000002;
           address_ = other.address_;
           onChanged();
         }
@@ -11793,6 +11948,9 @@ public final class Pipe {
       }
 
       public final boolean isInitialized() {
+        if (!hasMode()) {
+          return false;
+        }
         if (!hasAddress()) {
           return false;
         }
@@ -11818,15 +11976,51 @@ public final class Pipe {
       }
       private int bitField0_;
 
-      private java.lang.Object address_ = "";
+      private int mode_ = 0;
       /**
-       * <code>required string address = 1;</code>
+       * <code>required .Heartbeat.Mode mode = 1;</code>
        */
-      public boolean hasAddress() {
+      public boolean hasMode() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required string address = 1;</code>
+       * <code>required .Heartbeat.Mode mode = 1;</code>
+       */
+      public routing.Pipe.Heartbeat.Mode getMode() {
+        routing.Pipe.Heartbeat.Mode result = routing.Pipe.Heartbeat.Mode.valueOf(mode_);
+        return result == null ? routing.Pipe.Heartbeat.Mode.PING : result;
+      }
+      /**
+       * <code>required .Heartbeat.Mode mode = 1;</code>
+       */
+      public Builder setMode(routing.Pipe.Heartbeat.Mode value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        mode_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required .Heartbeat.Mode mode = 1;</code>
+       */
+      public Builder clearMode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        mode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object address_ = "";
+      /**
+       * <code>required string address = 2;</code>
+       */
+      public boolean hasAddress() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string address = 2;</code>
        */
       public java.lang.String getAddress() {
         java.lang.Object ref = address_;
@@ -11843,7 +12037,7 @@ public final class Pipe {
         }
       }
       /**
-       * <code>required string address = 1;</code>
+       * <code>required string address = 2;</code>
        */
       public com.google.protobuf.ByteString
           getAddressBytes() {
@@ -11859,36 +12053,36 @@ public final class Pipe {
         }
       }
       /**
-       * <code>required string address = 1;</code>
+       * <code>required string address = 2;</code>
        */
       public Builder setAddress(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
         address_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string address = 1;</code>
+       * <code>required string address = 2;</code>
        */
       public Builder clearAddress() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000002);
         address_ = getDefaultInstance().getAddress();
         onChanged();
         return this;
       }
       /**
-       * <code>required string address = 1;</code>
+       * <code>required string address = 2;</code>
        */
       public Builder setAddressBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
         address_ = value;
         onChanged();
         return this;
@@ -12951,9 +13145,11 @@ public final class Pipe {
       "ST\020\000\022\014\n\010RESPONSE\020\001\022\017\n\013REMOVE_NODE\020\002\"Y\n\006H" +
       "eader\022\032\n\004type\030\001 \002(\0162\014.Header.Type\"3\n\004Typ" +
       "e\022\014\n\010INTERNAL\020\000\022\021\n\rINTER_CLUSTER\020\001\022\n\n\006CL" +
-      "IENT\020\002\"\034\n\tHeartbeat\022\017\n\007address\030\001 \002(\t\";\n\010" +
-      "Response\022\017\n\007success\030\001 \001(\010\022\017\n\007message\030\002 \001" +
-      "(\t\022\r\n\005error\030\003 \001(\tB\013\n\007routingH\001"
+      "IENT\020\002\"V\n\tHeartbeat\022\035\n\004mode\030\001 \002(\0162\017.Hear" +
+      "tbeat.Mode\022\017\n\007address\030\002 \002(\t\"\031\n\004Mode\022\010\n\004P" +
+      "ING\020\000\022\007\n\003ACK\020\001\";\n\010Response\022\017\n\007success\030\001 " +
+      "\001(\010\022\017\n\007message\030\002 \001(\t\022\r\n\005error\030\003 \001(\tB\013\n\007r",
+      "outingH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -13020,7 +13216,7 @@ public final class Pipe {
     internal_static_Heartbeat_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Heartbeat_descriptor,
-        new java.lang.String[] { "Address", });
+        new java.lang.String[] { "Mode", "Address", });
     internal_static_Response_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_Response_fieldAccessorTable = new
