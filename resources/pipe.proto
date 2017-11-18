@@ -147,6 +147,10 @@ message Header {
     required Type type = 1;
 }
 
+message Heartbeat {
+    required string address = 1;
+}
+
 
 message Response {
     optional bool success = 1;
