@@ -23,6 +23,11 @@ public class Raft{
     private Integer timeOut;
     private String leaderIP;
     private Raft() {
+
+    }
+
+    public void setConf(RoutingConf conf) {
+        this.conf = conf;
         myIP = conf.getNodeAddress();
         timeOut = 1000;
         leaderIP = "";
@@ -30,10 +35,6 @@ public class Raft{
         TimeOut timeOut = new TimeOut();
         Thread thread = new Thread(timeOut);
         thread.start();
-    }
-
-    public void setConf(RoutingConf conf) {
-        this.conf = conf;
     }
 
     private String getLeaderIP() {
