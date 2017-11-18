@@ -158,6 +158,7 @@ public class Client {
         // construct the message to send
         Pipe.MessagesRequest.Builder messagesRequest = Pipe.MessagesRequest.newBuilder();
         messagesRequest.setId(uname);
+        messagesRequest.setType(Pipe.MessagesRequest.Type.USER);
 
         Route.Builder rb = Route.newBuilder();
         rb.setId(nextId());
