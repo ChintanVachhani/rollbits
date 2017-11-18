@@ -39,7 +39,7 @@ public class GroupResource implements RouteResource {
     private GroupDAO groupDAO;
     private UserDAO userDAO;
 
-    GroupResource() {
+    public GroupResource() {
         MorphiaService morphiaService = new MorphiaService();
         this.groupDAO = new GroupDAOImpl(Group.class, morphiaService.getDatastore());
         this.userDAO = new UserDAOImpl(User.class, morphiaService.getDatastore());

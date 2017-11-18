@@ -37,7 +37,7 @@ public class MessageResource implements RouteResource {
 
     private MessageDAO messageDAO;
 
-    MessageResource() {
+    public MessageResource() {
         MorphiaService morphiaService = new MorphiaService();
         this.messageDAO = new MessageDAOImpl(Message.class, morphiaService.getDatastore());
     }
@@ -58,6 +58,7 @@ public class MessageResource implements RouteResource {
                     response = post(route.getMessage());
             }
         }
+
 
         Route.Builder responseRoute = Route.newBuilder();
         responseRoute.setId(route.getId());
