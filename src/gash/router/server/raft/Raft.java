@@ -3,6 +3,7 @@ package gash.router.server.raft;
 import gash.router.container.RoutingConf;
 import gash.router.server.Node;
 import gash.router.server.RoutingMap;
+import gash.router.server.communication.SendHeartbeat;
 import gash.router.server.discovery.InternalDiscoveryClient;
 import org.slf4j.LoggerFactory;
 
@@ -11,18 +12,21 @@ import java.util.Objects;
 
 import static java.lang.Thread.sleep;
 
-public class Raft{
+public class Raft {
     protected static org.slf4j.Logger logger = LoggerFactory.getLogger("Raft");
 
     private static Raft ourInstance = new Raft();
+
     public static Raft getInstance() {
         return ourInstance;
     }
+
     private HashMap<String, String> routing;
     private RoutingConf conf;
     private String myIP;
     private Integer timeOut;
     private String leaderIP;
+
     private Raft() {
 
     }
@@ -60,7 +64,7 @@ public class Raft{
         }
     }
 
-    public void election(){
+    public void election() {
         printRaftStatus("Starting election...");
         try {
             // finding all the active servers
@@ -72,43 +76,42 @@ public class Raft{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        for(Node node: RoutingMap.getInstance().getInternalServers().values()){
-                if (compareIP(conf.getNodeAddress(), node.getNodeAddress()) == 1 || compareIP(conf.getNodeAddress(), node.getNodeAddress()) == 0 ){
-                }else {
-                    try {
-                        printRaftStatus("This IP is Higher than myIP, sleeping for 1000...");
-                        sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        for (Node node : RoutingMap.getInstance().getInternalServers().values()) {
+            if (compareIP(conf.getNodeAddress(), node.getNodeAddress()) == 1 || compareIP(conf.getNodeAddress(), node.getNodeAddress()) == 0) {
+            } else {
+                try {
+                    printRaftStatus("This IP is Higher than myIP, sleeping for 1000...");
+                    sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-            if (Objects.equals(leaderIP, "")) {
-                printRaftStatus("I am now leader...");
-                leaderIP = conf.getNodeAddress();
-                startHeartBeat();
-            }
+        }
+        if (Objects.equals(leaderIP, "")) {
+            printRaftStatus("I am now leader...");
+            leaderIP = conf.getNodeAddress();
+            startHeartBeat();
+        }
     }
 
-    public Integer compareIP(String ip1S,String ip2S){
-        Integer ip1 = Integer.parseInt(ip1S.substring(ip1S.lastIndexOf('.'), ip1S.length() -1 ));
-        Integer ip2 = Integer.parseInt(ip2S.substring(ip2S.lastIndexOf('.'), ip2S.length() -1 ));
-        if(ip1 > ip2){
+    public Integer compareIP(String ip1S, String ip2S) {
+        Integer ip1 = Integer.parseInt(ip1S.substring(ip1S.lastIndexOf('.'), ip1S.length() - 1));
+        Integer ip2 = Integer.parseInt(ip2S.substring(ip2S.lastIndexOf('.'), ip2S.length() - 1));
+        if (ip1 > ip2) {
             return 1;
-        }
-        else if (Objects.equals(ip1, ip2)){
+        } else if (Objects.equals(ip1, ip2)) {
             return 0;
-        }
-        else return -1;
+        } else return -1;
     }
 
 
-    public void startHeartBeat(){
+    public void startHeartBeat() {
         printRaftStatus("Starting Heartbeat....");
         while (Objects.equals(leaderIP, conf.getNodeAddress())) {
             if (Objects.equals(conf.getNodeAddress(), leaderIP)) {
                 for (Node node : RoutingMap.getInstance().getInternalServers().values()) {
                     //TODO: send heartbeat for each node in this list
+                    SendHeartbeat.run(node.getNodeAddress(), node.getNodePort(), conf.getNodeAddress());
                 }
                 try {
                     printRaftStatus("Sending heartbeat...");
@@ -130,12 +133,12 @@ public class Raft{
         this.timeOut = timeOut;
     }
 
-    public void printRaftStatus(String message){
+    public void printRaftStatus(String message) {
 
         System.out.println(message);
-        System.out.println("TimeOut: "+ timeOut);
-        System.out.println("LeaderIP: "+leaderIP);
-        System.out.println("My IP: "+ myIP);
+        System.out.println("TimeOut: " + timeOut);
+        System.out.println("LeaderIP: " + leaderIP);
+        System.out.println("My IP: " + myIP);
     }
 
 }
