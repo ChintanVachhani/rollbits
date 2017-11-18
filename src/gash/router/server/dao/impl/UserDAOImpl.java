@@ -24,12 +24,23 @@ public class UserDAOImpl extends BasicDAO<User, ObjectId> implements UserDAO {
         Query<User> query = createQuery().
                 field("username").equal(username);
 
+        System.out.println(query.get());
+
         return query.get();
     }
 
-    public void deleteUserByUsername(String username) {
+    public User getUser(String username, String password) {
         Query<User> query = createQuery().
-                field("username").equal(username);
+                field("username").equal(username).
+                field("password").equal(password);
+
+        return query.get();
+    }
+
+    public void deleteUser(String username, String password) {
+        Query<User> query = createQuery().
+                field("username").equal(username).
+                field("password").equal(password);
 
         deleteByQuery(query);
     }

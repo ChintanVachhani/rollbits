@@ -11,4 +11,6 @@ public interface MessageDAO extends DAO<Message, ObjectId> {
 
     void postMessage(Message message);
 
+    List<Message> getAllMessagesByUser(String username, List<Long> groupIds);
+
 }

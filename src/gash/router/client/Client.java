@@ -63,6 +63,7 @@ public class Client {
         // construct the message to send
         Pipe.User.Builder user = Pipe.User.newBuilder();
         user.setUname(uname);
+        user.setPassword(password);
 
         switch (action) {
             case "register":
@@ -129,6 +130,7 @@ public class Client {
         message.setSenderId(senderId);
         message.setReceiverId(receiverId);
         message.setPayload(payload);
+        message.setAction(Pipe.Message.ActionType.POST);
 
         switch (type) {
             case "user":

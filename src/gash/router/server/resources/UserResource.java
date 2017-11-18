@@ -84,7 +84,11 @@ public class UserResource implements RouteResource {
     }
 
     private String register(Pipe.User user) {
-        User newUser = new User(user.getUname(), new Date().toString());
+        String username = user.getUname();
+        String password = user.getPassword();
+        if (!user.hasPassword())
+            password = "default";
+        User newUser = new User(username, password);
         if (userDAO.getUserByUsername(newUser.getUsername()) == null) {
             userDAO.createUser(newUser);
             return "User Registered.";
@@ -93,7 +97,11 @@ public class UserResource implements RouteResource {
     }
 
     private String access(Pipe.User user) {
-        User existingUser = userDAO.getUserByUsername(user.getUname());
+        String username = user.getUname();
+        String password = user.getPassword();
+        if (!user.hasPassword())
+            password = "default";
+        User existingUser = userDAO.getUser(username, password);
         if (existingUser != null) {
             return "User found.";
         }
@@ -101,8 +109,12 @@ public class UserResource implements RouteResource {
     }
 
     private String delete(Pipe.User user) {
-        if (userDAO.getUserByUsername(user.getUname()) != null) {
-            userDAO.deleteUserByUsername(user.getUname());
+        String username = user.getUname();
+        String password = user.getPassword();
+        if (!user.hasPassword())
+            password = "default";
+        if (userDAO.getUser(username, password) != null) {
+            userDAO.deleteUser(username, password);
             return "User Deleted.";
         }
         return "User not found.";
