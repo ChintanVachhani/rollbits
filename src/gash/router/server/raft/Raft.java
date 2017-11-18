@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.concurrent.*;
 
 import static java.lang.Thread.sleep;
 
@@ -21,10 +20,12 @@ public class Raft {
     private HashMap<String, String> routing;
     private RoutingConf conf;
     private String myIP;
-    private boolean iAmLeader;
+    private Integer timeOut;
+    private String leaderIP;
     private Raft() {
         myIP = conf.getNodeAddress();
-        iAmLeader = false;
+        timeOut = 1000;
+        leaderIP = "";
     }
 
     public void setConf(RoutingConf conf) {
@@ -60,21 +61,19 @@ public class Raft {
     }
 
     public void election(){
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
-        final Future handler = executor.submit((Callable) () -> {
-            sleep(1000);
             for(Node node: RoutingMap.getInstance().getInternalServers().values()){
-                if (compareIP(conf.getNodeAddress(), node.getNodeAddress()) == -1 ){
-
+                if (compareIP(conf.getNodeAddress(), node.getNodeAddress()) == 1 || compareIP(conf.getNodeAddress(), node.getNodeAddress()) == 0 ){
+                    leaderIP = node.getNodeAddress();
+                    startHeartBeat();
+                    break;
+                }else {
+                    try {
+                        sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-            return null;
-        });
-        executor.schedule(new Runnable(){
-            public void run(){
-                handler.cancel(true);
-            }
-        }, 10000, TimeUnit.MILLISECONDS);
     }
 
     public Integer compareIP(String ip1S,String ip2S){
@@ -89,8 +88,22 @@ public class Raft {
         else return -1;
     }
 
+    public void startHeartBeat(){
+        if (conf.getNodeAddress() == leaderIP){
+            for (Node node : RoutingMap.getInstance().getInternalServers().values()){
 
-    public boolean isiAmLeader() {
-        return iAmLeader;
+            }
+        }
+    }
+
+    public Integer getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(Integer timeOut) {
+        this.timeOut = timeOut;
+    }
+
+    public void setLeaderIP(String leaderIP) {
     }
 }

@@ -16,16 +16,10 @@
 package gash.router.server.resources;
 
 import gash.router.container.RoutingConf;
-import gash.router.server.dao.MessageDAO;
-import gash.router.server.dao.MorphiaService;
-import gash.router.server.dao.impl.MessageDAOImpl;
-import gash.router.server.entity.Message;
+import gash.router.server.raft.Raft;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import routing.Pipe;
 import routing.Pipe.Route;
-
-import java.util.Date;
 
 /**
  * processes requests of message passing - demonstration
@@ -34,7 +28,6 @@ import java.util.Date;
  */
 public class HeartbeatResource implements RouteResource {
     protected static Logger logger = LoggerFactory.getLogger("heartbeat");
-
 
     HeartbeatResource() {
 
@@ -52,7 +45,12 @@ public class HeartbeatResource implements RouteResource {
 
     @Override
     public Route process(Route route, RoutingConf conf) throws Exception {
+        if (Raft.getInstance() != null){
+            return null;
+        }
+        else {
+            Raft.getInstance().setTimeOut(1000);
+        }
         return null;
     }
-
 }
