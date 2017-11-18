@@ -26,6 +26,7 @@ public class Raft{
         myIP = conf.getNodeAddress();
         timeOut = 1000;
         leaderIP = "";
+        printRaftStatus("Starting Heartbeat thread...");
         TimeOut timeOut = new TimeOut();
         Thread thread = new Thread(timeOut);
         thread.start();
@@ -64,13 +65,17 @@ public class Raft{
     }
 
     public void election(){
+        printRaftStatus("Starting election...");
             for(Node node: RoutingMap.getInstance().getInternalServers().values()){
                 if (compareIP(conf.getNodeAddress(), node.getNodeAddress()) == 1 || compareIP(conf.getNodeAddress(), node.getNodeAddress()) == 0 ){
+                    printRaftStatus("I am now leader...");
                     leaderIP = node.getNodeAddress();
+
                     startHeartBeat();
                     break;
                 }else {
                     try {
+                        printRaftStatus("This IP is Higher than myIP, sleeping for 1000...");
                         sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -92,6 +97,7 @@ public class Raft{
     }
 
     public void startHeartBeat(){
+        printRaftStatus("Starting Heartbeat....");
         if (conf.getNodeAddress() == leaderIP){
             for (Node node : RoutingMap.getInstance().getInternalServers().values()){
 
@@ -109,4 +115,12 @@ public class Raft{
 
     public void setLeaderIP(String leaderIP) {
     }
+
+    public void printRaftStatus(String message){
+        System.out.println(message);
+        System.out.println("TimeOut: "+ timeOut);
+        System.out.println("LeaderIP: "+leaderIP);
+        System.out.println("My IP: "+ myIP);
+    }
+
 }
