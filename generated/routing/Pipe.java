@@ -150,6 +150,19 @@ public final class Pipe {
         getPayloadMessageBytes();
 
     /**
+     * <code>optional .Heartbeat heartbeat = 12;</code>
+     */
+    boolean hasHeartbeat();
+    /**
+     * <code>optional .Heartbeat heartbeat = 12;</code>
+     */
+    routing.Pipe.Heartbeat getHeartbeat();
+    /**
+     * <code>optional .Heartbeat heartbeat = 12;</code>
+     */
+    routing.Pipe.HeartbeatOrBuilder getHeartbeatOrBuilder();
+
+    /**
      * <code>optional .Header header = 9;</code>
      */
     boolean hasHeader();
@@ -311,7 +324,7 @@ public final class Pipe {
             }
             case 74: {
               routing.Pipe.Header.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000400) == 0x00000400)) {
+              if (((bitField0_ & 0x00000800) == 0x00000800)) {
                 subBuilder = header_.toBuilder();
               }
               header_ = input.readMessage(routing.Pipe.Header.PARSER, extensionRegistry);
@@ -319,7 +332,7 @@ public final class Pipe {
                 subBuilder.mergeFrom(header_);
                 header_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000400;
+              bitField0_ |= 0x00000800;
               break;
             }
             case 82: {
@@ -340,6 +353,20 @@ public final class Pipe {
               com.google.protobuf.ByteString bs = input.readBytes();
               payloadCase_ = 11;
               payload_ = bs;
+              break;
+            }
+            case 98: {
+              routing.Pipe.Heartbeat.Builder subBuilder = null;
+              if (payloadCase_ == 12) {
+                subBuilder = ((routing.Pipe.Heartbeat) payload_).toBuilder();
+              }
+              payload_ =
+                  input.readMessage(routing.Pipe.Heartbeat.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((routing.Pipe.Heartbeat) payload_);
+                payload_ = subBuilder.buildPartial();
+              }
+              payloadCase_ = 12;
               break;
             }
           }
@@ -532,6 +559,7 @@ public final class Pipe {
       MESSAGESRESPONSE(8),
       RESPONSE(10),
       PAYLOADMESSAGE(11),
+      HEARTBEAT(12),
       PAYLOAD_NOT_SET(0);
       private final int value;
       private PayloadCase(int value) {
@@ -555,6 +583,7 @@ public final class Pipe {
           case 8: return MESSAGESRESPONSE;
           case 10: return RESPONSE;
           case 11: return PAYLOADMESSAGE;
+          case 12: return HEARTBEAT;
           case 0: return PAYLOAD_NOT_SET;
           default: return null;
         }
@@ -840,13 +869,39 @@ public final class Pipe {
       }
     }
 
+    public static final int HEARTBEAT_FIELD_NUMBER = 12;
+    /**
+     * <code>optional .Heartbeat heartbeat = 12;</code>
+     */
+    public boolean hasHeartbeat() {
+      return payloadCase_ == 12;
+    }
+    /**
+     * <code>optional .Heartbeat heartbeat = 12;</code>
+     */
+    public routing.Pipe.Heartbeat getHeartbeat() {
+      if (payloadCase_ == 12) {
+         return (routing.Pipe.Heartbeat) payload_;
+      }
+      return routing.Pipe.Heartbeat.getDefaultInstance();
+    }
+    /**
+     * <code>optional .Heartbeat heartbeat = 12;</code>
+     */
+    public routing.Pipe.HeartbeatOrBuilder getHeartbeatOrBuilder() {
+      if (payloadCase_ == 12) {
+         return (routing.Pipe.Heartbeat) payload_;
+      }
+      return routing.Pipe.Heartbeat.getDefaultInstance();
+    }
+
     public static final int HEADER_FIELD_NUMBER = 9;
     private routing.Pipe.Header header_;
     /**
      * <code>optional .Header header = 9;</code>
      */
     public boolean hasHeader() {
-      return ((bitField0_ & 0x00000400) == 0x00000400);
+      return ((bitField0_ & 0x00000800) == 0x00000800);
     }
     /**
      * <code>optional .Header header = 9;</code>
@@ -911,6 +966,12 @@ public final class Pipe {
           return false;
         }
       }
+      if (hasHeartbeat()) {
+        if (!getHeartbeat().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       if (hasHeader()) {
         if (!getHeader().isInitialized()) {
           memoizedIsInitialized = 0;
@@ -947,7 +1008,7 @@ public final class Pipe {
       if (payloadCase_ == 8) {
         output.writeMessage(8, (routing.Pipe.MessagesResponse) payload_);
       }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
         output.writeMessage(9, getHeader());
       }
       if (payloadCase_ == 10) {
@@ -955,6 +1016,9 @@ public final class Pipe {
       }
       if (payloadCase_ == 11) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 11, payload_);
+      }
+      if (payloadCase_ == 12) {
+        output.writeMessage(12, (routing.Pipe.Heartbeat) payload_);
       }
       unknownFields.writeTo(output);
     }
@@ -996,7 +1060,7 @@ public final class Pipe {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(8, (routing.Pipe.MessagesResponse) payload_);
       }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(9, getHeader());
       }
@@ -1006,6 +1070,10 @@ public final class Pipe {
       }
       if (payloadCase_ == 11) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, payload_);
+      }
+      if (payloadCase_ == 12) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(12, (routing.Pipe.Heartbeat) payload_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1073,6 +1141,10 @@ public final class Pipe {
           result = result && getPayloadMessage()
               .equals(other.getPayloadMessage());
           break;
+        case 12:
+          result = result && getHeartbeat()
+              .equals(other.getHeartbeat());
+          break;
         case 0:
         default:
       }
@@ -1132,6 +1204,10 @@ public final class Pipe {
         case 11:
           hash = (37 * hash) + PAYLOADMESSAGE_FIELD_NUMBER;
           hash = (53 * hash) + getPayloadMessage().hashCode();
+          break;
+        case 12:
+          hash = (37 * hash) + HEARTBEAT_FIELD_NUMBER;
+          hash = (53 * hash) + getHeartbeat().hashCode();
           break;
         case 0:
         default:
@@ -1275,7 +1351,7 @@ public final class Pipe {
         } else {
           headerBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000400);
+        bitField0_ = (bitField0_ & ~0x00000800);
         payloadCase_ = 0;
         payload_ = null;
         return this;
@@ -1362,8 +1438,15 @@ public final class Pipe {
         if (payloadCase_ == 11) {
           result.payload_ = payload_;
         }
-        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
-          to_bitField0_ |= 0x00000400;
+        if (payloadCase_ == 12) {
+          if (heartbeatBuilder_ == null) {
+            result.payload_ = payload_;
+          } else {
+            result.payload_ = heartbeatBuilder_.build();
+          }
+        }
+        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+          to_bitField0_ |= 0x00000800;
         }
         if (headerBuilder_ == null) {
           result.header_ = header_;
@@ -1457,6 +1540,10 @@ public final class Pipe {
             onChanged();
             break;
           }
+          case HEARTBEAT: {
+            mergeHeartbeat(other.getHeartbeat());
+            break;
+          }
           case PAYLOAD_NOT_SET: {
             break;
           }
@@ -1500,6 +1587,11 @@ public final class Pipe {
         }
         if (hasMessagesResponse()) {
           if (!getMessagesResponse().isInitialized()) {
+            return false;
+          }
+        }
+        if (hasHeartbeat()) {
+          if (!getHeartbeat().isInitialized()) {
             return false;
           }
         }
@@ -2668,6 +2760,142 @@ public final class Pipe {
         return this;
       }
 
+      private com.google.protobuf.SingleFieldBuilderV3<
+          routing.Pipe.Heartbeat, routing.Pipe.Heartbeat.Builder, routing.Pipe.HeartbeatOrBuilder> heartbeatBuilder_;
+      /**
+       * <code>optional .Heartbeat heartbeat = 12;</code>
+       */
+      public boolean hasHeartbeat() {
+        return payloadCase_ == 12;
+      }
+      /**
+       * <code>optional .Heartbeat heartbeat = 12;</code>
+       */
+      public routing.Pipe.Heartbeat getHeartbeat() {
+        if (heartbeatBuilder_ == null) {
+          if (payloadCase_ == 12) {
+            return (routing.Pipe.Heartbeat) payload_;
+          }
+          return routing.Pipe.Heartbeat.getDefaultInstance();
+        } else {
+          if (payloadCase_ == 12) {
+            return heartbeatBuilder_.getMessage();
+          }
+          return routing.Pipe.Heartbeat.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>optional .Heartbeat heartbeat = 12;</code>
+       */
+      public Builder setHeartbeat(routing.Pipe.Heartbeat value) {
+        if (heartbeatBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          payload_ = value;
+          onChanged();
+        } else {
+          heartbeatBuilder_.setMessage(value);
+        }
+        payloadCase_ = 12;
+        return this;
+      }
+      /**
+       * <code>optional .Heartbeat heartbeat = 12;</code>
+       */
+      public Builder setHeartbeat(
+          routing.Pipe.Heartbeat.Builder builderForValue) {
+        if (heartbeatBuilder_ == null) {
+          payload_ = builderForValue.build();
+          onChanged();
+        } else {
+          heartbeatBuilder_.setMessage(builderForValue.build());
+        }
+        payloadCase_ = 12;
+        return this;
+      }
+      /**
+       * <code>optional .Heartbeat heartbeat = 12;</code>
+       */
+      public Builder mergeHeartbeat(routing.Pipe.Heartbeat value) {
+        if (heartbeatBuilder_ == null) {
+          if (payloadCase_ == 12 &&
+              payload_ != routing.Pipe.Heartbeat.getDefaultInstance()) {
+            payload_ = routing.Pipe.Heartbeat.newBuilder((routing.Pipe.Heartbeat) payload_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            payload_ = value;
+          }
+          onChanged();
+        } else {
+          if (payloadCase_ == 12) {
+            heartbeatBuilder_.mergeFrom(value);
+          }
+          heartbeatBuilder_.setMessage(value);
+        }
+        payloadCase_ = 12;
+        return this;
+      }
+      /**
+       * <code>optional .Heartbeat heartbeat = 12;</code>
+       */
+      public Builder clearHeartbeat() {
+        if (heartbeatBuilder_ == null) {
+          if (payloadCase_ == 12) {
+            payloadCase_ = 0;
+            payload_ = null;
+            onChanged();
+          }
+        } else {
+          if (payloadCase_ == 12) {
+            payloadCase_ = 0;
+            payload_ = null;
+          }
+          heartbeatBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>optional .Heartbeat heartbeat = 12;</code>
+       */
+      public routing.Pipe.Heartbeat.Builder getHeartbeatBuilder() {
+        return getHeartbeatFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .Heartbeat heartbeat = 12;</code>
+       */
+      public routing.Pipe.HeartbeatOrBuilder getHeartbeatOrBuilder() {
+        if ((payloadCase_ == 12) && (heartbeatBuilder_ != null)) {
+          return heartbeatBuilder_.getMessageOrBuilder();
+        } else {
+          if (payloadCase_ == 12) {
+            return (routing.Pipe.Heartbeat) payload_;
+          }
+          return routing.Pipe.Heartbeat.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>optional .Heartbeat heartbeat = 12;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          routing.Pipe.Heartbeat, routing.Pipe.Heartbeat.Builder, routing.Pipe.HeartbeatOrBuilder> 
+          getHeartbeatFieldBuilder() {
+        if (heartbeatBuilder_ == null) {
+          if (!(payloadCase_ == 12)) {
+            payload_ = routing.Pipe.Heartbeat.getDefaultInstance();
+          }
+          heartbeatBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              routing.Pipe.Heartbeat, routing.Pipe.Heartbeat.Builder, routing.Pipe.HeartbeatOrBuilder>(
+                  (routing.Pipe.Heartbeat) payload_,
+                  getParentForChildren(),
+                  isClean());
+          payload_ = null;
+        }
+        payloadCase_ = 12;
+        onChanged();;
+        return heartbeatBuilder_;
+      }
+
       private routing.Pipe.Header header_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
           routing.Pipe.Header, routing.Pipe.Header.Builder, routing.Pipe.HeaderOrBuilder> headerBuilder_;
@@ -2675,7 +2903,7 @@ public final class Pipe {
        * <code>optional .Header header = 9;</code>
        */
       public boolean hasHeader() {
-        return ((bitField0_ & 0x00000400) == 0x00000400);
+        return ((bitField0_ & 0x00000800) == 0x00000800);
       }
       /**
        * <code>optional .Header header = 9;</code>
@@ -2700,7 +2928,7 @@ public final class Pipe {
         } else {
           headerBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000400;
+        bitField0_ |= 0x00000800;
         return this;
       }
       /**
@@ -2714,7 +2942,7 @@ public final class Pipe {
         } else {
           headerBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000400;
+        bitField0_ |= 0x00000800;
         return this;
       }
       /**
@@ -2722,7 +2950,7 @@ public final class Pipe {
        */
       public Builder mergeHeader(routing.Pipe.Header value) {
         if (headerBuilder_ == null) {
-          if (((bitField0_ & 0x00000400) == 0x00000400) &&
+          if (((bitField0_ & 0x00000800) == 0x00000800) &&
               header_ != null &&
               header_ != routing.Pipe.Header.getDefaultInstance()) {
             header_ =
@@ -2734,7 +2962,7 @@ public final class Pipe {
         } else {
           headerBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000400;
+        bitField0_ |= 0x00000800;
         return this;
       }
       /**
@@ -2747,14 +2975,14 @@ public final class Pipe {
         } else {
           headerBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000400);
+        bitField0_ = (bitField0_ & ~0x00000800);
         return this;
       }
       /**
        * <code>optional .Header header = 9;</code>
        */
       public routing.Pipe.Header.Builder getHeaderBuilder() {
-        bitField0_ |= 0x00000400;
+        bitField0_ |= 0x00000800;
         onChanged();
         return getHeaderFieldBuilder().getBuilder();
       }
@@ -12677,7 +12905,7 @@ public final class Pipe {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\npipe.proto\"\205\004\n\005Route\022\n\n\002id\030\001 \002(\003\022\031\n\004pa" +
+      "\n\npipe.proto\"\246\004\n\005Route\022\n\n\002id\030\001 \002(\003\022\031\n\004pa" +
       "th\030\002 \002(\0162\013.Route.Path\0229\n\026networkDiscover" +
       "yPacket\030\003 \001(\0132\027.NetworkDiscoveryPacketH\000" +
       "\022\025\n\004user\030\004 \001(\0132\005.UserH\000\022\033\n\007message\030\005 \001(\013" +
@@ -12685,46 +12913,47 @@ public final class Pipe {
       "\017messagesRequest\030\007 \001(\0132\020.MessagesRequest" +
       "H\000\022-\n\020messagesResponse\030\010 \001(\0132\021.MessagesR" +
       "esponseH\000\022\035\n\010response\030\n \001(\0132\t.ResponseH\000" +
-      "\022\030\n\016payloadMessage\030\013 \001(\tH\000\022\027\n\006header\030\t \001" +
-      "(\0132\007.Header\"\223\001\n\004Path\022\010\n\004PING\020\000\022\025\n\021NETWOR",
-      "K_DISCOVERY\020\001\022\010\n\004USER\020\002\022\013\n\007MESSAGE\020\003\022\t\n\005" +
-      "GROUP\020\004\022\024\n\020MESSAGES_REQUEST\020\005\022\025\n\021MESSAGE" +
-      "S_RESPONSE\020\006\022\014\n\010RESPONSE\020\007\022\r\n\tHEARTBEAT\020" +
-      "\010B\t\n\007payload\"\246\001\n\004User\022\r\n\005uname\030\001 \002(\t\022\r\n\005" +
-      "email\030\002 \001(\t\022\020\n\010password\030\003 \001(\t\022\030\n\020recentA" +
-      "ctiveTime\030\004 \001(\t\022 \n\006action\030\005 \002(\0162\020.User.A" +
-      "ctionType\"2\n\nActionType\022\014\n\010REGISTER\020\000\022\n\n" +
-      "\006ACCESS\020\001\022\n\n\006DELETE\020\002\"\232\001\n\005Group\022\r\n\005gname" +
-      "\030\001 \002(\t\022\013\n\003gid\030\002 \001(\003\022\r\n\005uname\030\003 \001(\t\022!\n\006ac" +
-      "tion\030\004 \002(\0162\021.Group.ActionType\"C\n\nActionT",
-      "ype\022\n\n\006CREATE\020\000\022\n\n\006DELETE\020\001\022\014\n\010ADD_USER\020" +
-      "\002\022\017\n\013REMOVE_USER\020\004\"\246\002\n\007Message\022\033\n\004type\030\001" +
-      " \002(\0162\r.Message.Type\022\020\n\010senderId\030\002 \002(\t\022\017\n" +
-      "\007payload\030\003 \002(\t\022\022\n\nreceiverId\030\004 \002(\t\022\021\n\tti" +
-      "mestamp\030\005 \001(\t\022\037\n\006status\030\006 \001(\0162\017.Message." +
-      "Status\022#\n\006action\030\007 \002(\0162\023.Message.ActionT" +
-      "ype\".\n\nActionType\022\010\n\004POST\020\000\022\n\n\006UPDATE\020\001\022" +
-      "\n\n\006DELETE\020\002\"\035\n\004Type\022\n\n\006SINGLE\020\000\022\t\n\005GROUP" +
-      "\020\001\"\037\n\006Status\022\n\n\006ACTIVE\020\000\022\t\n\005STALE\020\001\"_\n\017M" +
-      "essagesRequest\022#\n\004type\030\001 \002(\0162\025.MessagesR",
-      "equest.Type\022\n\n\002id\030\002 \002(\t\"\033\n\004Type\022\010\n\004USER\020" +
-      "\000\022\t\n\005GROUP\020\001\"}\n\020MessagesResponse\022$\n\004type" +
-      "\030\001 \002(\0162\026.MessagesResponse.Type\022\n\n\002id\030\002 \002" +
-      "(\t\022\032\n\010messages\030\003 \003(\0132\010.Message\"\033\n\004Type\022\010" +
-      "\n\004USER\020\000\022\t\n\005GROUP\020\001\"\324\002\n\026NetworkDiscovery" +
-      "Packet\022*\n\004mode\030\001 \002(\0162\034.NetworkDiscoveryP" +
-      "acket.Mode\022.\n\006sender\030\002 \002(\0162\036.NetworkDisc" +
-      "overyPacket.Sender\022\020\n\010groupTag\030\003 \001(\t\022\016\n\006" +
-      "nodeId\030\004 \001(\t\022\023\n\013nodeAddress\030\005 \002(\t\022\020\n\010nod" +
-      "ePort\030\006 \002(\003\022\016\n\006secret\030\007 \002(\t\"Q\n\006Sender\022\030\n",
-      "\024EXTERNAL_SERVER_NODE\020\000\022\030\n\024INTERNAL_SERV" +
-      "ER_NODE\020\001\022\023\n\017END_USER_CLIENT\020\002\"2\n\004Mode\022\013" +
-      "\n\007REQUEST\020\000\022\014\n\010RESPONSE\020\001\022\017\n\013REMOVE_NODE" +
-      "\020\002\"Y\n\006Header\022\032\n\004type\030\001 \002(\0162\014.Header.Type" +
-      "\"3\n\004Type\022\014\n\010INTERNAL\020\000\022\021\n\rINTER_CLUSTER\020" +
-      "\001\022\n\n\006CLIENT\020\002\"\034\n\tHeartbeat\022\017\n\007address\030\001 " +
-      "\002(\t\";\n\010Response\022\017\n\007success\030\001 \001(\010\022\017\n\007mess" +
-      "age\030\002 \001(\t\022\r\n\005error\030\003 \001(\tB\013\n\007routingH\001"
+      "\022\030\n\016payloadMessage\030\013 \001(\tH\000\022\037\n\theartbeat\030" +
+      "\014 \001(\0132\n.HeartbeatH\000\022\027\n\006header\030\t \001(\0132\007.He",
+      "ader\"\223\001\n\004Path\022\010\n\004PING\020\000\022\025\n\021NETWORK_DISCO" +
+      "VERY\020\001\022\010\n\004USER\020\002\022\013\n\007MESSAGE\020\003\022\t\n\005GROUP\020\004" +
+      "\022\024\n\020MESSAGES_REQUEST\020\005\022\025\n\021MESSAGES_RESPO" +
+      "NSE\020\006\022\014\n\010RESPONSE\020\007\022\r\n\tHEARTBEAT\020\010B\t\n\007pa" +
+      "yload\"\246\001\n\004User\022\r\n\005uname\030\001 \002(\t\022\r\n\005email\030\002" +
+      " \001(\t\022\020\n\010password\030\003 \001(\t\022\030\n\020recentActiveTi" +
+      "me\030\004 \001(\t\022 \n\006action\030\005 \002(\0162\020.User.ActionTy" +
+      "pe\"2\n\nActionType\022\014\n\010REGISTER\020\000\022\n\n\006ACCESS" +
+      "\020\001\022\n\n\006DELETE\020\002\"\232\001\n\005Group\022\r\n\005gname\030\001 \002(\t\022" +
+      "\013\n\003gid\030\002 \001(\003\022\r\n\005uname\030\003 \001(\t\022!\n\006action\030\004 ",
+      "\002(\0162\021.Group.ActionType\"C\n\nActionType\022\n\n\006" +
+      "CREATE\020\000\022\n\n\006DELETE\020\001\022\014\n\010ADD_USER\020\002\022\017\n\013RE" +
+      "MOVE_USER\020\004\"\246\002\n\007Message\022\033\n\004type\030\001 \002(\0162\r." +
+      "Message.Type\022\020\n\010senderId\030\002 \002(\t\022\017\n\007payloa" +
+      "d\030\003 \002(\t\022\022\n\nreceiverId\030\004 \002(\t\022\021\n\ttimestamp" +
+      "\030\005 \001(\t\022\037\n\006status\030\006 \001(\0162\017.Message.Status\022" +
+      "#\n\006action\030\007 \002(\0162\023.Message.ActionType\".\n\n" +
+      "ActionType\022\010\n\004POST\020\000\022\n\n\006UPDATE\020\001\022\n\n\006DELE" +
+      "TE\020\002\"\035\n\004Type\022\n\n\006SINGLE\020\000\022\t\n\005GROUP\020\001\"\037\n\006S" +
+      "tatus\022\n\n\006ACTIVE\020\000\022\t\n\005STALE\020\001\"_\n\017Messages",
+      "Request\022#\n\004type\030\001 \002(\0162\025.MessagesRequest." +
+      "Type\022\n\n\002id\030\002 \002(\t\"\033\n\004Type\022\010\n\004USER\020\000\022\t\n\005GR" +
+      "OUP\020\001\"}\n\020MessagesResponse\022$\n\004type\030\001 \002(\0162" +
+      "\026.MessagesResponse.Type\022\n\n\002id\030\002 \002(\t\022\032\n\010m" +
+      "essages\030\003 \003(\0132\010.Message\"\033\n\004Type\022\010\n\004USER\020" +
+      "\000\022\t\n\005GROUP\020\001\"\324\002\n\026NetworkDiscoveryPacket\022" +
+      "*\n\004mode\030\001 \002(\0162\034.NetworkDiscoveryPacket.M" +
+      "ode\022.\n\006sender\030\002 \002(\0162\036.NetworkDiscoveryPa" +
+      "cket.Sender\022\020\n\010groupTag\030\003 \001(\t\022\016\n\006nodeId\030" +
+      "\004 \001(\t\022\023\n\013nodeAddress\030\005 \002(\t\022\020\n\010nodePort\030\006",
+      " \002(\003\022\016\n\006secret\030\007 \002(\t\"Q\n\006Sender\022\030\n\024EXTERN" +
+      "AL_SERVER_NODE\020\000\022\030\n\024INTERNAL_SERVER_NODE" +
+      "\020\001\022\023\n\017END_USER_CLIENT\020\002\"2\n\004Mode\022\013\n\007REQUE" +
+      "ST\020\000\022\014\n\010RESPONSE\020\001\022\017\n\013REMOVE_NODE\020\002\"Y\n\006H" +
+      "eader\022\032\n\004type\030\001 \002(\0162\014.Header.Type\"3\n\004Typ" +
+      "e\022\014\n\010INTERNAL\020\000\022\021\n\rINTER_CLUSTER\020\001\022\n\n\006CL" +
+      "IENT\020\002\"\034\n\tHeartbeat\022\017\n\007address\030\001 \002(\t\";\n\010" +
+      "Response\022\017\n\007success\030\001 \001(\010\022\017\n\007message\030\002 \001" +
+      "(\t\022\r\n\005error\030\003 \001(\tB\013\n\007routingH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -12743,7 +12972,7 @@ public final class Pipe {
     internal_static_Route_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Route_descriptor,
-        new java.lang.String[] { "Id", "Path", "NetworkDiscoveryPacket", "User", "Message", "Group", "MessagesRequest", "MessagesResponse", "Response", "PayloadMessage", "Header", "Payload", });
+        new java.lang.String[] { "Id", "Path", "NetworkDiscoveryPacket", "User", "Message", "Group", "MessagesRequest", "MessagesResponse", "Response", "PayloadMessage", "Heartbeat", "Header", "Payload", });
     internal_static_User_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_User_fieldAccessorTable = new

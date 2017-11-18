@@ -53,7 +53,7 @@ public class ClientApp implements CommListener {
                 mc.ping();
                 waitForReply();
                 break;
-            case "user": // ex. user [register|access|delete] <username>
+            case "user": // ex. user [register|access|delete] <username> <password>
                 if ((parsedCmd[1].equals("register") || parsedCmd[1].equals("access") || parsedCmd[1].equals("delete")) && parsedCmd[2] != null && parsedCmd[3] != null) {
                     clientUname = parsedCmd[2];
                     mc.user(parsedCmd[1], parsedCmd[2], parsedCmd[3]);

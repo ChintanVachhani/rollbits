@@ -29,10 +29,9 @@ message Route {
         MessagesResponse messagesResponse = 8;
         Response response = 10;
         string payloadMessage = 11;
+        Heartbeat heartbeat = 12;
     }
     optional Header header = 9;
-
-
 }
 
 message User {
