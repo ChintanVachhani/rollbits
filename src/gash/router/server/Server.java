@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import gash.router.server.communication.ExternalCommServer;
+import gash.router.server.communication.InternalCommServer;
 import gash.router.server.discovery.InternalDiscoveryClient;
 import gash.router.server.discovery.InternalDiscoveryServer;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -62,8 +63,7 @@ public class Server {
         dcthread.start();
 
         // start communication over channel
-        ExternalCommServer comm = new ExternalCommServer(conf);
-        logger.info("Communication starting");
+        InternalCommServer comm = new InternalCommServer(conf);
 
         if (background) {
             Thread cthread = new Thread(comm);
