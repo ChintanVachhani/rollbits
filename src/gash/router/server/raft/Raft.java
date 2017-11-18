@@ -10,7 +10,7 @@ import java.util.Objects;
 
 import static java.lang.Thread.sleep;
 
-public class Raft {
+public class Raft{
     protected static org.slf4j.Logger logger = LoggerFactory.getLogger("Raft");
 
     private static Raft ourInstance = new Raft();
@@ -26,6 +26,9 @@ public class Raft {
         myIP = conf.getNodeAddress();
         timeOut = 1000;
         leaderIP = "";
+        TimeOut timeOut = new TimeOut();
+        Thread thread = new Thread(timeOut);
+        thread.start();
     }
 
     public void setConf(RoutingConf conf) {
