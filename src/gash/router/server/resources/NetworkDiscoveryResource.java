@@ -71,8 +71,7 @@ public class NetworkDiscoveryResource implements RouteResource {
         ndpb.setMode(NetworkDiscoveryPacket.Mode.RESPONSE);
         ndpb.setSender(requestNetworkDiscoveryPacket.getSender());
         ndpb.setGroupTag(conf.getGroupTag());
-        //ndpb.setNodeAddress(InetAddress.getLocalHost().getHostAddress());
-        ndpb.setNodeAddress("10.0.0.50");
+        ndpb.setNodeAddress(conf.getNodeAddress());
 
         if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE))
             ndpb.setNodePort(conf.getInternalCommunicationPort());

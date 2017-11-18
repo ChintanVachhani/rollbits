@@ -25,6 +25,8 @@ import org.slf4j.LoggerFactory;
         }
 
         public void run() {
+            logger.info("External Communication starting");
+
             // construct boss and worker threads (num threads = number of cores)
 
             EventLoopGroup bossGroup = new NioEventLoopGroup();
