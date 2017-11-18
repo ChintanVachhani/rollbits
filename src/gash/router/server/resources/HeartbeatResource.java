@@ -19,7 +19,10 @@ import gash.router.container.RoutingConf;
 import gash.router.server.raft.Raft;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import routing.Pipe;
 import routing.Pipe.Route;
+
+import java.util.Objects;
 
 /**
  * processes requests of message passing - demonstration
@@ -45,11 +48,27 @@ public class HeartbeatResource implements RouteResource {
 
     @Override
     public Route process(Route route, RoutingConf conf) throws Exception {
-        if (Raft.getInstance() != null){
+        if (route.getHeartbeat().getMode() == Pipe.Heartbeat.Mode.PING) {
+            if (Objects.equals(Raft.getInstance().getLeaderIP(), "")) {
+                Raft.getInstance().setLeaderIP(route.getHeartbeat().getAddress());
+            } else if (!Objects.equals(Raft.getInstance().getLeaderIP(), "")) {
+                if (Objects.equals(Raft.getInstance().getLeaderIP(), route.getHeartbeat().getAddress())) {
+                    //TODO: heartbeat is from leader/ all good, process heartbeat here
+                } else {
+                    if (Objects.equals(conf.getNodeAddress(), Raft.getInstance().getLeaderIP())) {
+
+                    }
+                }
+            }
+
+            if (Raft.getInstance() != null) {
+
+            } else {
+                Raft.getInstance().setTimeOut(1000);
+            }
             return null;
-        }
-        else {
-            Raft.getInstance().setTimeOut(1000);
+        }else if (route.getHeartbeat().getMode() == Pipe.Heartbeat.Mode.ACK){
+            Raft.getInstance().setTimeOut(2000);
         }
         return null;
     }
