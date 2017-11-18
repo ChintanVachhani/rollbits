@@ -73,6 +73,7 @@ public class UserResource implements RouteResource {
         responseRoute.setId(route.getId());
         responseRoute.setPath(Route.Path.RESPONSE);
         Pipe.Response.Builder rb = Pipe.Response.newBuilder();
+
         rb.setMessage(response);
         responseRoute.setResponse(rb);
 
@@ -97,7 +98,7 @@ public class UserResource implements RouteResource {
         User newUser = new User(username, password);
         if (userDAO.getUserByUsername(newUser.getUsername()) == null) {
             userDAO.createUser(newUser);
-            return "User Registered.";
+            return "User registered.";
         }
         return "User already exists.";
     }
@@ -109,9 +110,9 @@ public class UserResource implements RouteResource {
             password = "default";
         User existingUser = userDAO.getUser(username, password);
         if (existingUser != null) {
-            return "User found.";
+            return "User access granted.";
         }
-        return "User not found.";
+        return "User access denied.";
     }
 
     private String delete(Pipe.User user) {
@@ -121,7 +122,7 @@ public class UserResource implements RouteResource {
             password = "default";
         if (userDAO.getUser(username, password) != null) {
             userDAO.deleteUser(username, password);
-            return "User Deleted.";
+            return "User deleted.";
         }
         return "User not found.";
     }
