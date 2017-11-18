@@ -63,7 +63,9 @@ public class Server {
         dcthread.start();
 
         // start communication over channel
-        InternalCommServer comm = new InternalCommServer(conf);
+        //InternalCommServer comm = new InternalCommServer(conf);
+
+        ExternalCommServer comm = new ExternalCommServer(conf);
 
         if (background) {
             Thread cthread = new Thread(comm);

@@ -45,7 +45,7 @@ public class MessagesResource implements RouteResource {
     private MessageDAO messageDAO;
     private UserDAO userDAO;
 
-    MessagesResource() {
+    public MessagesResource() {
         MorphiaService morphiaService = new MorphiaService();
         this.messageDAO = new MessageDAOImpl(Message.class, morphiaService.getDatastore());
         this.userDAO = new UserDAOImpl(User.class, morphiaService.getDatastore());
@@ -67,19 +67,30 @@ public class MessagesResource implements RouteResource {
             responseRoute.setPath(Route.Path.MESSAGES_REQUEST);
             Pipe.MessagesResponse.Builder rb = Pipe.MessagesResponse.newBuilder();
             for (Message aResponse : response) {
-                rb.addMessages(aResponse);
+                Pipe.Message.Builder messageBuilder = Pipe.Message.newBuilder();
+                if (aResponse.getType().equals("SINGLE"))
+                    messageBuilder.setType(Pipe.Message.Type.SINGLE);
+                else if (aResponse.getType().equals("GROUP"))
+                    messageBuilder.setType(Pipe.Message.Type.GROUP);
+                messageBuilder.setSenderId(aResponse.getFrom());
+                messageBuilder.setReceiverId(aResponse.getTo());
+                messageBuilder.setTimestamp(aResponse.getTimestamp());
+                messageBuilder.setSenderId(aResponse.getFrom());
+                messageBuilder.setAction(Pipe.Message.ActionType.POST);
+                rb.addMessages(messageBuilder.build());
             }
 
-            responseRoute.setResponse(rb);
+            responseRoute.setMessagesResponse(rb);
+
         } else if (route.getPath().equals(Route.Path.MESSAGES_RESPONSE)) {
-            route.getMessagesResponse().getMessagesList();
+            /*route.getMessagesResponse().getMessagesList();
 
             Route.Builder responseRoute = Route.newBuilder();
             responseRoute.setId(route.getId());
             responseRoute.setPath(Route.Path.MESSAGES_RESPONSE);
             Pipe.MessagesResponse.Builder rb = Pipe.MessagesResponse.newBuilder();
             rb.addAllMessages(response);
-            responseRoute.setResponse(rb);
+            responseRoute.setResponse(rb);*/
         } else {
 
         }
