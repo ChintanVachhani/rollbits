@@ -66,6 +66,12 @@ message Group {
 
 message Message {
 
+    enum ActionType {
+        POST = 0;
+        UPDATE = 1;
+        DELETE = 2;
+    }
+
     enum Type {
         SINGLE = 0;
         GROUP = 1;
@@ -83,6 +89,7 @@ message Message {
     required string receiverId = 4; //would be groupId if the type is GROUP or else userId if the type is SINGLE
     optional string timestamp = 5;
     optional Status status = 6;
+    required ActionType action = 7;
 }
 
 message MessagesRequest {
@@ -119,10 +126,11 @@ message NetworkDiscoveryPacket {
     enum Mode {
         REQUEST = 0;
         RESPONSE = 1;
+        REMOVE_NODE = 2; // Use this mode to ask other cluster to remove one of your nodes which is not up now. Or which is not the leader now. Teams must remove the node (details in packet) from their UDP discovery data structure.
     }
 
     required Mode mode = 1;
-    required Sender sender = 2 [default = INTERNAL_SERVER_NODE];
+    required Sender sender = 2;
     optional string groupTag = 3; //If sender is a server node, then this field can contain its group id. If sender is end user client, then this field is not required.
     optional string nodeId = 4; //node id of the sender
     required string nodeAddress = 5;

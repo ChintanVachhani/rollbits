@@ -52,6 +52,8 @@ public class NetworkDiscoveryResource implements RouteResource {
                     return processRequest(route, conf);
                 else if (route.getNetworkDiscoveryPacket().getMode().equals(NetworkDiscoveryPacket.Mode.RESPONSE))
                     return processResponse(route, conf);
+                else if (route.getNetworkDiscoveryPacket().getMode().equals(NetworkDiscoveryPacket.Mode.REMOVE_NODE))
+                    return processRemoval(route, conf);
             } else {
                 throw new IllegalArgumentException();
             }
@@ -87,9 +89,9 @@ public class NetworkDiscoveryResource implements RouteResource {
 
         Node node = new Node(requestNetworkDiscoveryPacket.getSender().toString(), requestNetworkDiscoveryPacket.getGroupTag(), requestNetworkDiscoveryPacket.getNodeId(), requestNetworkDiscoveryPacket.getNodeAddress(), (int) requestNetworkDiscoveryPacket.getNodePort());
 
-        if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE) && !requestNetworkDiscoveryPacket.getNodeAddress().equals("10.0.0.50") && requestNetworkDiscoveryPacket.getGroupTag().equals(conf.getGroupTag()))
+        if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE) && !requestNetworkDiscoveryPacket.getNodeAddress().equals(conf.getNodeAddress()) && requestNetworkDiscoveryPacket.getGroupTag().equals(conf.getGroupTag()))
             routingMap.addInternalServer(node);
-        else if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !requestNetworkDiscoveryPacket.getNodeAddress().equals("10.0.0.50"))
+        else if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !requestNetworkDiscoveryPacket.getNodeAddress().equals(conf.getNodeAddress()))
             routingMap.addExternalServer(node);
         else if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.END_USER_CLIENT))
             routingMap.addClient(node);
@@ -107,9 +109,9 @@ public class NetworkDiscoveryResource implements RouteResource {
 
         Node node = new Node(responseNetworkDiscoveryPacket.getSender().toString(), responseNetworkDiscoveryPacket.getGroupTag(), responseNetworkDiscoveryPacket.getNodeId(), responseNetworkDiscoveryPacket.getNodeAddress(), (int) responseNetworkDiscoveryPacket.getNodePort());
 
-        if (responseNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE) && !responseNetworkDiscoveryPacket.getNodeAddress().equals("10.0.0.50"))
+        if (responseNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE) && !responseNetworkDiscoveryPacket.getNodeAddress().equals(conf.getNodeAddress()))
             routingMap.addInternalServer(node);
-        else if (responseNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !responseNetworkDiscoveryPacket.getNodeAddress().equals("10.0.0.50"))
+        else if (responseNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !responseNetworkDiscoveryPacket.getNodeAddress().equals(conf.getNodeAddress()))
             routingMap.addExternalServer(node);
         else if (responseNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.END_USER_CLIENT))
             routingMap.addClient(node);
@@ -117,6 +119,26 @@ public class NetworkDiscoveryResource implements RouteResource {
         System.out.println("Internal Servers: " + routingMap.getInternalServers());
         System.out.println("External Servers: " + routingMap.getExternalServers().toString());
         System.out.println("Clients: " + routingMap.getClients().toString());
+
+        return null;
+    }
+
+    private Route processRemoval(Route route, RoutingConf conf) throws Exception {
+
+        NetworkDiscoveryPacket routeNetworkDiscoveryPacket = route.getNetworkDiscoveryPacket();
+
+        Node node = new Node(routeNetworkDiscoveryPacket.getSender().toString(), routeNetworkDiscoveryPacket.getGroupTag(), routeNetworkDiscoveryPacket.getNodeId(), routeNetworkDiscoveryPacket.getNodeAddress(), (int) routeNetworkDiscoveryPacket.getNodePort());
+
+        if (routeNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE) && !routeNetworkDiscoveryPacket.getNodeAddress().equals(conf.getNodeAddress()))
+            routingMap.removeInternalServer(node);
+        else if (routeNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE) && !routeNetworkDiscoveryPacket.getNodeAddress().equals(conf.getNodeAddress()))
+            routingMap.removeExternalServer(node);
+        else if (routeNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.END_USER_CLIENT))
+            routingMap.removeClient(node);
+
+        System.out.println("Internal Servers: " + routingMap.getInternalServers());
+        System.out.println("External Servers: " + routingMap.getExternalServers());
+        System.out.println("Clients: " + routingMap.getClients());
 
         return null;
     }
