@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import gash.router.server.communication.ExternalCommServer;
+import gash.router.server.communication.HeartbeatServer;
 import gash.router.server.communication.InternalCommServer;
 import gash.router.server.discovery.InternalDiscoveryClient;
 import gash.router.server.discovery.InternalDiscoveryServer;
@@ -61,6 +62,11 @@ public class Server {
         InternalDiscoveryClient internalDiscoveryClient = new InternalDiscoveryClient(conf);
         Thread dcthread = new Thread(internalDiscoveryClient);
         dcthread.start();
+
+        // start heartbeat server
+        HeartbeatServer heartbeatServer = new HeartbeatServer(conf);
+        Thread hbthread = new Thread(heartbeatServer);
+        hbthread.start();
 
         // start internal communication over channel
         InternalCommServer comm = new InternalCommServer(conf);
