@@ -66,8 +66,17 @@ public class CommServerHandler extends SimpleChannelInboundHandler<Route> {
             String clazz = routing.get("/" + msg.getPath().toString().toLowerCase());
             if (clazz != null) {
                 RouteResource rsc = (RouteResource) Beans.instantiate(RouteResource.class.getClassLoader(), clazz);
+                Route response;
                 try {
-                    Route response = rsc.process(msg);
+                    switch (msg.getPath()) {
+                        case HEARTBEAT: response = rsc.process(msg, conf);
+                            break;
+                        case MESSAGES_REQUEST: response = rsc.process(msg, channel);
+                            break;
+                        default: response = rsc.process(msg);
+                            break;
+                    }
+
                     System.out.println("<--- reply: \n" + response);
                     if (response != null) {
                         channel.writeAndFlush(response);

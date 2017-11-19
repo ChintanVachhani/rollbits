@@ -27,6 +27,7 @@ import gash.router.server.dao.impl.UserDAOImpl;
 import gash.router.server.entity.Group;
 import gash.router.server.entity.Message;
 import gash.router.server.entity.User;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,14 +65,18 @@ public class MessagesResource implements RouteResource {
     }
 
     @Override
-    public Route process(Route route, ChannelHandlerContext ctx) {
+    public Route process(Route route, Channel ctx) {
         Route.Builder responseRoute = Route.newBuilder();
-        List<Message> response = new ArrayList<>();
+        List<Message> response;
 
         response = fetch(route.getMessagesRequest().getId());
+        System.out.println("->" + response);
+
         responseRoute.setId(route.getId());
         responseRoute.setPath(Route.Path.MESSAGES_RESPONSE);
         Pipe.MessagesResponse.Builder rb = Pipe.MessagesResponse.newBuilder();
+        rb.setType(Pipe.MessagesResponse.Type.USER);
+        rb.setId(route.getMessagesRequest().getId());
         for (Message aResponse : response) {
             Pipe.Message.Builder messageBuilder = Pipe.Message.newBuilder();
             if (aResponse.getType().equals("SINGLE"))

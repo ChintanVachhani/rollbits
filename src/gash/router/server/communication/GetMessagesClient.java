@@ -4,10 +4,7 @@ import gash.router.container.RoutingConf;
 import gash.router.server.Node;
 import gash.router.server.RoutingMap;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
@@ -23,9 +20,9 @@ public class GetMessagesClient {
 
     private Pipe.Route request;
     private Pipe.Route response;
-    ChannelHandlerContext clientChannel;
+    Channel clientChannel;
 
-    public GetMessagesClient(Pipe.Route request, Pipe.Route response, ChannelHandlerContext clientChannel) {
+    public GetMessagesClient(Pipe.Route request, Pipe.Route response, Channel clientChannel) {
         this.request = request;
         this.response = response;
         this.clientChannel = clientChannel;

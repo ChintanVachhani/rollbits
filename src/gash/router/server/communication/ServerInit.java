@@ -1,6 +1,7 @@
 package gash.router.server.communication;
 
 import gash.router.container.RoutingConf;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -27,9 +28,9 @@ public class ServerInit extends ChannelInitializer<SocketChannel> {
 
     private Route request;
     private Route response;
-    ChannelHandlerContext clientChannel;
+    Channel clientChannel;
 
-    public ServerInit(Route request, Route response, ChannelHandlerContext clientChannel, String handler) {
+    public ServerInit(Route request, Route response, Channel clientChannel, String handler) {
         this.request = request;
         this.response = response;
         this.clientChannel = clientChannel;
@@ -65,9 +66,6 @@ public class ServerInit extends ChannelInitializer<SocketChannel> {
         switch (handler) {
             case "commServerHandler":
                 pipeline.addLast(handler, new CommServerHandler(conf));
-                break;
-            case "heartbeatServerHandler":
-                pipeline.addLast(handler, new HeartbeatServerHandler(conf));
                 break;
             case "getMessagesClientHandler":
                 pipeline.addLast(handler, new GetMessagesClientHandler(request, response, clientChannel));

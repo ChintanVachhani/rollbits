@@ -19,6 +19,7 @@ import gash.router.container.RoutingConf;
 import gash.router.server.Node;
 import gash.router.server.RoutingMap;
 import gash.router.server.raft.Raft;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +49,7 @@ public class NetworkDiscoveryResource implements RouteResource {
     }
 
     @Override
-    public Route process(Route route, ChannelHandlerContext ctx) {
+    public Route process(Route route, Channel ctx) {
         return null;
     }
 

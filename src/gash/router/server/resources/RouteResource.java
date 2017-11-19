@@ -16,6 +16,7 @@
 package gash.router.server.resources;
 
 import gash.router.container.RoutingConf;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import routing.Pipe.Route;
 
@@ -42,7 +43,7 @@ public interface RouteResource {
      */
     Route process(Route route);
 
-    Route process(Route route, ChannelHandlerContext ctx);
+    Route process(Route route, Channel ctx);
 
     Route process(Route route, RoutingConf conf) throws Exception;
 }

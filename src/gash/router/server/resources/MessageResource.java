@@ -20,6 +20,7 @@ import gash.router.server.dao.MessageDAO;
 import gash.router.server.dao.MorphiaService;
 import gash.router.server.dao.impl.MessageDAOImpl;
 import gash.router.server.entity.Message;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +73,7 @@ public class MessageResource implements RouteResource {
     }
 
     @Override
-    public Route process(Route route, ChannelHandlerContext ctx) {
+    public Route process(Route route, Channel ctx) {
         return null;
     }
 

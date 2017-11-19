@@ -44,11 +44,12 @@ public class GetMessagesClientHandler extends SimpleChannelInboundHandler<Route>
 
     private Route request;
     private Route response;
-    ChannelHandlerContext clientChannel;
+    Channel clientChannel;
 
-    public GetMessagesClientHandler(Route request, Route response, ChannelHandlerContext clientChannel) {
+    public GetMessagesClientHandler(Route request, Route response, Channel clientChannel) {
         this.request = request;
         this.response = response;
+        this.clientChannel = clientChannel;
     }
 
     @Override
