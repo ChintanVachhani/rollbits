@@ -156,7 +156,7 @@ public class CommConnection {
             b.option(ChannelOption.SO_KEEPALIVE, true);
 
             // Make the connection attempt.
-            channel = b.connect(host, port).syncUninterruptibly();
+            channel = b.connect(host, port).sync();
 
             // want to monitor the connection to the server s.t. if we loose the
             // connection, we can try to re-establish it.

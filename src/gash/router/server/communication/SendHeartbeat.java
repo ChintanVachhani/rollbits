@@ -26,18 +26,14 @@ import java.util.Scanner;
 public class SendHeartbeat implements CommListener {
     private ServerSideClient ssc;
 
-    public SendHeartbeat(ServerSideClient ssc) {
+    public SendHeartbeat(String host, int port) {
+        ssc = new ServerSideClient(host, port);
         init(ssc);
     }
 
     private void init(ServerSideClient ssc) {
         this.ssc = ssc;
         this.ssc.addListener(this);
-    }
-
-
-    public void sendHeartbeat(String leaderIp){
-        ssc.sendHeartbeat(leaderIp);
     }
 
     @Override
@@ -50,15 +46,9 @@ public class SendHeartbeat implements CommListener {
         System.out.println(msg);
     }
 
-    public static void run(String host, int port, String leaderIp) {
-
+    public void run(String leaderIp) {
         try {
-            ServerSideClient ssc = new ServerSideClient(host, port);
-            SendHeartbeat sh = new SendHeartbeat(ssc);
-            sh.sendHeartbeat(leaderIp);
-			/*System.out.println("\n** exiting in 60 seconds. **");
-            System.out.flush();
-			Thread.sleep(60 * 1000);*/
+            ssc.sendHeartbeat(leaderIp);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

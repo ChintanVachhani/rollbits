@@ -95,8 +95,8 @@ public class Raft {
     }
 
     public Integer compareIP(String ip1S, String ip2S) {
-        Integer ip1 = Integer.parseInt(ip1S.substring(ip1S.lastIndexOf('.'), ip1S.length() - 1));
-        Integer ip2 = Integer.parseInt(ip2S.substring(ip2S.lastIndexOf('.'), ip2S.length() - 1));
+        Integer ip1 = Integer.parseInt(ip1S.substring(ip1S.lastIndexOf('.') + 1, ip1S.length() - 1));
+        Integer ip2 = Integer.parseInt(ip2S.substring(ip2S.lastIndexOf('.') + 1, ip2S.length() - 1));
         if (ip1 > ip2) {
             return 1;
         } else if (Objects.equals(ip1, ip2)) {
@@ -111,10 +111,11 @@ public class Raft {
             if (Objects.equals(conf.getNodeAddress(), leaderIP)) {
                 for (Node node : RoutingMap.getInstance().getInternalServers().values()) {
                     //TODO: send heartbeat for each node in this list
-                    SendHeartbeat.run(node.getNodeAddress(), node.getNodePort(), conf.getNodeAddress());
+                    printRaftStatus("Sending heartbeat...");
+                    node.getSendHeartbeat().run(leaderIP);
                 }
                 try {
-                    printRaftStatus("Sending heartbeat...");
+
                     sleep(50);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
