@@ -33,6 +33,8 @@ import org.slf4j.LoggerFactory;
 import gash.router.container.RoutingConf;
 import io.netty.bootstrap.ServerBootstrap;
 
+import static java.lang.Thread.sleep;
+
 public class Server {
     protected static Logger logger = LoggerFactory.getLogger("server");
 
@@ -62,6 +64,12 @@ public class Server {
         InternalDiscoveryClient internalDiscoveryClient = new InternalDiscoveryClient(conf);
         Thread dcthread = new Thread(internalDiscoveryClient);
         dcthread.start();
+
+        try {
+            sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         // start heartbeat server
         HeartbeatServer heartbeatServer = new HeartbeatServer(conf);

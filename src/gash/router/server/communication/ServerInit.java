@@ -66,6 +66,9 @@ public class ServerInit extends ChannelInitializer<SocketChannel> {
             case "commServerHandler":
                 pipeline.addLast(handler, new CommServerHandler(conf));
                 break;
+            case "heartbeatServerHandler":
+                pipeline.addLast(handler, new HeartbeatServerHandler(conf));
+                break;
             case "getMessagesClientHandler":
                 pipeline.addLast(handler, new GetMessagesClientHandler(request, response, clientChannel));
                 break;
