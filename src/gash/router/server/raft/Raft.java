@@ -4,6 +4,7 @@ import gash.router.container.RoutingConf;
 import gash.router.server.Node;
 import gash.router.server.RoutingMap;
 import gash.router.server.communication.ExternalCommServer;
+import gash.router.server.communication.InternalCommServer;
 import gash.router.server.communication.SendHeartbeat;
 import gash.router.server.discovery.ExternalDiscoveryClient;
 import gash.router.server.discovery.ExternalDiscoveryServer;
@@ -95,6 +96,11 @@ public class Raft {
             ExternalDiscoveryClient externalDiscoveryClient = new ExternalDiscoveryClient(conf);
             Thread dcthread = new Thread(externalDiscoveryClient);
             dcthread.start();
+
+            // start external communication over channel
+            ExternalCommServer comm = new ExternalCommServer(conf);
+            Thread cthread = new Thread(comm);
+            cthread.start();
 
             leaderIP = conf.getNodeAddress();
             startHeartBeat();
