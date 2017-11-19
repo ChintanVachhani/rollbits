@@ -119,7 +119,7 @@ public class Raft {
                 for (Node node : RoutingMap.getInstance().getInternalServers().values()) {
                     //TODO: send heartbeat for each node in this list
                     printRaftStatus("Sending heartbeat...");
-                    node.getSendHeartbeat().run(leaderIP);
+                    node.getSendHeartbeat().ping(leaderIP);
                 }
                 try {
                     sleep(50);

@@ -41,12 +41,30 @@ public class ServerSideClient {
         CommConnection.getInstance().addListener(listener);
     }
 
-    public void sendHeartbeat(String leaderIp) {
+    public void sendHeartbeatPing(String leaderIp) {
         // construct the heartbeat to send
         Route.Builder rb = Route.newBuilder();
         rb.setId(nextId());
         rb.setPath(Route.Path.HEARTBEAT);
         rb.setHeartbeat(Pipe.Heartbeat.newBuilder().setMode(Pipe.Heartbeat.Mode.PING).setAddress(leaderIp));
+
+        try {
+            // direct no queue
+            CommConnection.getInstance().write(rb.build());
+
+            // using queue
+            //CommConnection.getInstance().enqueue(rb.build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendHeartbeatAck(String followerIp) {
+        // construct the heartbeat to send
+        Route.Builder rb = Route.newBuilder();
+        rb.setId(nextId());
+        rb.setPath(Route.Path.HEARTBEAT);
+        rb.setHeartbeat(Pipe.Heartbeat.newBuilder().setMode(Pipe.Heartbeat.Mode.ACK).setAddress(followerIp));
 
         try {
             // direct no queue

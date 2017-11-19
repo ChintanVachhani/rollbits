@@ -16,6 +16,7 @@
 package gash.router.server.resources;
 
 import gash.router.container.RoutingConf;
+import gash.router.server.RoutingMap;
 import gash.router.server.raft.Raft;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
@@ -60,6 +61,8 @@ public class HeartbeatResource implements RouteResource {
             } else if (!Objects.equals(Raft.getInstance().getLeaderIP(), "")) {
                 if (Objects.equals(Raft.getInstance().getLeaderIP(), route.getHeartbeat().getAddress())) {
                     //TODO: heartbeat is from leader/ all good, process heartbeat here
+                    Raft.getInstance().setTimeOut(1000);
+                    RoutingMap.getInstance().getInternalServers().get(route.getHeartbeat().getAddress()).getSendHeartbeat().ack(conf.getNodeAddress());
                 } else {
                     if (Objects.equals(conf.getNodeAddress(), Raft.getInstance().getLeaderIP())) {
 
@@ -73,7 +76,7 @@ public class HeartbeatResource implements RouteResource {
                 Raft.getInstance().setTimeOut(1000);
             }
             return null;
-        }else if (route.getHeartbeat().getMode() == Pipe.Heartbeat.Mode.ACK){
+        } else if (route.getHeartbeat().getMode() == Pipe.Heartbeat.Mode.ACK) {
             Raft.getInstance().setTimeOut(2000);
         }
         return null;

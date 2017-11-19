@@ -41,9 +41,19 @@ public class SendHeartbeat implements CommListener {
         System.out.println(msg);
     }
 
-    public void run(String leaderIp) {
+    public void ping(String leaderIp) {
         try {
-            ssc.sendHeartbeat(leaderIp);
+            ssc.sendHeartbeatPing(leaderIp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            CommConnection.getInstance().release();
+        }
+    }
+
+    public void ack(String followerIp) {
+        try {
+            ssc.sendHeartbeatAck(followerIp);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
