@@ -36,7 +36,6 @@ public class ExternalDiscoveryServer implements Runnable {
             logger.info("Starting server, listening on port = " + conf.getExternalDiscoveryPort());
             ChannelFuture f = b.bind(conf.getExternalDiscoveryPort()).sync();
 
-
             logger.info(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "
                     + f.channel().isWritable() + ", act: " + f.channel().isActive());
 

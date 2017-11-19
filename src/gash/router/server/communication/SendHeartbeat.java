@@ -28,12 +28,7 @@ public class SendHeartbeat implements CommListener {
 
     public SendHeartbeat(String host, int port) {
         ssc = new ServerSideClient(host, port);
-        init(ssc);
-    }
-
-    private void init(ServerSideClient ssc) {
-        this.ssc = ssc;
-        this.ssc.addListener(this);
+        ssc.addListener(this);
     }
 
     @Override
@@ -54,5 +49,9 @@ public class SendHeartbeat implements CommListener {
         } finally {
             CommConnection.getInstance().release();
         }
+    }
+
+    public void stop(){
+        ssc.release();
     }
 }

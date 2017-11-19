@@ -3,8 +3,12 @@ package gash.router.server.raft;
 import gash.router.container.RoutingConf;
 import gash.router.server.Node;
 import gash.router.server.RoutingMap;
+import gash.router.server.communication.ExternalCommServer;
 import gash.router.server.communication.SendHeartbeat;
+import gash.router.server.discovery.ExternalDiscoveryClient;
+import gash.router.server.discovery.ExternalDiscoveryServer;
 import gash.router.server.discovery.InternalDiscoveryClient;
+import gash.router.server.discovery.InternalDiscoveryServer;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
@@ -59,10 +63,10 @@ public class Raft {
         printRaftStatus("Starting election...");
         try {
             // finding all the active servers
-            RoutingMap.getInstance().getInternalServers().clear();
+            /*RoutingMap.getInstance().getInternalServers().clear();
             InternalDiscoveryClient internalDiscoveryClient = new InternalDiscoveryClient(conf);
             Thread dcthread = new Thread(internalDiscoveryClient);
-            dcthread.start();
+            dcthread.start();*/
             sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -80,6 +84,18 @@ public class Raft {
         }
         if (Objects.equals(leaderIP, "")) {
             printRaftStatus("I am now leader...");
+
+            // External network discovery
+            // listening for discovery request by other servers
+            ExternalDiscoveryServer externalDiscoveryServer = new ExternalDiscoveryServer(conf);
+            Thread dsthread = new Thread(externalDiscoveryServer);
+            dsthread.start();
+
+            // finding all the active servers
+            ExternalDiscoveryClient externalDiscoveryClient = new ExternalDiscoveryClient(conf);
+            Thread dcthread = new Thread(externalDiscoveryClient);
+            dcthread.start();
+
             leaderIP = conf.getNodeAddress();
             startHeartBeat();
         }
@@ -106,7 +122,6 @@ public class Raft {
                     node.getSendHeartbeat().run(leaderIP);
                 }
                 try {
-
                     sleep(50);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
