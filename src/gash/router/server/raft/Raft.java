@@ -55,15 +55,6 @@ public class Raft {
         this.leaderIP = leaderIP;
     }
 
-    public void sendHeartBeat() {
-        for (Node node : RoutingMap.getInstance().getInternalServers().values()) {
-            if (!Objects.equals(node.getNodeAddress(), myIP)) {
-                //TODO: write code to send heartbeat via TCP
-
-            }
-        }
-    }
-
     public void election() {
         printRaftStatus("Starting election...");
         try {
