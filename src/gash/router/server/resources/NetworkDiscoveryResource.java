@@ -106,6 +106,7 @@ public class NetworkDiscoveryResource implements RouteResource {
                 && !requestNetworkDiscoveryPacket.getNodeAddress().equals(conf.getNodeAddress())
                 && !requestNetworkDiscoveryPacket.getGroupTag().equals(conf.getGroupTag())) {
             Node node = new Node(requestNetworkDiscoveryPacket.getSender().toString(), requestNetworkDiscoveryPacket.getGroupTag(), requestNetworkDiscoveryPacket.getNodeId(), requestNetworkDiscoveryPacket.getNodeAddress(), (int) requestNetworkDiscoveryPacket.getNodePort());
+            System.out.println("Node: " + node);
             routingMap.addExternalServer(node);
         } else if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.END_USER_CLIENT)) {
             Node node = new Node(requestNetworkDiscoveryPacket.getSender().toString(), requestNetworkDiscoveryPacket.getGroupTag(), requestNetworkDiscoveryPacket.getNodeId(), requestNetworkDiscoveryPacket.getNodeAddress(), (int) requestNetworkDiscoveryPacket.getNodePort());

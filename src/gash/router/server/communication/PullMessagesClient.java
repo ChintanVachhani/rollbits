@@ -15,28 +15,25 @@
  */
 package gash.router.server.communication;
 
-import gash.router.client.Client;
-import gash.router.server.communication.ServerSideClient;
 import gash.router.client.CommConnection;
 import gash.router.client.CommListener;
 import gash.router.server.raft.Raft;
 import routing.Pipe;
 import routing.Pipe.Route;
 
-import java.util.Scanner;
-
-public class HeartbeatClient implements CommListener {
+public class PullMessagesClient implements CommListener {
     private ServerSideClient ssc;
-
     String host;
     int port;
 
-    public HeartbeatClient(String host, int port, String leaderIp) {
+    PullMessagesService pullMessagesService;
+
+    public PullMessagesClient(String host, int port, Route route, PullMessagesService pullMessagesService) {
         this.host = host;
         this.port = port;
         ServerSideClient ssc = new ServerSideClient(host, port);
         init(ssc);
-        ping(leaderIp);
+        getMessages(route);
     }
 
     private void init(ServerSideClient ssc) {
@@ -46,30 +43,19 @@ public class HeartbeatClient implements CommListener {
 
     @Override
     public String getListenerID() {
-        return "heartbeatClient";
+        return "pullMessagesClient";
     }
 
     @Override
     public void onMessage(Route msg) {
         System.out.println(msg);
-        if (msg.getHeartbeat().getMode().equals(Pipe.Heartbeat.Mode.ACK)) {
-            Raft.getInstance().setTimeOut(2000);
-        }
+        pullMessagesService.responseCount++;
+        pullMessagesService.collateResponse(msg);
     }
 
-    public void ping(String leaderIp) {
+    public void getMessages(Route route) {
         try {
-            ssc.sendHeartbeatPing(leaderIp);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            CommConnection.getInstance().release();
-        }
-    }
-
-    public void ack(String followerIp) {
-        try {
-            ssc.sendHeartbeatAck(followerIp);
+            ssc.pullMessages(route);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

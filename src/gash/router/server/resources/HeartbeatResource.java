@@ -56,7 +56,7 @@ public class HeartbeatResource implements RouteResource {
 
     @Override
     public Route process(Route route, RoutingConf conf) throws Exception {
-        if (route.getHeartbeat().getMode() == Pipe.Heartbeat.Mode.PING) {
+        /*if (route.getHeartbeat().getMode() == Pipe.Heartbeat.Mode.PING) {
             Raft.getInstance().printRaftStatus("PING");
             if (Objects.equals(Raft.getInstance().getLeaderIP(), "")) {
                 Raft.getInstance().setLeaderIP(route.getHeartbeat().getAddress());
@@ -88,7 +88,9 @@ public class HeartbeatResource implements RouteResource {
             } else {
                 Raft.getInstance().setTimeOut(1000);
             }
-        }
-        return null;
+        }*/
+        Route.Builder rb = Route.newBuilder(route);
+        rb.setHeartbeat(Pipe.Heartbeat.newBuilder().setMode(Pipe.Heartbeat.Mode.ACK).setAddress(conf.getNodeAddress()));
+        return rb.build();
     }
 }

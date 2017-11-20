@@ -9207,11 +9207,11 @@ public final class Pipe {
         getNodeAddressBytes();
 
     /**
-     * <code>required int64 nodePort = 6;</code>
+     * <code>optional int64 nodePort = 6;</code>
      */
     boolean hasNodePort();
     /**
-     * <code>required int64 nodePort = 6;</code>
+     * <code>optional int64 nodePort = 6;</code>
      */
     long getNodePort();
 
@@ -9746,13 +9746,13 @@ public final class Pipe {
     public static final int NODEPORT_FIELD_NUMBER = 6;
     private long nodePort_;
     /**
-     * <code>required int64 nodePort = 6;</code>
+     * <code>optional int64 nodePort = 6;</code>
      */
     public boolean hasNodePort() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>required int64 nodePort = 6;</code>
+     * <code>optional int64 nodePort = 6;</code>
      */
     public long getNodePort() {
       return nodePort_;
@@ -9815,10 +9815,6 @@ public final class Pipe {
         return false;
       }
       if (!hasNodeAddress()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasNodePort()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -10255,9 +10251,6 @@ public final class Pipe {
         if (!hasNodeAddress()) {
           return false;
         }
-        if (!hasNodePort()) {
-          return false;
-        }
         if (!hasSecret()) {
           return false;
         }
@@ -10633,19 +10626,19 @@ public final class Pipe {
 
       private long nodePort_ ;
       /**
-       * <code>required int64 nodePort = 6;</code>
+       * <code>optional int64 nodePort = 6;</code>
        */
       public boolean hasNodePort() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>required int64 nodePort = 6;</code>
+       * <code>optional int64 nodePort = 6;</code>
        */
       public long getNodePort() {
         return nodePort_;
       }
       /**
-       * <code>required int64 nodePort = 6;</code>
+       * <code>optional int64 nodePort = 6;</code>
        */
       public Builder setNodePort(long value) {
         bitField0_ |= 0x00000020;
@@ -10654,7 +10647,7 @@ public final class Pipe {
         return this;
       }
       /**
-       * <code>required int64 nodePort = 6;</code>
+       * <code>optional int64 nodePort = 6;</code>
        */
       public Builder clearNodePort() {
         bitField0_ = (bitField0_ & ~0x00000020);
@@ -13139,7 +13132,7 @@ public final class Pipe {
       "ode\022.\n\006sender\030\002 \002(\0162\036.NetworkDiscoveryPa" +
       "cket.Sender\022\020\n\010groupTag\030\003 \001(\t\022\016\n\006nodeId\030" +
       "\004 \001(\t\022\023\n\013nodeAddress\030\005 \002(\t\022\020\n\010nodePort\030\006",
-      " \002(\003\022\016\n\006secret\030\007 \002(\t\"Q\n\006Sender\022\030\n\024EXTERN" +
+      " \001(\003\022\016\n\006secret\030\007 \002(\t\"Q\n\006Sender\022\030\n\024EXTERN" +
       "AL_SERVER_NODE\020\000\022\030\n\024INTERNAL_SERVER_NODE" +
       "\020\001\022\023\n\017END_USER_CLIENT\020\002\"2\n\004Mode\022\013\n\007REQUE" +
       "ST\020\000\022\014\n\010RESPONSE\020\001\022\017\n\013REMOVE_NODE\020\002\"Y\n\006H" +

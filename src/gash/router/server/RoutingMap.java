@@ -11,7 +11,7 @@ public class RoutingMap {
     }
 
     private HashMap<String, Node> internalServers;
-    private HashMap<String, ArrayList<Node>> externalServers;
+    private HashMap<String, Node> externalServers;
     private HashMap<String, Node> clients;
 
     private RoutingMap() {
@@ -28,12 +28,12 @@ public class RoutingMap {
         this.internalServers.put(node.getNodeAddress(), node);
     }
 
-    public HashMap<String, ArrayList<Node>> getExternalServers() {
+    public HashMap<String, Node> getExternalServers() {
         return externalServers;
     }
 
     public void addExternalServer(Node node) {
-        this.externalServers.get(node.getGroupTag()).add(node);
+        this.externalServers.put(node.getGroupTag(), node);
     }
 
     public HashMap<String, Node> getClients() {
@@ -49,7 +49,7 @@ public class RoutingMap {
     }
 
     public void removeExternalServer(Node node) {
-        this.externalServers.get(node.getGroupTag()).remove(node);
+        this.externalServers.remove(node.getGroupTag());
     }
 
     public void removeClient(Node node) {

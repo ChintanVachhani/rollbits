@@ -173,6 +173,8 @@ public class CommConnection {
 
         } catch (Throwable ex) {
             logger.error("failed to initialize the client connection", ex);
+            // if lost, try to re-establish the connection
+            CommConnection.initConnection(host, port);
             ex.printStackTrace();
         }
 
@@ -218,10 +220,11 @@ public class CommConnection {
         @Override
         public void operationComplete(ChannelFuture future) throws Exception {
             // we lost the connection or have shutdown.
-            System.out.println("\nLost connection to the server!");
+            System.out.println("\nlost connection to the server!");
             System.out.flush();
 
-            // @TODO if lost, try to re-establish the connection
+            // if lost, try to re-establish the connection
+                CommConnection.initConnection(cc.host, cc.port);
         }
     }
 }

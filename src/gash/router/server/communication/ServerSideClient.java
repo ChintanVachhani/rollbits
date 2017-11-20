@@ -77,21 +77,17 @@ public class ServerSideClient {
         }
     }
 
-    public void getMessages(String uname) {
-        // construct the message to send
-        Pipe.MessagesRequest.Builder messagesRequest = Pipe.MessagesRequest.newBuilder();
-        messagesRequest.setId(uname);
-        messagesRequest.setType(Pipe.MessagesRequest.Type.USER);
-
-        Route.Builder rb = Route.newBuilder();
-        rb.setId(nextId());
-        rb.setPath(Route.Path.MESSAGES_REQUEST);
-        rb.setHeader(Pipe.Header.newBuilder().setType(Pipe.Header.Type.CLIENT));
-        rb.setMessagesRequest(messagesRequest.build());
+    public void pullMessages(Route route) {
+        // construct the route to send
+        Route.Builder rb = Route.newBuilder(route);
+        rb.setHeader(Pipe.Header.newBuilder().setType(Pipe.Header.Type.INTER_CLUSTER));
 
         try {
+            // direct no queue
+            CommConnection.getInstance().write(rb.build());
+
             // using queue
-            CommConnection.getInstance().enqueue(rb.build());
+            //CommConnection.getInstance().enqueue(rb.build());
         } catch (Exception e) {
             e.printStackTrace();
         }

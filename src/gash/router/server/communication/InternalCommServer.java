@@ -1,6 +1,8 @@
 package gash.router.server.communication;
 
 import gash.router.container.RoutingConf;
+import gash.router.server.Node;
+import gash.router.server.RoutingMap;
 import gash.router.server.Server;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

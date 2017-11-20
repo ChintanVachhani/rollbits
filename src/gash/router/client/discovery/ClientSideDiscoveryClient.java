@@ -41,11 +41,11 @@ public final class ClientSideDiscoveryClient implements Runnable {
             // construct the networkDiscoveryPacket to send
             NetworkDiscoveryPacket.Builder ndpb = NetworkDiscoveryPacket.newBuilder();
             ndpb.setMode(NetworkDiscoveryPacket.Mode.REQUEST);
-            ndpb.setSender(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE);
+            ndpb.setSender(NetworkDiscoveryPacket.Sender.END_USER_CLIENT);
             ndpb.setGroupTag(conf.getGroupTag());
             //ndpb.setGroupTag("weCAN");
             ndpb.setNodeAddress(InetAddress.getLocalHost().getHostAddress());
-            ndpb.setNodePort(conf.getInternalDiscoveryPort());
+            ndpb.setNodePort(9999);
             //ndpb.setNodePort(4444);
             ndpb.setSecret(conf.getSecret());
             //ndpb.setSecret("secret");
@@ -58,13 +58,13 @@ public final class ClientSideDiscoveryClient implements Runnable {
             // Broadcast the NetworkDiscovery request to internal discovery port.
             ch.writeAndFlush(new DatagramPacket(
                     Unpooled.copiedBuffer(rb.build().toByteArray()),
-                    SocketUtils.socketAddress("255.255.255.255", conf.getInternalDiscoveryPort()))).sync();
+                    SocketUtils.socketAddress(conf.getNodeBroadcastAddress(), conf.getExternalDiscoveryPort()))).sync();
 
             // ClientSideDiscoveryClientHandler will close the DatagramChannel when a
             // response is received.  If the channel is not closed within 5 seconds,
             // print an error message and quit.
             if (!ch.closeFuture().await(5000)) {
-                System.err.println("NetworkDiscovery request timed out.");
+                System.err.println("Client NetworkDiscovery request timed out.");
             }
         } catch (Exception e) {
             System.out.println("Failed to read route." + e);

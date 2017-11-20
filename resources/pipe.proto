@@ -133,7 +133,7 @@ message NetworkDiscoveryPacket {
     optional string groupTag = 3; //If sender is a server node, then this field can contain its group id. If sender is end user client, then this field is not required.
     optional string nodeId = 4; //node id of the sender
     required string nodeAddress = 5;
-    required int64 nodePort = 6;
+    optional int64 nodePort = 6;
     required string secret = 7;
 }
 

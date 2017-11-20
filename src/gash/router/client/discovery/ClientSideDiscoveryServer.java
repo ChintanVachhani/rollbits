@@ -34,7 +34,7 @@ public class ClientSideDiscoveryServer implements Runnable {
                     .handler(new ClientSideDiscoveryInit(conf, false));
 
             logger.info("Starting server, listening on port = " + conf.getInternalDiscoveryPort());
-            ChannelFuture f = b.bind(conf.getInternalDiscoveryPort()).sync();
+            ChannelFuture f = b.bind(0).sync();
 
 
             logger.info(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "

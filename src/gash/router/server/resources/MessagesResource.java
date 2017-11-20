@@ -16,19 +16,15 @@
 package gash.router.server.resources;
 
 import gash.router.container.RoutingConf;
-import gash.router.server.communication.GetMessagesClient;
-import gash.router.server.dao.GroupDAO;
+import gash.router.server.communication.PullMessagesService;
 import gash.router.server.dao.MessageDAO;
 import gash.router.server.dao.MorphiaService;
 import gash.router.server.dao.UserDAO;
-import gash.router.server.dao.impl.GroupDAOImpl;
 import gash.router.server.dao.impl.MessageDAOImpl;
 import gash.router.server.dao.impl.UserDAOImpl;
-import gash.router.server.entity.Group;
 import gash.router.server.entity.Message;
 import gash.router.server.entity.User;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import routing.Pipe;
@@ -95,13 +91,13 @@ public class MessagesResource implements RouteResource {
         responseRoute.setMessagesResponse(rb);
 
         if (route.getHeader().getType().equals(Pipe.Header.Type.CLIENT)) {
-            Route.Builder requestRoute = Route.newBuilder(route);
-            requestRoute.setHeader(Pipe.Header.newBuilder().setType(Pipe.Header.Type.INTER_CLUSTER));
-            GetMessagesClient getMessagesClient = new GetMessagesClient(route, responseRoute.build(), ctx);
-            getMessagesClient.run();
+            PullMessagesService pullMessagesService = new PullMessagesService(route, responseRoute.build(), ctx);
         }
 
-        return responseRoute.build();
+        if (route.getHeader().getType().equals(Pipe.Header.Type.INTER_CLUSTER)) {
+            return responseRoute.build();
+        }
+        return null;
     }
 
     @Override
@@ -111,10 +107,14 @@ public class MessagesResource implements RouteResource {
 
     private List<Message> fetch(String username) {
 
-        if (!username.equals("")) {
+        /*if (!username.equals("")) {
             User existingUser = userDAO.getUserByUsername(username);
-
             return messageDAO.getAllMessagesByUser(existingUser.getUsername(), existingUser.getGroupNames());
+        }*/
+        if (!username.equals("")) {
+            if (messageDAO.getAllMessagesByUser(username, new ArrayList<>()) != null) {
+                return messageDAO.getAllMessagesByUser(username, new ArrayList<>());
+            }
         }
         return new ArrayList<>();
     }
