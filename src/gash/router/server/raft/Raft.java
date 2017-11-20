@@ -4,6 +4,7 @@ import gash.router.container.RoutingConf;
 import gash.router.server.Node;
 import gash.router.server.RoutingMap;
 import gash.router.server.communication.ExternalCommServer;
+import gash.router.server.communication.HeartbeatClient;
 import gash.router.server.discovery.ExternalDiscoveryClient;
 import gash.router.server.discovery.ExternalDiscoveryServer;
 import gash.router.server.discovery.InternalDiscoveryClient;
@@ -121,7 +122,7 @@ public class Raft {
             if (Objects.equals(conf.getNodeAddress(), leaderIP)) {
                 for (Node node : RoutingMap.getInstance().getInternalServers().values()) {
                     //TODO: send heartbeat for each node in this list
-
+                    sendHeartbeat(node.getNodeAddress(), node.getNodePort());
                 }
                 try {
                     sleep(50);
@@ -132,9 +133,10 @@ public class Raft {
         }
     }
 
-    public void sendHeartbeat(){
+    public void sendHeartbeat(String nodeAddress, int nodePort) {
         printRaftStatus("Sending heartbeat...");
-
+        HeartbeatClient heartbeatClient = new HeartbeatClient(nodeAddress, nodePort);
+        heartbeatClient.ping(leaderIP);
     }
 
     public Integer getTimeOut() {
