@@ -14,8 +14,6 @@ public class Node {
 
     private int nodePort;
 
-    private HeartbeatClient heartbeatClient;
-
     public Node() {
     }
 
@@ -26,7 +24,6 @@ public class Node {
         this.nodeId = nodeId;
         this.nodeAddress = nodeAddress;
         this.nodePort = nodePort;
-        this.heartbeatClient = new HeartbeatClient(nodeAddress, 6969);
     }
 
     public String getNodeType() {
@@ -67,14 +64,6 @@ public class Node {
 
     public void setNodePort(int nodePort) {
         this.nodePort = nodePort;
-    }
-
-    public HeartbeatClient getHeartbeatClient() {
-        return heartbeatClient;
-    }
-
-    public void setHeartbeatClient(HeartbeatClient heartbeatClient) {
-        this.heartbeatClient = heartbeatClient;
     }
 
     @Override

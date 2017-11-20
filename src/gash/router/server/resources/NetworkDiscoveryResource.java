@@ -18,6 +18,7 @@ package gash.router.server.resources;
 import gash.router.container.RoutingConf;
 import gash.router.server.Node;
 import gash.router.server.RoutingMap;
+import gash.router.server.communication.HeartbeatClient;
 import gash.router.server.raft.Raft;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;

@@ -124,8 +124,8 @@ public class Raft {
         while (Objects.equals(leaderIP, conf.getNodeAddress())) {
             if (Objects.equals(conf.getNodeAddress(), leaderIP)) {
                 for (Node node : RoutingMap.getInstance().getInternalServers().values()) {
-                    //TODO: send heartbeat for each node in this list
-                    sendHeartbeat(node);
+                    //send heartbeat for each node in this list
+                    printRaftStatus("Sending heartbeat...");
                 }
                 try {
                     sleep(50);
@@ -134,11 +134,6 @@ public class Raft {
                 }
             }
         }
-    }
-
-    public void sendHeartbeat(Node node) {
-        printRaftStatus("Sending heartbeat...");
-        node.getHeartbeatClient().ping(leaderIP);
     }
 
     public Integer getTimeOut() {
