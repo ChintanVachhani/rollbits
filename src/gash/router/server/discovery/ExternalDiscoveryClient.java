@@ -63,6 +63,7 @@ public final class ExternalDiscoveryClient implements Runnable {
         ndpb.setSender(sender);
         ndpb.setGroupTag(conf.getGroupTag());
         ndpb.setNodeAddress(conf.getNodeAddress());
+        ndpb.setNodeId(conf.getNodeId());
         ndpb.setNodePort(conf.getExternalCommunicationPort());
         ndpb.setSecret(conf.getSecret());
 
