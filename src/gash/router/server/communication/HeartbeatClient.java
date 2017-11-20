@@ -18,15 +18,16 @@ package gash.router.server.communication;
 import gash.router.server.communication.ServerSideClient;
 import gash.router.client.CommConnection;
 import gash.router.client.CommListener;
+import gash.router.server.raft.Raft;
 import routing.Pipe;
 import routing.Pipe.Route;
 
 import java.util.Scanner;
 
-public class SendHeartbeat implements CommListener {
+public class HeartbeatClient implements CommListener {
     private ServerSideClient ssc;
 
-    public SendHeartbeat(String host, int port) {
+    public HeartbeatClient(String host, int port) {
         ssc = new ServerSideClient(host, port);
         ssc.addListener(this);
     }
@@ -39,6 +40,9 @@ public class SendHeartbeat implements CommListener {
     @Override
     public void onMessage(Route msg) {
         System.out.println(msg);
+        if (msg.getHeartbeat().getMode().equals(Pipe.Heartbeat.Mode.ACK)) {
+            Raft.getInstance().setTimeOut(2000);
+        }
     }
 
     public void ping(String leaderIp) {
@@ -61,7 +65,7 @@ public class SendHeartbeat implements CommListener {
         }
     }
 
-    public void stop(){
+    public void stop() {
         ssc.release();
     }
 }

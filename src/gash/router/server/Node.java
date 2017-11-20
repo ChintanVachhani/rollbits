@@ -1,7 +1,5 @@
 package gash.router.server;
 
-import gash.router.server.communication.SendHeartbeat;
-
 public class Node {
 
     private String nodeType;
@@ -14,7 +12,6 @@ public class Node {
 
     private int nodePort;
 
-    private SendHeartbeat sendHeartbeat;
 
     public Node() {}
 
@@ -25,8 +22,6 @@ public class Node {
         this.nodeId = nodeId;
         this.nodeAddress = nodeAddress;
         this.nodePort = nodePort;
-
-        sendHeartbeat = new SendHeartbeat(nodeAddress, 6969);
     }
 
     public String getNodeType() {
@@ -67,14 +62,6 @@ public class Node {
 
     public void setNodePort(int nodePort) {
         this.nodePort = nodePort;
-    }
-
-    public SendHeartbeat getSendHeartbeat() {
-        return sendHeartbeat;
-    }
-
-    public void setSendHeartbeat(SendHeartbeat sendHeartbeat) {
-        this.sendHeartbeat = sendHeartbeat;
     }
 
     @Override

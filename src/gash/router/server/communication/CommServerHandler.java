@@ -69,22 +69,20 @@ public class CommServerHandler extends SimpleChannelInboundHandler<Route> {
                 Route response;
                 try {
                     switch (msg.getPath()) {
-                        case HEARTBEAT: rsc.process(msg, conf);
+                        case HEARTBEAT:
+                            response = rsc.process(msg, conf);
                             break;
-                        case MESSAGES_REQUEST: response = rsc.process(msg, channel);
-                            System.out.println("<--- reply: \n" + response);
-                            if (response != null) {
-                                channel.writeAndFlush(response);
-                            }
+                        case MESSAGES_REQUEST:
+                            response = rsc.process(msg, channel);
                             break;
-                        default: response = rsc.process(msg);
-                            System.out.println("<--- reply: \n" + response);
-                            if (response != null) {
-                                channel.writeAndFlush(response);
-                            }
+                        default:
+                            response = rsc.process(msg);
                             break;
                     }
-
+                    System.out.println("<--- reply: \n" + response);
+                    if (response != null) {
+                        channel.writeAndFlush(response);
+                    }
                 } catch (Exception e) {
                     logger.error("Failed to read route.", e);
                 }

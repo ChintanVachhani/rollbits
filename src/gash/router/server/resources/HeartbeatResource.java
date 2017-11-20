@@ -63,7 +63,12 @@ public class HeartbeatResource implements RouteResource {
                 if (Objects.equals(Raft.getInstance().getLeaderIP(), route.getHeartbeat().getAddress())) {
                     //TODO: heartbeat is from leader/ all good, process heartbeat here
                     Raft.getInstance().setTimeOut(1000);
-                    RoutingMap.getInstance().getInternalServers().get(route.getHeartbeat().getAddress()).getSendHeartbeat().ack(conf.getNodeAddress());
+
+                    // construct the heartbeat to send
+                    Route.Builder rb = Route.newBuilder(route);
+                    rb.setHeartbeat(Pipe.Heartbeat.newBuilder().setMode(Pipe.Heartbeat.Mode.ACK).setAddress(conf.getNodeAddress()));
+
+                    return rb.build();
                 } else {
                     if (Objects.equals(conf.getNodeAddress(), Raft.getInstance().getLeaderIP())) {
 
@@ -76,7 +81,6 @@ public class HeartbeatResource implements RouteResource {
             } else {
                 Raft.getInstance().setTimeOut(1000);
             }
-            return null;
         } else if (route.getHeartbeat().getMode() == Pipe.Heartbeat.Mode.ACK) {
             Raft.getInstance().setTimeOut(2000);
         }

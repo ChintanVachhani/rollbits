@@ -4,12 +4,9 @@ import gash.router.container.RoutingConf;
 import gash.router.server.Node;
 import gash.router.server.RoutingMap;
 import gash.router.server.communication.ExternalCommServer;
-import gash.router.server.communication.InternalCommServer;
-import gash.router.server.communication.SendHeartbeat;
 import gash.router.server.discovery.ExternalDiscoveryClient;
 import gash.router.server.discovery.ExternalDiscoveryServer;
 import gash.router.server.discovery.InternalDiscoveryClient;
-import gash.router.server.discovery.InternalDiscoveryServer;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
@@ -64,10 +61,10 @@ public class Raft {
         printRaftStatus("Starting election...");
         try {
             // finding all the active servers
-            /*RoutingMap.getInstance().getInternalServers().clear();
+            RoutingMap.getInstance().getInternalServers().clear();
             InternalDiscoveryClient internalDiscoveryClient = new InternalDiscoveryClient(conf);
             Thread dcthread = new Thread(internalDiscoveryClient);
-            dcthread.start();*/
+            dcthread.start();
             sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -124,8 +121,7 @@ public class Raft {
             if (Objects.equals(conf.getNodeAddress(), leaderIP)) {
                 for (Node node : RoutingMap.getInstance().getInternalServers().values()) {
                     //TODO: send heartbeat for each node in this list
-                    printRaftStatus("Sending heartbeat...");
-                    node.getSendHeartbeat().ping(leaderIP);
+
                 }
                 try {
                     sleep(50);
@@ -133,8 +129,11 @@ public class Raft {
                     e.printStackTrace();
                 }
             }
-
         }
+    }
+
+    public void sendHeartbeat(){
+        printRaftStatus("Sending heartbeat...");
 
     }
 
