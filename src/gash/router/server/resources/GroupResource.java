@@ -114,8 +114,9 @@ public class GroupResource implements RouteResource {
     }
 
     private String addUser(Pipe.Group group) {
-        if (groupDAO.getGroupByName(group.getGname().toLowerCase()) != null) {
+        if (groupDAO.getGroupByName(group.getGname().toLowerCase()) == null) {
             //TODO: Forward to others
+            return "Will be forwarded to others.";
         } else {
             if(userDAO.getUserByUsername(group.getUname().toLowerCase()) != null) {
                 userDAO.addGroupToUser(group.getGname().toLowerCase(), group.getUname().toLowerCase());
@@ -123,12 +124,12 @@ public class GroupResource implements RouteResource {
             }
             return "User not found.";
         }
-        return "Something unexpected occurred.";
     }
 
     private String removeUser(Pipe.Group group) {
-        if (groupDAO.getGroupByName(group.getGname().toLowerCase()) != null) {
+        if (groupDAO.getGroupByName(group.getGname().toLowerCase()) == null) {
             //TODO: Forward to others
+            return "Will be forwarded to others.";
         } else {
             if(userDAO.getUserByUsername(group.getUname().toLowerCase()) != null) {
                 userDAO.removeGroupFromUser(group.getGname().toLowerCase(), group.getUname().toLowerCase());
@@ -136,6 +137,5 @@ public class GroupResource implements RouteResource {
             }
             return "User not found.";
         }
-        return "Something unexpected occurred.";
     }
 }

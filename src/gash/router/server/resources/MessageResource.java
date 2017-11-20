@@ -109,6 +109,7 @@ public class MessageResource implements RouteResource {
                     return "User not in the group.";
                 } else {
                     //TODO: Forward to others
+                    return "Will be forwarded to others.";
                 }
             }
             return "Receiver not found.";
