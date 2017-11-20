@@ -76,6 +76,7 @@ public class UserResource implements RouteResource {
         Pipe.Response.Builder rb = Pipe.Response.newBuilder();
 
         rb.setMessage(response);
+        rb.setSuccess(true);
         responseRoute.setResponse(rb);
 
         return responseRoute.build();

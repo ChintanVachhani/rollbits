@@ -77,6 +77,7 @@ public class MessageResource implements RouteResource {
         responseRoute.setPath(Route.Path.RESPONSE);
         Pipe.Response.Builder rb = Pipe.Response.newBuilder();
         rb.setMessage(response);
+        rb.setSuccess(true);
         responseRoute.setResponse(rb);
 
         return responseRoute.build();
