@@ -22,19 +22,19 @@ public class MessageDAOImpl extends BasicDAO<Message, ObjectId> implements Messa
         save(message);
     }
 
-    public List<Message> getAllMessagesByUser(String username, List<Long> groupIds) {
+    public List<Message> getAllMessagesByUser(String username, List<String> groupNames) {
 
-        List<Message> allMessages = new ArrayList<>();
+        List<Message> allMessages = new ArrayList<Message>();
         Query<Message> userQuery = createQuery().
                 field("type").equal("SINGLE").
                 field("to").equal(username);
 
         allMessages.addAll(userQuery.asList());
 
-        for (Long groupId : groupIds) {
+        for (String groupName : groupNames) {
             Query<Message> groupQuery = createQuery().
                     field("type").equal("GROUP").
-                    field("to").equal(groupId);
+                    field("to").equal(groupName);
 
             allMessages.addAll(groupQuery.asList());
         }

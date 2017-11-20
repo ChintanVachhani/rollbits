@@ -24,8 +24,6 @@ public class UserDAOImpl extends BasicDAO<User, ObjectId> implements UserDAO {
         Query<User> query = createQuery().
                 field("username").equal(username);
 
-        System.out.println(query.get());
-
         return query.get();
     }
 
@@ -45,22 +43,22 @@ public class UserDAOImpl extends BasicDAO<User, ObjectId> implements UserDAO {
         deleteByQuery(query);
     }
 
-    public void addGroupToUser(long groupId, String username) {
+    public void addGroupToUser(String groupName, String username) {
         Query<User> updateQuery = createQuery().
                 field("username").equal(username);
 
         UpdateOperations<User> ops = createUpdateOperations()
-                .addToSet("groupIds", groupId);
+                .addToSet("groupNames", groupName);
 
         update(updateQuery, ops);
     }
 
-    public void removeGroupFromUser(long groupId, String username) {
+    public void removeGroupFromUser(String groupName, String username) {
         Query<User> updateQuery = createQuery().
                 field("username").equal(username);
 
         UpdateOperations<User> ops = createUpdateOperations()
-                .removeAll("groupIds", groupId);
+                .removeAll("groupNames", groupName);
 
         update(updateQuery, ops);
     }

@@ -19,7 +19,7 @@ public class User {
 
     private String recentActiveTime;
 
-    private List<Long> groupIds = new ArrayList<>();
+    private List<String> groupNames = new ArrayList<>();
 
     public User() {
     }
@@ -62,12 +62,11 @@ public class User {
         this.recentActiveTime = recentActiveTime;
     }
 
-    public List<Long> getGroupIds() {
-        return groupIds;
+    public List<String> getGroupNames() {
+        return groupNames;
     }
 
-    public void setGroupIds(List<Long> groupIds) {
-        this.groupIds = groupIds;
+    public void setGroupNames(List<String> groupNames) {
+        this.groupNames = groupNames;
     }
-
 }

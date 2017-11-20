@@ -16,10 +16,16 @@
 package gash.router.server.resources;
 
 import gash.router.container.RoutingConf;
+import gash.router.server.dao.GroupDAO;
 import gash.router.server.dao.MessageDAO;
 import gash.router.server.dao.MorphiaService;
+import gash.router.server.dao.UserDAO;
+import gash.router.server.dao.impl.GroupDAOImpl;
 import gash.router.server.dao.impl.MessageDAOImpl;
+import gash.router.server.dao.impl.UserDAOImpl;
+import gash.router.server.entity.Group;
 import gash.router.server.entity.Message;
+import gash.router.server.entity.User;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
@@ -38,10 +44,14 @@ public class MessageResource implements RouteResource {
     protected static Logger logger = LoggerFactory.getLogger("message");
 
     private MessageDAO messageDAO;
+    private UserDAO userDAO;
+    private GroupDAO groupDAO;
 
     public MessageResource() {
         MorphiaService morphiaService = new MorphiaService();
         this.messageDAO = new MessageDAOImpl(Message.class, morphiaService.getDatastore());
+        this.userDAO = new UserDAOImpl(User.class, morphiaService.getDatastore());
+        this.groupDAO = new GroupDAOImpl(Group.class, morphiaService.getDatastore());
     }
 
     @Override
@@ -83,8 +93,21 @@ public class MessageResource implements RouteResource {
     }
 
     private String post(Pipe.Message message) {
-        Message newMessage = new Message(message.getType().toString(), message.getSenderId(), message.getPayload(), message.getReceiverId(), new Date().toString(), false);
-        messageDAO.postMessage(newMessage);
-        return "Message posted.";
+        if (!message.getSenderId().equals("")) {
+            if (message.getType().equals(Pipe.Message.Type.SINGLE) && userDAO.getUserByUsername(message.getReceiverId().toLowerCase()) != null) {
+                Message newMessage = new Message(message.getType().toString(), message.getSenderId().toLowerCase(), message.getPayload(), message.getReceiverId().toLowerCase(), new Date().toString(), false);
+                messageDAO.postMessage(newMessage);
+                return "Message posted.";
+            } else if (message.getType().equals(Pipe.Message.Type.GROUP) && groupDAO.getGroupByName(message.getReceiverId().toLowerCase()) != null) {
+                if (userDAO.getUserByUsername(message.getSenderId().toLowerCase()).getGroupNames().contains(message.getReceiverId().toLowerCase())) {
+                    Message newMessage = new Message(message.getType().toString(), message.getSenderId().toLowerCase(), message.getPayload(), message.getReceiverId().toLowerCase(), new Date().toString(), false);
+                    messageDAO.postMessage(newMessage);
+                    return "Message posted.";
+                }
+                return "User not added to group.";
+            }
+            return "Receiver not found.";
+        }
+        return "Access the user first.";
     }
 }

@@ -92,7 +92,7 @@ public class UserResource implements RouteResource {
     }
 
     private String register(Pipe.User user) {
-        String username = user.getUname();
+        String username = user.getUname().toLowerCase();
         String password = user.getPassword();
         if (!user.hasPassword())
             password = "default";
@@ -105,7 +105,7 @@ public class UserResource implements RouteResource {
     }
 
     private String access(Pipe.User user) {
-        String username = user.getUname();
+        String username = user.getUname().toLowerCase();
         String password = user.getPassword();
         if (!user.hasPassword())
             password = "default";
@@ -117,7 +117,7 @@ public class UserResource implements RouteResource {
     }
 
     private String delete(Pipe.User user) {
-        String username = user.getUname();
+        String username = user.getUname().toLowerCase();
         String password = user.getPassword();
         if (!user.hasPassword())
             password = "default";
