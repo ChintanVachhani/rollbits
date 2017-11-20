@@ -65,12 +65,6 @@ public class Server {
         Thread dcthread = new Thread(internalDiscoveryClient);
         dcthread.start();
 
-        try {
-            sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         // start heartbeat server
         HeartbeatServer heartbeatServer = new HeartbeatServer(conf);
         Thread hbthread = new Thread(heartbeatServer);

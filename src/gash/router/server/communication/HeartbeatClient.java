@@ -45,7 +45,7 @@ public class HeartbeatClient implements CommListener {
 
     @Override
     public String getListenerID() {
-        return "sendHeartbeat";
+        return "heartbeatClient";
     }
 
     @Override

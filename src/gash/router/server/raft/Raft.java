@@ -9,8 +9,11 @@ import gash.router.server.discovery.ExternalDiscoveryClient;
 import gash.router.server.discovery.ExternalDiscoveryServer;
 import gash.router.server.discovery.InternalDiscoveryClient;
 import org.slf4j.LoggerFactory;
+import routing.Pipe;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 import static java.lang.Thread.sleep;
@@ -118,11 +121,15 @@ public class Raft {
 
     public void startHeartBeat() {
         printRaftStatus("Starting Heartbeat....");
+        List<HeartbeatClient> heartbeatClients = new ArrayList<>();
+        for (Node node : RoutingMap.getInstance().getInternalServers().values()) {
+            heartbeatClients.add(new HeartbeatClient(node.getNodeAddress(), conf.getHeartbeatPort()));
+        }
         while (Objects.equals(leaderIP, conf.getNodeAddress())) {
             if (Objects.equals(conf.getNodeAddress(), leaderIP)) {
-                for (Node node : RoutingMap.getInstance().getInternalServers().values()) {
+                for (HeartbeatClient heartbeatClient: heartbeatClients) {
                     //TODO: send heartbeat for each node in this list
-                    sendHeartbeat(node.getNodeAddress(), conf.getHeartbeatPort());
+                    sendHeartbeat(heartbeatClient);
                 }
                 try {
                     sleep(50);
@@ -133,9 +140,8 @@ public class Raft {
         }
     }
 
-    public void sendHeartbeat(String nodeAddress, int nodePort) {
+    public void sendHeartbeat(HeartbeatClient heartbeatClient) {
         printRaftStatus("Sending heartbeat...");
-        HeartbeatClient heartbeatClient = new HeartbeatClient(nodeAddress, nodePort);
         heartbeatClient.ping(leaderIP);
     }
 
