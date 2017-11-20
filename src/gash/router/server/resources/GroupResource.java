@@ -114,18 +114,28 @@ public class GroupResource implements RouteResource {
     }
 
     private String addUser(Pipe.Group group) {
-        if (groupDAO.getGroupByName(group.getGname().toLowerCase()) != null && userDAO.getUserByUsername(group.getUname().toLowerCase()) != null) {
-            userDAO.addGroupToUser(group.getGname().toLowerCase(), group.getUname().toLowerCase());
-            return "User added to group.";
+        if (groupDAO.getGroupByName(group.getGname().toLowerCase()) != null) {
+            //TODO: Forward to others
+        } else {
+            if(userDAO.getUserByUsername(group.getUname().toLowerCase()) != null) {
+                userDAO.addGroupToUser(group.getGname().toLowerCase(), group.getUname().toLowerCase());
+                return "User added to group.";
+            }
+            return "User not found.";
         }
-        return "Group or user not found.";
+        return "Something unexpected occurred.";
     }
 
     private String removeUser(Pipe.Group group) {
-        if (groupDAO.getGroupByName(group.getGname().toLowerCase()) != null && userDAO.getUserByUsername(group.getUname().toLowerCase()) != null) {
-            userDAO.removeGroupFromUser(group.getGname().toLowerCase(), group.getUname().toLowerCase());
-            return "User removed from group.";
+        if (groupDAO.getGroupByName(group.getGname().toLowerCase()) != null) {
+            //TODO: Forward to others
+        } else {
+            if(userDAO.getUserByUsername(group.getUname().toLowerCase()) != null) {
+                userDAO.removeGroupFromUser(group.getGname().toLowerCase(), group.getUname().toLowerCase());
+                return "User removed from group.";
+            }
+            return "User not found.";
         }
-        return "Group or user not found.";
+        return "Something unexpected occurred.";
     }
 }

@@ -95,17 +95,21 @@ public class MessageResource implements RouteResource {
 
     private String post(Pipe.Message message) {
         if (!message.getSenderId().equals("")) {
-            if (message.getType().equals(Pipe.Message.Type.SINGLE)/* && userDAO.getUserByUsername(message.getReceiverId().toLowerCase()) != null*/) {
+            if (message.getType().equals(Pipe.Message.Type.SINGLE) && userDAO.getUserByUsername(message.getReceiverId().toLowerCase()) != null) {
                 Message newMessage = new Message(message.getType().toString(), message.getSenderId().toLowerCase(), message.getPayload(), message.getReceiverId().toLowerCase(), new Date().toString(), false);
                 messageDAO.postMessage(newMessage);
                 return "Message posted.";
-            } else if (message.getType().equals(Pipe.Message.Type.GROUP)/* && groupDAO.getGroupByName(message.getReceiverId().toLowerCase()) != null*/) {
-                //if (userDAO.getUserByUsername(message.getSenderId().toLowerCase()).getGroupNames().contains(message.getReceiverId().toLowerCase())) {
-                    Message newMessage = new Message(message.getType().toString(), message.getSenderId().toLowerCase(), message.getPayload(), message.getReceiverId().toLowerCase(), new Date().toString(), false);
-                    messageDAO.postMessage(newMessage);
-                    return "Message posted.";
-                //}
-                //return "User not in the group.";
+            } else if (message.getType().equals(Pipe.Message.Type.GROUP)) {
+                if(groupDAO.getGroupByName(message.getReceiverId().toLowerCase()) != null) {
+                    if (userDAO.getUserByUsername(message.getSenderId().toLowerCase()).getGroupNames().contains(message.getReceiverId().toLowerCase())) {
+                        Message newMessage = new Message(message.getType().toString(), message.getSenderId().toLowerCase(), message.getPayload(), message.getReceiverId().toLowerCase(), new Date().toString(), false);
+                        messageDAO.postMessage(newMessage);
+                        return "Message posted.";
+                    }
+                    return "User not in the group.";
+                } else {
+                    //TODO: Forward to others
+                }
             }
             return "Receiver not found.";
         }

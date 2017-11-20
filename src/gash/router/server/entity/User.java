@@ -19,7 +19,7 @@ public class User {
 
     private String recentActiveTime;
 
-    private List<String> groupNames = new ArrayList<>();
+    private List<String> groupNames = new ArrayList<String>();
 
     public User() {
     }
