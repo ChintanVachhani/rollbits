@@ -38,12 +38,12 @@ import java.util.HashMap;
  * @author gash
  *
  */
-public class DiscoveryServerHandler extends SimpleChannelInboundHandler<Route> {
+public class ClientSideDiscoveryServerHandler extends SimpleChannelInboundHandler<Route> {
 	protected static Logger logger = LoggerFactory.getLogger("discovery");
 	RoutingConf conf;
 	private HashMap<String, String> routing;
 
-	public DiscoveryServerHandler(RoutingConf conf) {
+	public ClientSideDiscoveryServerHandler(RoutingConf conf) {
 		this.conf = conf;
 		if (conf != null)
 			routing = conf.asHashMap();

@@ -13,11 +13,11 @@ import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import routing.Pipe.Route;
 
-public class DiscoveryInit extends ChannelInitializer<DatagramChannel> {
+public class ClientSideDiscoveryInit extends ChannelInitializer<DatagramChannel> {
 	boolean compress = false;
 	RoutingConf conf;
 
-	public DiscoveryInit(RoutingConf conf, boolean enableCompression) {
+	public ClientSideDiscoveryInit(RoutingConf conf, boolean enableCompression) {
 		super();
 		compress = enableCompression;
 		this.conf = conf;
@@ -49,6 +49,6 @@ public class DiscoveryInit extends ChannelInitializer<DatagramChannel> {
 
 
 		// our server processor (new instance for each connection)
-		pipeline.addLast("handler", new DiscoveryServerHandler(conf));
+		pipeline.addLast("handler", new ClientSideDiscoveryServerHandler(conf));
 	}
 }

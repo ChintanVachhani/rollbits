@@ -154,11 +154,12 @@ public class Raft {
     }
 
     public void printRaftStatus(String message) {
-
+        System.out.println();
         System.out.println(message);
         System.out.println("TimeOut: " + timeOut);
         System.out.println("LeaderIP: " + leaderIP);
         System.out.println("My IP: " + myIP);
+        System.out.println();
     }
 
 }

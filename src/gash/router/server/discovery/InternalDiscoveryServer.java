@@ -1,7 +1,6 @@
 package gash.router.server.discovery;
 
 import gash.router.container.RoutingConf;
-import gash.router.server.raft.Raft;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -40,7 +39,7 @@ public class InternalDiscoveryServer implements Runnable {
 
             logger.info(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "
                     + f.channel().isWritable() + ", act: " + f.channel().isActive());
-            Raft.getInstance().setConf(conf);
+
             f.channel().closeFuture().await();
 
         } catch (InterruptedException ex) {

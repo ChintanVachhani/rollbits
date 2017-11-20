@@ -15,14 +15,14 @@ import routing.Pipe.Route;
 
 import java.net.InetAddress;
 
-public final class DiscoveryClient implements Runnable {
+public final class ClientSideDiscoveryClient implements Runnable {
 
     // track requests
     private static long curID = 0;
 
     private RoutingConf conf;
 
-    public DiscoveryClient(RoutingConf conf) {
+    public ClientSideDiscoveryClient(RoutingConf conf) {
         this.conf = conf;
     }
 
@@ -34,7 +34,7 @@ public final class DiscoveryClient implements Runnable {
             b.group(group)
                     .channel(NioDatagramChannel.class)
                     .option(ChannelOption.SO_BROADCAST, true)
-                    .handler(new DiscoveryClientHandler());
+                    .handler(new ClientSideDiscoveryClientHandler());
 
             Channel ch = b.bind(0).sync().channel();
 
@@ -60,7 +60,7 @@ public final class DiscoveryClient implements Runnable {
                     Unpooled.copiedBuffer(rb.build().toByteArray()),
                     SocketUtils.socketAddress("255.255.255.255", conf.getInternalDiscoveryPort()))).sync();
 
-            // DiscoveryClientHandler will close the DatagramChannel when a
+            // ClientSideDiscoveryClientHandler will close the DatagramChannel when a
             // response is received.  If the channel is not closed within 5 seconds,
             // print an error message and quit.
             if (!ch.closeFuture().await(5000)) {

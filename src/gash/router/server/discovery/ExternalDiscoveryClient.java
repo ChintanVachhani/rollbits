@@ -43,7 +43,7 @@ public final class ExternalDiscoveryClient implements Runnable {
                     SocketUtils.socketAddress(conf.getNodeBroadcastAddress(), conf.getExternalDiscoveryPort()))).sync();
 
             System.out.println("External Network Discovery Request Sent.");
-            // DiscoveryClientHandler will close the DatagramChannel when a
+            // ClientSideDiscoveryClientHandler will close the DatagramChannel when a
             // response is received.  If the channel is not closed within 5 seconds,
             // print an error message and quit.
             /*if (!ch.closeFuture().await(5000)) {

@@ -1,6 +1,8 @@
 package gash.router.server.discovery;
 
 import gash.router.container.RoutingConf;
+import gash.router.server.communication.HeartbeatServer;
+import gash.router.server.raft.Raft;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -45,12 +47,13 @@ public final class InternalDiscoveryClient implements Runnable {
 
 
             System.out.println("Internal Network Discovery Request Sent.");
-            // DiscoveryClientHandler will close the DatagramChannel when a
+            // ClientSideDiscoveryClientHandler will close the DatagramChannel when a
             // response is received.  If the channel is not closed within 5 seconds,
             // print an error message and quit.
             /*if (!ch.closeFuture().await(5000)) {
                 System.err.println("NetworkDiscovery request timed out.");
             }*/
+
         } catch (Exception e) {
             System.out.println("Failed to read route." + e);
         } finally {
@@ -65,6 +68,7 @@ public final class InternalDiscoveryClient implements Runnable {
         ndpb.setSender(sender);
         ndpb.setGroupTag(conf.getGroupTag());
         ndpb.setNodeAddress(conf.getNodeAddress());
+        ndpb.setNodeId(conf.getNodeId());
         ndpb.setNodePort(conf.getInternalCommunicationPort());
         ndpb.setSecret(conf.getSecret());
 
