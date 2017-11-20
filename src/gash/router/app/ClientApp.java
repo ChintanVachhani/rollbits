@@ -28,6 +28,7 @@ public class ClientApp implements CommListener {
     private volatile boolean waitingForReply;
 
     public ClientApp(Client mc) {
+        clientUname = "";
         waitingForReply = false;
         init(mc);
     }
@@ -68,6 +69,7 @@ public class ClientApp implements CommListener {
                     waitForReply();
                 } else if ((parsedCmd[1].equals("add-user") || parsedCmd[1].equals("remove-user")) && parsedCmd[2] != null && parsedCmd[3] != null) {
                     mc.group(parsedCmd[1], parsedCmd[2], parsedCmd[3]);
+                    waitForReply();
                 } else {
                     System.out.println("Invalid command.\n");
                 }

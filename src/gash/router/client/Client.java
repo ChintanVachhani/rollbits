@@ -94,7 +94,7 @@ public class Client {
     public void group(String action, String uname, String gname) {
         // construct the message to send
         Pipe.Group.Builder group = Pipe.Group.newBuilder();
-        group.setGname(uname);
+        group.setUname(uname);
         group.setGname(gname);
 
         switch (action) {
