@@ -96,11 +96,14 @@ public class NetworkDiscoveryResource implements RouteResource {
         rb.setPath(Route.Path.NETWORK_DISCOVERY);
         rb.setNetworkDiscoveryPacket(ndpb);
 
-        if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE) && !requestNetworkDiscoveryPacket.getNodeAddress().equals(conf.getNodeAddress()) && requestNetworkDiscoveryPacket.getGroupTag().equals(conf.getGroupTag())) {
+        if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.INTERNAL_SERVER_NODE)
+                && !requestNetworkDiscoveryPacket.getNodeAddress().equals(conf.getNodeAddress())
+                && requestNetworkDiscoveryPacket.getGroupTag().equals(conf.getGroupTag())) {
             Node node = new Node(requestNetworkDiscoveryPacket.getSender().toString(), requestNetworkDiscoveryPacket.getGroupTag(), requestNetworkDiscoveryPacket.getNodeId(), requestNetworkDiscoveryPacket.getNodeAddress(), (int) requestNetworkDiscoveryPacket.getNodePort());
             routingMap.addInternalServer(node);
         } else if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE)
-                && !requestNetworkDiscoveryPacket.getNodeAddress().equals(conf.getNodeAddress())) {
+                && !requestNetworkDiscoveryPacket.getNodeAddress().equals(conf.getNodeAddress())
+                && !requestNetworkDiscoveryPacket.getGroupTag().equals(conf.getGroupTag())) {
             Node node = new Node(requestNetworkDiscoveryPacket.getSender().toString(), requestNetworkDiscoveryPacket.getGroupTag(), requestNetworkDiscoveryPacket.getNodeId(), requestNetworkDiscoveryPacket.getNodeAddress(), (int) requestNetworkDiscoveryPacket.getNodePort());
             routingMap.addExternalServer(node);
         } else if (requestNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.END_USER_CLIENT)) {
@@ -124,7 +127,8 @@ public class NetworkDiscoveryResource implements RouteResource {
             Node node = new Node(responseNetworkDiscoveryPacket.getSender().toString(), responseNetworkDiscoveryPacket.getGroupTag(), responseNetworkDiscoveryPacket.getNodeId(), responseNetworkDiscoveryPacket.getNodeAddress(), (int) responseNetworkDiscoveryPacket.getNodePort());
             routingMap.addInternalServer(node);
         } else if (responseNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.EXTERNAL_SERVER_NODE)
-                && !responseNetworkDiscoveryPacket.getNodeAddress().equals(conf.getNodeAddress())) {
+                && !responseNetworkDiscoveryPacket.getNodeAddress().equals(conf.getNodeAddress())
+                && !responseNetworkDiscoveryPacket.getGroupTag().equals(conf.getGroupTag())) {
             Node node = new Node(responseNetworkDiscoveryPacket.getSender().toString(), responseNetworkDiscoveryPacket.getGroupTag(), responseNetworkDiscoveryPacket.getNodeId(), responseNetworkDiscoveryPacket.getNodeAddress(), (int) responseNetworkDiscoveryPacket.getNodePort());
             routingMap.addExternalServer(node);
         } else if (responseNetworkDiscoveryPacket.getSender().equals(NetworkDiscoveryPacket.Sender.END_USER_CLIENT)) {
