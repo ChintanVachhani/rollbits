@@ -57,16 +57,19 @@ public class HeartbeatResource implements RouteResource {
     @Override
     public Route process(Route route, RoutingConf conf) throws Exception {
         if (route.getHeartbeat().getMode() == Pipe.Heartbeat.Mode.PING) {
+            Raft.getInstance().printRaftStatus("PING");
             if (Objects.equals(Raft.getInstance().getLeaderIP(), "")) {
                 Raft.getInstance().setLeaderIP(route.getHeartbeat().getAddress());
-
+                Raft.getInstance().printRaftStatus("New Leader");
                 // construct the heartbeat ack to send
                 Route.Builder rb = Route.newBuilder(route);
                 rb.setHeartbeat(Pipe.Heartbeat.newBuilder().setMode(Pipe.Heartbeat.Mode.ACK).setAddress(conf.getNodeAddress()));
                 return rb.build();
             } else if (!Objects.equals(Raft.getInstance().getLeaderIP(), "")) {
+                Raft.getInstance().printRaftStatus("Old Leader");
                 if (Objects.equals(Raft.getInstance().getLeaderIP(), route.getHeartbeat().getAddress())) {
-                    //TODO: heartbeat is from leader/ all good, process heartbeat here
+                    Raft.getInstance().printRaftStatus("Same Leader");
+                    //heartbeat is from leader/ all good, process heartbeat here
                     Raft.getInstance().setTimeOut(1000);
 
                     // construct the heartbeat ack to send
