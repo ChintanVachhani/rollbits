@@ -110,14 +110,10 @@ public class MessagesResource implements RouteResource {
 
         if (!username.equals("")) {
             User existingUser = userDAO.getUserByUsername(username);
-            return messageDAO.getAllMessagesByUser(existingUser.getUsername(), existingUser.getGroupNames());
-        }
-
-        /*if (!username.equals("")) {
-            if (messageDAO.getAllMessagesByUser(username, new ArrayList<>()) != null) {
-                return messageDAO.getAllMessagesByUser(username, new ArrayList<>());
+            if (existingUser != null) {
+                return messageDAO.getAllMessagesByUser(existingUser.getUsername(), existingUser.getGroupNames());
             }
-        }*/
+        }
         return new ArrayList<Message>();
     }
 }
