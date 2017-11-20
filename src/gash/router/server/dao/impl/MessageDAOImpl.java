@@ -26,14 +26,14 @@ public class MessageDAOImpl extends BasicDAO<Message, ObjectId> implements Messa
 
         List<Message> allMessages = new ArrayList<>();
         Query<Message> userQuery = createQuery().
-                field("type").equal("user").
+                field("type").equal("SINGLE").
                 field("to").equal(username);
 
         allMessages.addAll(userQuery.asList());
 
         for (Long groupId : groupIds) {
             Query<Message> groupQuery = createQuery().
-                    field("type").equal("group").
+                    field("type").equal("GROUP").
                     field("to").equal(groupId);
 
             allMessages.addAll(groupQuery.asList());

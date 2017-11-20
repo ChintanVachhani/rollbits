@@ -87,6 +87,7 @@ public class MessagesResource implements RouteResource {
             messageBuilder.setReceiverId(aResponse.getTo());
             messageBuilder.setTimestamp(aResponse.getTimestamp());
             messageBuilder.setSenderId(aResponse.getFrom());
+            messageBuilder.setPayload(aResponse.getPayload());
             messageBuilder.setAction(Pipe.Message.ActionType.POST);
             rb.addMessages(messageBuilder.build());
         }
