@@ -122,7 +122,7 @@ public class Raft {
             if (Objects.equals(conf.getNodeAddress(), leaderIP)) {
                 for (Node node : RoutingMap.getInstance().getInternalServers().values()) {
                     //TODO: send heartbeat for each node in this list
-                    sendHeartbeat(node.getNodeAddress(), node.getNodePort());
+                    sendHeartbeat(node.getNodeAddress(), conf.getHeartbeatPort());
                 }
                 try {
                     sleep(50);
