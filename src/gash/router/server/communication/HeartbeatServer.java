@@ -46,7 +46,7 @@ public class HeartbeatServer implements Runnable {
 
             // Start the server.
             logger.info("Starting server, listening on port = " + conf.getHeartbeatPort());
-            ChannelFuture f = b.bind(conf.getHeartbeatPort()).syncUninterruptibly();
+            ChannelFuture f = b.bind(conf.getHeartbeatPort()).sync();
 
             logger.info(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "
                     + f.channel().isWritable() + ", act: " + f.channel().isActive());

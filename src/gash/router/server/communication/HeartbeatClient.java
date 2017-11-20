@@ -15,6 +15,7 @@
  */
 package gash.router.server.communication;
 
+import gash.router.client.Client;
 import gash.router.server.communication.ServerSideClient;
 import gash.router.client.CommConnection;
 import gash.router.client.CommListener;
@@ -27,9 +28,19 @@ import java.util.Scanner;
 public class HeartbeatClient implements CommListener {
     private ServerSideClient ssc;
 
+    String host;
+    int port;
+
     public HeartbeatClient(String host, int port) {
-        ssc = new ServerSideClient(host, port);
-        ssc.addListener(this);
+        this.host = host;
+        this.port = port;
+        ServerSideClient ssc = new ServerSideClient(host, port);
+        init(ssc);
+    }
+
+    private void init(ServerSideClient ssc) {
+        this.ssc = ssc;
+        this.ssc.addListener(this);
     }
 
     @Override
