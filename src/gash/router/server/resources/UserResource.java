@@ -80,18 +80,18 @@ public class UserResource implements RouteResource {
 
         if (route.getHeader().getType().equals(Pipe.Header.Type.INTERNAL)) {
             return null;
+        } else {
+            Route.Builder responseRoute = Route.newBuilder();
+            responseRoute.setId(route.getId());
+            responseRoute.setPath(Route.Path.RESPONSE);
+            Pipe.Response.Builder rb = Pipe.Response.newBuilder();
+
+            rb.setMessage(response);
+            rb.setSuccess(true);
+            responseRoute.setResponse(rb);
+
+            return responseRoute.build();
         }
-
-        Route.Builder responseRoute = Route.newBuilder();
-        responseRoute.setId(route.getId());
-        responseRoute.setPath(Route.Path.RESPONSE);
-        Pipe.Response.Builder rb = Pipe.Response.newBuilder();
-
-        rb.setMessage(response);
-        rb.setSuccess(true);
-        responseRoute.setResponse(rb);
-
-        return responseRoute.build();
     }
 
     @Override

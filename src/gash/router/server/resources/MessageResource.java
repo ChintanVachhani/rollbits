@@ -82,17 +82,17 @@ public class MessageResource implements RouteResource {
 
         if (route.getHeader().getType().equals(Pipe.Header.Type.INTERNAL)) {
             return null;
+        } else {
+            Route.Builder responseRoute = Route.newBuilder();
+            responseRoute.setId(route.getId());
+            responseRoute.setPath(Route.Path.RESPONSE);
+            Pipe.Response.Builder rb = Pipe.Response.newBuilder();
+            rb.setMessage(response);
+            rb.setSuccess(true);
+            responseRoute.setResponse(rb);
+
+            return responseRoute.build();
         }
-
-        Route.Builder responseRoute = Route.newBuilder();
-        responseRoute.setId(route.getId());
-        responseRoute.setPath(Route.Path.RESPONSE);
-        Pipe.Response.Builder rb = Pipe.Response.newBuilder();
-        rb.setMessage(response);
-        rb.setSuccess(true);
-        responseRoute.setResponse(rb);
-
-        return responseRoute.build();
     }
 
     @Override
@@ -107,7 +107,7 @@ public class MessageResource implements RouteResource {
                 messageDAO.postMessage(newMessage);
                 return "Message posted.";
             } else if (message.getType().equals(Pipe.Message.Type.GROUP)) {
-                if(groupDAO.getGroupByName(message.getReceiverId().toLowerCase()) != null) {
+                if (groupDAO.getGroupByName(message.getReceiverId().toLowerCase()) != null) {
                     if (userDAO.getUserByUsername(message.getSenderId().toLowerCase()).getGroupNames().contains(message.getReceiverId().toLowerCase())) {
                         Message newMessage = new Message(message.getType().toString(), message.getSenderId().toLowerCase(), message.getPayload(), message.getReceiverId().toLowerCase(), new Date().toString(), false);
                         messageDAO.postMessage(newMessage);
