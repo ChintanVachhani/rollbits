@@ -95,7 +95,7 @@ public class MessageResource implements RouteResource {
 
     private String post(Pipe.Message message) {
         if (!message.getSenderId().equals("")) {
-            if (message.getType().equals(Pipe.Message.Type.SINGLE) && userDAO.getUserByUsername(message.getReceiverId().toLowerCase()) != null) {
+            if (message.getType().equals(Pipe.Message.Type.SINGLE)) {
                 Message newMessage = new Message(message.getType().toString(), message.getSenderId().toLowerCase(), message.getPayload(), message.getReceiverId().toLowerCase(), new Date().toString(), false);
                 messageDAO.postMessage(newMessage);
                 return "Message posted.";
