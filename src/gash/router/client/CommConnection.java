@@ -15,21 +15,16 @@
  */
 package gash.router.client;
 
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.atomic.AtomicReference;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import routing.Pipe.Route;
+
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * provides an abstraction of the communication to the remote server.
@@ -138,13 +133,20 @@ public class CommConnection {
             handler.addListener(listener);
     }
 
-    private void init() {
+    private boolean init() {
         System.out.println("--> initializing connection to " + host + ":" + port);
 
         // the queue to support client-side surging
         outbound = new LinkedBlockingDeque<Route>();
 
-        group = new NioEventLoopGroup();
+        try {
+            group = new NioEventLoopGroup();
+        }catch (ChannelException e){
+            e.printStackTrace();
+            return false;
+        }
+
+
         try {
             //ServerInit si = new ServerInit(null, false);
             CommInit ci = new CommInit(false);  // edited by Chintan Vachhani
@@ -182,6 +184,7 @@ public class CommConnection {
         worker = new CommWorker(this);
         worker.setDaemon(true);
         worker.start();*/
+        return true;
     }
 
     /**
@@ -222,7 +225,7 @@ public class CommConnection {
             // we lost the connection or have shutdown.
             System.out.println("\nlost connection to the server!");
             System.out.flush();
-
+            //cc.release();
             // if lost, try to re-establish the connection
                 CommConnection.initConnection(cc.host, cc.port);
         }
