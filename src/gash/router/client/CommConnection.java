@@ -59,7 +59,6 @@ public class CommConnection {
     protected CommConnection(String host, int port) {
         this.host = host;
         this.port = port;
-
         init();
     }
 
