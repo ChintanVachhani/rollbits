@@ -71,7 +71,9 @@ public class MessageResource implements RouteResource {
     public Route process(Route route, Channel ctx) {
         String response = null;
 
-        ReplicationService replicationService = new ReplicationService(route, ctx);
+        if (!route.getHeader().getType().equals(Pipe.Header.Type.INTERNAL)) {
+            ReplicationService replicationService = new ReplicationService(route, ctx);
+        }
 
         if (route.hasMessage()) {
             switch (route.getMessage().getAction()) {
