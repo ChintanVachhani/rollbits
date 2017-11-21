@@ -30,6 +30,7 @@ public class AddUserToGroupClient implements CommListener {
     public AddUserToGroupClient(String host, int port, Route route, AddUserToGroupService addUserToGroupService) {
         this.host = host;
         this.port = port;
+        this.addUserToGroupService = addUserToGroupService;
         ServerSideClient ssc = new ServerSideClient(host, port);
         init(ssc);
         addUserToGroup(route);
