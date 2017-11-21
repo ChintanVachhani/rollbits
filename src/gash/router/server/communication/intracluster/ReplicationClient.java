@@ -31,7 +31,7 @@ public class ReplicationClient implements CommListener {
         this.port = port;
         ServerSideClient ssc = new ServerSideClient(host, port);
         init(ssc);
-        addUserToGroup(route);
+        replicate(route);
     }
 
     private void init(ServerSideClient ssc) {
@@ -49,9 +49,9 @@ public class ReplicationClient implements CommListener {
         System.out.println(msg);
     }
 
-    public void addUserToGroup(Route route) {
+    public void replicate(Route route) {
         try {
-            ssc.addUserToGroup(route);
+            ssc.replicate(route);
         } catch (Exception e) {
             e.printStackTrace();
         }
