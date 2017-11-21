@@ -4,6 +4,7 @@ import gash.router.container.RoutingConf;
 import gash.router.server.Node;
 import gash.router.server.RoutingMap;
 import gash.router.server.communication.ExternalCommServer;
+import gash.router.server.communication.intracluster.HeartbeatService;
 import gash.router.server.discovery.ExternalDiscoveryClient;
 import gash.router.server.discovery.ExternalDiscoveryServer;
 import gash.router.server.discovery.InternalDiscoveryClient;
@@ -119,10 +120,11 @@ public class Raft {
         printRaftStatus("Starting Heartbeat....");
         while (Objects.equals(leaderIP, conf.getNodeAddress())) {
             if (Objects.equals(conf.getNodeAddress(), leaderIP)) {
-                for (Node node : RoutingMap.getInstance().getInternalServers().values()) {
+                /*for (Node node : RoutingMap.getInstance().getInternalServers().values()) {
                     //send heartbeat for each node in this list
                     printRaftStatus("Sending heartbeat...");
-                }
+                }*/
+                HeartbeatService heartbeatService = new HeartbeatService();
                 try {
                     sleep(50);
                 } catch (InterruptedException e) {
