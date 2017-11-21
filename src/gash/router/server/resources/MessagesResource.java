@@ -92,7 +92,6 @@ public class MessagesResource implements RouteResource {
 
         if (route.getHeader().getType().equals(Pipe.Header.Type.CLIENT)) {
             PullMessagesService pullMessagesService = new PullMessagesService(route, responseRoute.build(), ctx);
-            //return responseRoute.build();
         }
 
         if (route.getHeader().getType().equals(Pipe.Header.Type.INTER_CLUSTER)) {

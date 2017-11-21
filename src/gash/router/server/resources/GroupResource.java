@@ -18,6 +18,8 @@ package gash.router.server.resources;
 import gash.router.container.RoutingConf;
 import gash.router.server.communication.intercluster.AddUserToGroupClient;
 import gash.router.server.communication.intercluster.AddUserToGroupService;
+import gash.router.server.communication.intercluster.AddUserToGroupService;
+import gash.router.server.communication.intracluster.ReplicationService;
 import gash.router.server.dao.GroupDAO;
 import gash.router.server.dao.MorphiaService;
 import gash.router.server.dao.UserDAO;
@@ -62,6 +64,8 @@ public class GroupResource implements RouteResource {
     @Override
     public Route process(Route route, Channel ctx) {
         String response = null;
+
+        ReplicationService replicationService = new ReplicationService(route, ctx);
 
         if (route.hasGroup()) {
             switch (route.getGroup().getAction()) {
@@ -124,7 +128,7 @@ public class GroupResource implements RouteResource {
             AddUserToGroupService addUserToGroupService = new AddUserToGroupService(route, ctx);
             return null;
         } else {
-            if(userDAO.getUserByUsername(group.getUname().toLowerCase()) != null) {
+            if (userDAO.getUserByUsername(group.getUname().toLowerCase()) != null) {
                 userDAO.addGroupToUser(group.getGname().toLowerCase(), group.getUname().toLowerCase());
                 return "User added to group.";
             }
@@ -137,7 +141,7 @@ public class GroupResource implements RouteResource {
             //TODO: Forward to others
             return "Will be forwarded to others.";
         } else {
-            if(userDAO.getUserByUsername(group.getUname().toLowerCase()) != null) {
+            if (userDAO.getUserByUsername(group.getUname().toLowerCase()) != null) {
                 userDAO.removeGroupFromUser(group.getGname().toLowerCase(), group.getUname().toLowerCase());
                 return "User removed from group.";
             }

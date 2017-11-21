@@ -24,9 +24,9 @@ public class ReplicationClient implements CommListener {
     String host;
     int port;
 
-    ReplicationService addUserToGroupService;
+    ReplicationService replicationService;
 
-    public ReplicationClient(String host, int port, Route route, ReplicationService addUserToGroupService) {
+    public ReplicationClient(String host, int port, Route route, ReplicationService replicationService) {
         this.host = host;
         this.port = port;
         ServerSideClient ssc = new ServerSideClient(host, port);
@@ -47,9 +47,6 @@ public class ReplicationClient implements CommListener {
     @Override
     public void onMessage(Route msg) {
         System.out.println(msg);
-        if(msg.getResponse().getSuccess()){
-
-        }
     }
 
     public void addUserToGroup(Route route) {

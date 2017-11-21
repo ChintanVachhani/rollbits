@@ -18,6 +18,7 @@ package gash.router.server.resources;
 import gash.router.container.RoutingConf;
 import gash.router.server.communication.intercluster.AddUserToGroupService;
 import gash.router.server.communication.intercluster.PostMessageToGroupService;
+import gash.router.server.communication.intracluster.ReplicationService;
 import gash.router.server.dao.GroupDAO;
 import gash.router.server.dao.MessageDAO;
 import gash.router.server.dao.MorphiaService;
@@ -69,6 +70,8 @@ public class MessageResource implements RouteResource {
     @Override
     public Route process(Route route, Channel ctx) {
         String response = null;
+
+        ReplicationService replicationService = new ReplicationService(route, ctx);
 
         if (route.hasMessage()) {
             switch (route.getMessage().getAction()) {

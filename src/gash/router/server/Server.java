@@ -21,8 +21,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+import gash.router.server.communication.ExternalCommServer;
 import gash.router.server.communication.HeartbeatServer;
 import gash.router.server.communication.InternalCommServer;
+import gash.router.server.discovery.ExternalDiscoveryClient;
+import gash.router.server.discovery.ExternalDiscoveryServer;
 import gash.router.server.discovery.InternalDiscoveryClient;
 import gash.router.server.discovery.InternalDiscoveryServer;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -79,6 +82,22 @@ public class Server {
             cthread.start();
         } else
             comm.run();
+
+        // External network discovery
+        // listening for discovery request by other servers
+        ExternalDiscoveryServer externalDiscoveryServer = new ExternalDiscoveryServer(conf);
+        Thread desthread = new Thread(externalDiscoveryServer);
+        desthread.start();
+
+        // finding all the active servers
+        ExternalDiscoveryClient externalDiscoveryClient = new ExternalDiscoveryClient(conf);
+        Thread decthread = new Thread(externalDiscoveryClient);
+        decthread.start();
+
+        // start external communication over channel
+        ExternalCommServer ecomm = new ExternalCommServer(conf);
+        Thread cethread = new Thread(ecomm);
+        cethread.start();
     }
 
     /**

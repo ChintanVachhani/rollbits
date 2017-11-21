@@ -75,6 +75,15 @@ public class CommServerHandler extends SimpleChannelInboundHandler<Route> {
                         case MESSAGES_REQUEST:
                             response = rsc.process(msg, channel);
                             break;
+                        case GROUP:
+                            response = rsc.process(msg, channel);
+                            break;
+                        case USER:
+                            response = rsc.process(msg, channel);
+                            break;
+                        case MESSAGE:
+                            response = rsc.process(msg, channel);
+                            break;
                         default:
                             response = rsc.process(msg);
                             break;

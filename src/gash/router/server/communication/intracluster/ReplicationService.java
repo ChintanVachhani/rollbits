@@ -18,8 +18,7 @@ public class ReplicationService {
 
     public void init() {
         for (Node node : RoutingMap.getInstance().getInternalServers().values()) {
-            ReplicationClient replicationClient = new ReplicationClient(node.getNodeAddress(), node.getNodePort(), route, this);
+            ReplicationClient replicationClient = new ReplicationClient(node.getNodeAddress(), node.getNodePort(), route,this);
         }
     }
-
 }

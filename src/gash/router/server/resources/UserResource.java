@@ -16,6 +16,7 @@
 package gash.router.server.resources;
 
 import gash.router.container.RoutingConf;
+import gash.router.server.communication.intracluster.ReplicationService;
 import gash.router.server.dao.MorphiaService;
 import gash.router.server.dao.impl.UserDAOImpl;
 import gash.router.server.entity.User;
@@ -52,7 +53,14 @@ public class UserResource implements RouteResource {
 
     @Override
     public Route process(Route route) {
+        return null;
+    }
+
+    @Override
+    public Route process(Route route, Channel ctx) {
         String response = null;
+
+        ReplicationService replicationService = new ReplicationService(route, ctx);
 
         if (route.hasUser()) {
             switch (route.getUser().getAction()) {
@@ -84,11 +92,6 @@ public class UserResource implements RouteResource {
         responseRoute.setResponse(rb);
 
         return responseRoute.build();
-    }
-
-    @Override
-    public Route process(Route route, Channel ctx) {
-        return null;
     }
 
     @Override
