@@ -31,12 +31,11 @@ public class HeartbeatClient implements CommListener {
     String host;
     int port;
 
-    public HeartbeatClient(String host, int port, String leaderIp) {
+    public HeartbeatClient(ServerSideClient ssc) {
         this.host = host;
         this.port = port;
-        ServerSideClient ssc = new ServerSideClient(host, port);
+        this.ssc = ssc;
         init(ssc);
-        ping(leaderIp);
     }
 
     private void init(ServerSideClient ssc) {
