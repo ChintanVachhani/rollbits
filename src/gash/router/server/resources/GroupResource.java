@@ -16,6 +16,8 @@
 package gash.router.server.resources;
 
 import gash.router.container.RoutingConf;
+import gash.router.server.communication.intercluster.AddUserToGroupClient;
+import gash.router.server.communication.intercluster.AddUserToGroupService;
 import gash.router.server.dao.GroupDAO;
 import gash.router.server.dao.MorphiaService;
 import gash.router.server.dao.UserDAO;
@@ -54,6 +56,11 @@ public class GroupResource implements RouteResource {
 
     @Override
     public Route process(Route route) {
+        return null;
+    }
+
+    @Override
+    public Route process(Route route, Channel ctx) {
         String response = null;
 
         if (route.hasGroup()) {
@@ -65,7 +72,7 @@ public class GroupResource implements RouteResource {
                     response = delete(route.getGroup());
                     break;
                 case ADD_USER:
-                    response = addUser(route.getGroup());
+                    response = addUser(route.getGroup(), route, ctx);
                     break;
                 case REMOVE_USER:
                     response = removeUser(route.getGroup());
@@ -91,11 +98,6 @@ public class GroupResource implements RouteResource {
     }
 
     @Override
-    public Route process(Route route, Channel ctx) {
-        return null;
-    }
-
-    @Override
     public Route process(Route route, RoutingConf conf) throws Exception {
         return null;
     }
@@ -117,10 +119,10 @@ public class GroupResource implements RouteResource {
         return "Group not found.";
     }
 
-    private String addUser(Pipe.Group group) {
+    private String addUser(Pipe.Group group, Route route, Channel ctx) {
         if (groupDAO.getGroupByName(group.getGname().toLowerCase()) == null) {
-            //TODO: Forward to others
-            return "Will be forwarded to others.";
+            AddUserToGroupService addUserToGroupService = new AddUserToGroupService(route, ctx);
+            return null;
         } else {
             if(userDAO.getUserByUsername(group.getUname().toLowerCase()) != null) {
                 userDAO.addGroupToUser(group.getGname().toLowerCase(), group.getUname().toLowerCase());

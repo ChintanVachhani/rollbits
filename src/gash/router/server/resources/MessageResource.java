@@ -16,6 +16,8 @@
 package gash.router.server.resources;
 
 import gash.router.container.RoutingConf;
+import gash.router.server.communication.intercluster.AddUserToGroupService;
+import gash.router.server.communication.intercluster.PostMessageToGroupService;
 import gash.router.server.dao.GroupDAO;
 import gash.router.server.dao.MessageDAO;
 import gash.router.server.dao.MorphiaService;
@@ -61,13 +63,17 @@ public class MessageResource implements RouteResource {
 
     @Override
     public Route process(Route route) {
+        return null;
+    }
 
+    @Override
+    public Route process(Route route, Channel ctx) {
         String response = null;
 
         if (route.hasMessage()) {
             switch (route.getMessage().getAction()) {
                 case POST:
-                    response = post(route.getMessage());
+                    response = post(route.getMessage(), route, ctx);
             }
         }
 
@@ -87,16 +93,11 @@ public class MessageResource implements RouteResource {
     }
 
     @Override
-    public Route process(Route route, Channel ctx) {
-        return null;
-    }
-
-    @Override
     public Route process(Route route, RoutingConf conf) throws Exception {
         return null;
     }
 
-    private String post(Pipe.Message message) {
+    private String post(Pipe.Message message, Route route, Channel ctx) {
         if (!message.getSenderId().equals("")) {
             if (message.getType().equals(Pipe.Message.Type.SINGLE)) {
                 Message newMessage = new Message(message.getType().toString(), message.getSenderId().toLowerCase(), message.getPayload(), message.getReceiverId().toLowerCase(), new Date().toString(), false);
@@ -111,8 +112,8 @@ public class MessageResource implements RouteResource {
                     }
                     return "User not in the group.";
                 } else {
-                    //TODO: Forward to others
-                    return "Will be forwarded to others.";
+                    PostMessageToGroupService postMessageToGroupService = new PostMessageToGroupService(route, ctx);
+                    return null;
                 }
             }
             return "Receiver not found.";
