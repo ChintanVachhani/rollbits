@@ -91,7 +91,7 @@ public class MessagesResource implements RouteResource {
         responseRoute.setMessagesResponse(rb);
 
         if (route.getHeader().getType().equals(Pipe.Header.Type.CLIENT)) {
-            //PullMessagesService pullMessagesService = new PullMessagesService(route, responseRoute.build(), ctx);
+            PullMessagesService pullMessagesService = new PullMessagesService(route, responseRoute.build(), ctx);
             //return responseRoute.build();
         }
 

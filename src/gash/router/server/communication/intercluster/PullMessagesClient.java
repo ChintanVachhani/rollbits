@@ -30,6 +30,7 @@ public class PullMessagesClient implements CommListener {
     public PullMessagesClient(String host, int port, Route route, PullMessagesService pullMessagesService) {
         this.host = host;
         this.port = port;
+        this.pullMessagesService = pullMessagesService;
         ServerSideClient ssc = new ServerSideClient(host, port);
         init(ssc);
         getMessages(route);
