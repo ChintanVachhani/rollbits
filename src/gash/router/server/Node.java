@@ -1,5 +1,9 @@
 package gash.router.server;
 
+import gash.router.server.communication.ServerSideClient;
+import gash.router.server.communication.intercluster.PullMessagesClient;
+import gash.router.server.communication.intracluster.ReplicationClient;
+
 public class Node {
 
     private String nodeType;
@@ -12,6 +16,8 @@ public class Node {
 
     private int nodePort;
 
+    public ServerSideClient serverSideClient;
+
     public Node() {
     }
 
@@ -22,6 +28,10 @@ public class Node {
         this.nodeId = nodeId;
         this.nodeAddress = nodeAddress;
         this.nodePort = nodePort;
+        ServerSideClient ssc = new ServerSideClient(nodeAddress, nodePort);
+        //ReplicationClient replicationClient = new ReplicationClient(ssc);
+        PullMessagesClient pullMessagesClient = new PullMessagesClient(ssc);
+        this.serverSideClient = ssc;
     }
 
     public String getNodeType() {

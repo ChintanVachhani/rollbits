@@ -177,7 +177,7 @@ public class ClientApp implements CommListener {
      * @param args
      */
     public static void main(String[] args) {
-        String host = "10.0.0.48";
+        String host = "10.0.0.50";
         int port = 4443;
 
         Scanner input = new Scanner(System.in);

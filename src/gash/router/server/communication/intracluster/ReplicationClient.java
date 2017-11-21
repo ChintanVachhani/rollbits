@@ -30,8 +30,14 @@ public class ReplicationClient implements CommListener {
         this.host = host;
         this.port = port;
         ServerSideClient ssc = new ServerSideClient(host, port);
+        this.ssc = ssc;
         init(ssc);
         replicate(route);
+    }
+
+    public ReplicationClient(ServerSideClient ssc){
+        this.ssc = ssc;
+        init(ssc);
     }
 
     private void init(ServerSideClient ssc) {

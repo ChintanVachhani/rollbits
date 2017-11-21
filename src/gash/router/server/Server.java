@@ -71,19 +71,7 @@ public class Server {
         HeartbeatServer heartbeatServer = new HeartbeatServer(conf);
         Thread hbthread = new Thread(heartbeatServer);
         hbthread.start();
-
-        // start internal communication over channel
-        InternalCommServer comm = new InternalCommServer(conf);
-
-        //ExternalCommServer comm = new ExternalCommServer(conf);
-
-        if (background) {
-            Thread cthread = new Thread(comm);
-            cthread.start();
-        } else
-            comm.run();
-
-        // External network discovery
+// External network discovery
         // listening for discovery request by other servers
         ExternalDiscoveryServer externalDiscoveryServer = new ExternalDiscoveryServer(conf);
         Thread desthread = new Thread(externalDiscoveryServer);
@@ -98,6 +86,18 @@ public class Server {
         ExternalCommServer ecomm = new ExternalCommServer(conf);
         Thread cethread = new Thread(ecomm);
         cethread.start();
+        // start internal communication over channel
+        InternalCommServer comm = new InternalCommServer(conf);
+
+        //ExternalCommServer comm = new ExternalCommServer(conf);
+
+        if (background) {
+            Thread cthread = new Thread(comm);
+            cthread.start();
+        } else
+            comm.run();
+
+
     }
 
     /**

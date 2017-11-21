@@ -127,33 +127,37 @@ public class Client {
     }
 
     public void message(String type, String receiverId, String payload, String senderId) {
-        // construct the message to send
-        Pipe.Message.Builder message = Pipe.Message.newBuilder();
-        message.setSenderId(senderId);
-        message.setReceiverId(receiverId);
-        message.setPayload(payload);
-        message.setAction(Pipe.Message.ActionType.POST);
+        for(int i=0; i<10;++i) {
+            // construct the message to send
+            Pipe.Message.Builder message = Pipe.Message.newBuilder();
+            message.setSenderId(senderId);
+            message.setReceiverId(receiverId);
+            message.setPayload(payload+i);
+            message.setAction(Pipe.Message.ActionType.POST);
 
-        switch (type) {
-            case "user":
-                message.setType(Pipe.Message.Type.SINGLE);
-                break;
-            case "group":
-                message.setType(Pipe.Message.Type.GROUP);
-                break;
-        }
+            switch (type) {
+                case "user":
+                    message.setType(Pipe.Message.Type.SINGLE);
+                    break;
+                case "group":
+                    message.setType(Pipe.Message.Type.GROUP);
+                    break;
+            }
 
-        Route.Builder rb = Route.newBuilder();
-        rb.setId(nextId());
-        rb.setPath(Route.Path.MESSAGE);
-        rb.setHeader(Pipe.Header.newBuilder().setType(Pipe.Header.Type.CLIENT));
-        rb.setMessage(message.build());
+            Route.Builder rb = Route.newBuilder();
+            rb.setId(nextId());
+            rb.setPath(Route.Path.MESSAGE);
+            rb.setHeader(Pipe.Header.newBuilder().setType(Pipe.Header.Type.CLIENT));
+            rb.setMessage(message.build());
 
-        try {
-            // using queue
-            CommConnection.getInstance().enqueue(rb.build());
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                // using queue
+
+
+                CommConnection.getInstance().enqueue(rb.build());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

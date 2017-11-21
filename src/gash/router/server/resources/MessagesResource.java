@@ -16,6 +16,9 @@
 package gash.router.server.resources;
 
 import gash.router.container.RoutingConf;
+import gash.router.server.Node;
+import gash.router.server.RoutingMap;
+import gash.router.server.communication.intercluster.PullMessagesClient;
 import gash.router.server.communication.intercluster.PullMessagesService;
 import gash.router.server.dao.MessageDAO;
 import gash.router.server.dao.MorphiaService;
@@ -91,7 +94,10 @@ public class MessagesResource implements RouteResource {
         responseRoute.setMessagesResponse(rb);
 
         if (route.getHeader().getType().equals(Pipe.Header.Type.CLIENT)) {
-            PullMessagesService pullMessagesService = new PullMessagesService(route, responseRoute.build(), ctx);
+            //PullMessagesService pullMessagesService = new PullMessagesService(route, responseRoute.build(), ctx);
+            for (Node node : RoutingMap.getInstance().getExternalServers().values()) {
+                node.serverSideClient.pullMessages(route);
+            }
         }
 
         if (route.getHeader().getType().equals(Pipe.Header.Type.INTER_CLUSTER)) {

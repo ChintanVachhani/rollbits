@@ -16,6 +16,8 @@
 package gash.router.server.resources;
 
 import gash.router.container.RoutingConf;
+import gash.router.server.Node;
+import gash.router.server.RoutingMap;
 import gash.router.server.communication.intracluster.ReplicationService;
 import gash.router.server.dao.MorphiaService;
 import gash.router.server.dao.impl.UserDAOImpl;
@@ -61,7 +63,10 @@ public class UserResource implements RouteResource {
         String response = null;
 
         if (!route.getHeader().getType().equals(Pipe.Header.Type.INTERNAL)) {
-            ReplicationService replicationService = new ReplicationService(route, ctx);
+            //ReplicationService replicationService = new ReplicationService(route, ctx);
+            for (Node node : RoutingMap.getInstance().getInternalServers().values()) {
+                node.serverSideClient.replicate(route);
+            }
         }
 
         if (route.hasUser()) {

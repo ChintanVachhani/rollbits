@@ -36,6 +36,11 @@ public class PullMessagesClient implements CommListener {
         getMessages(route);
     }
 
+    public PullMessagesClient(ServerSideClient ssc){
+        this.ssc = ssc;
+        init(ssc);
+    }
+
     private void init(ServerSideClient ssc) {
         this.ssc = ssc;
         this.ssc.addListener(this);
