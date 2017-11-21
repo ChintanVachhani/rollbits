@@ -1,4 +1,4 @@
-package gash.router.server.communication;
+package gash.router.server.communication.intracluster;
 
 import gash.router.server.Node;
 import gash.router.server.RoutingMap;
@@ -11,9 +11,8 @@ public class HeartbeatService {
     Pipe.Route route;
     Channel clientChannel;
 
-    public HeartbeatService(Pipe.Route route, Pipe.Route response, Channel clientChannel) {
-        this.route = route;
-        this.clientChannel = clientChannel;
+    public HeartbeatService() {
+        init();
     }
 
     public void init() {

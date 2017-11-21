@@ -21,7 +21,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
-import gash.router.server.communication.HeartbeatClient;
 import gash.router.server.communication.HeartbeatServer;
 import gash.router.server.communication.InternalCommServer;
 import gash.router.server.discovery.InternalDiscoveryClient;

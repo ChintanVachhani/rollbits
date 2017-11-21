@@ -151,9 +151,9 @@ public class CommConnection {
             Bootstrap b = new Bootstrap();
             //b.group(group).channel(NioSocketChannel.class).handler(si);
             b.group(group).channel(NioSocketChannel.class).handler(ci); // edited by Chintan Vachhani
-            b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000);
-            b.option(ChannelOption.TCP_NODELAY, true);
-            b.option(ChannelOption.SO_KEEPALIVE, true);
+            //b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000);
+            //b.option(ChannelOption.TCP_NODELAY, true);
+            //b.option(ChannelOption.SO_KEEPALIVE, true);
 
             // Make the connection attempt.
             channel = b.connect(host, port).sync();

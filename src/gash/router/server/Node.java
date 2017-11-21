@@ -1,7 +1,5 @@
 package gash.router.server;
 
-import gash.router.server.communication.HeartbeatClient;
-
 public class Node {
 
     private String nodeType;

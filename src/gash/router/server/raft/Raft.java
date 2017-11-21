@@ -4,16 +4,12 @@ import gash.router.container.RoutingConf;
 import gash.router.server.Node;
 import gash.router.server.RoutingMap;
 import gash.router.server.communication.ExternalCommServer;
-import gash.router.server.communication.HeartbeatClient;
 import gash.router.server.discovery.ExternalDiscoveryClient;
 import gash.router.server.discovery.ExternalDiscoveryServer;
 import gash.router.server.discovery.InternalDiscoveryClient;
 import org.slf4j.LoggerFactory;
-import routing.Pipe;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 import static java.lang.Thread.sleep;

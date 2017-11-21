@@ -93,6 +93,38 @@ public class ServerSideClient {
         }
     }
 
+    public void addUserToGroup(Route route) {
+        // construct the route to send
+        Route.Builder rb = Route.newBuilder(route);
+        rb.setHeader(Pipe.Header.newBuilder().setType(Pipe.Header.Type.INTER_CLUSTER));
+
+        try {
+            // direct no queue
+            CommConnection.getInstance().write(rb.build());
+
+            // using queue
+            //CommConnection.getInstance().enqueue(rb.build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void postMessageToGroup(Route route) {
+        // construct the route to send
+        Route.Builder rb = Route.newBuilder(route);
+        rb.setHeader(Pipe.Header.newBuilder().setType(Pipe.Header.Type.INTER_CLUSTER));
+
+        try {
+            // direct no queue
+            CommConnection.getInstance().write(rb.build());
+
+            // using queue
+            //CommConnection.getInstance().enqueue(rb.build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void release() {
         CommConnection.getInstance().release();
     }

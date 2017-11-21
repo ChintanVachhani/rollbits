@@ -18,17 +18,11 @@ package gash.router.server.resources;
 import gash.router.container.RoutingConf;
 import gash.router.server.Node;
 import gash.router.server.RoutingMap;
-import gash.router.server.communication.HeartbeatClient;
-import gash.router.server.raft.Raft;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import routing.Pipe;
 import routing.Pipe.NetworkDiscoveryPacket;
 import routing.Pipe.Route;
-
-import java.net.InetAddress;
 
 /**
  * processes requests of networkDiscovery

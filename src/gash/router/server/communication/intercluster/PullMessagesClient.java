@@ -13,12 +13,11 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package gash.router.server.communication;
+package gash.router.server.communication.intercluster;
 
 import gash.router.client.CommConnection;
 import gash.router.client.CommListener;
-import gash.router.server.raft.Raft;
-import routing.Pipe;
+import gash.router.server.communication.ServerSideClient;
 import routing.Pipe.Route;
 
 public class PullMessagesClient implements CommListener {
@@ -48,6 +47,7 @@ public class PullMessagesClient implements CommListener {
 
     @Override
     public void onMessage(Route msg) {
+        System.out.println("Got Messages...");
         System.out.println(msg);
         pullMessagesService.responseCount++;
         pullMessagesService.collateResponse(msg);
@@ -58,8 +58,6 @@ public class PullMessagesClient implements CommListener {
             ssc.pullMessages(route);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            CommConnection.getInstance().release();
         }
     }
 

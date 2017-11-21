@@ -1,13 +1,9 @@
-package gash.router.server.communication;
+package gash.router.server.communication.intercluster;
 
 import gash.router.server.Node;
 import gash.router.server.RoutingMap;
 import io.netty.channel.Channel;
 import routing.Pipe;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class PullMessagesService {
 
@@ -22,9 +18,11 @@ public class PullMessagesService {
         this.route = route;
         this.clientChannel = clientChannel;
         collatedResponse = Pipe.Route.newBuilder(response);
+        init();
     }
 
     public void init() {
+        System.out.println("Pulling Messages...");
         for (Node node : RoutingMap.getInstance().getExternalServers().values()) {
             PullMessagesClient pullMessagesClient = new PullMessagesClient(node.getNodeAddress(), node.getNodePort(), route, this);
         }

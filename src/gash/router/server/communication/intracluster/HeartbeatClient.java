@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package gash.router.server.communication;
+package gash.router.server.communication.intracluster;
 
 import gash.router.client.Client;
 import gash.router.server.communication.ServerSideClient;
@@ -62,8 +62,6 @@ public class HeartbeatClient implements CommListener {
             ssc.sendHeartbeatPing(leaderIp);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            CommConnection.getInstance().release();
         }
     }
 
@@ -72,8 +70,6 @@ public class HeartbeatClient implements CommListener {
             ssc.sendHeartbeatAck(followerIp);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            CommConnection.getInstance().release();
         }
     }
 
