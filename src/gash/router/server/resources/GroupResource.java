@@ -75,6 +75,10 @@ public class GroupResource implements RouteResource {
             }
         }
 
+        if (route.getHeader().getType().equals(Pipe.Header.Type.INTERNAL)) {
+            return null;
+        }
+
         Route.Builder responseRoute = Route.newBuilder();
         responseRoute.setId(route.getId());
         responseRoute.setPath(Route.Path.RESPONSE);
