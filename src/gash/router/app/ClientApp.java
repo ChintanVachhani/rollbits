@@ -15,17 +15,11 @@
  */
 package gash.router.app;
 
+import gash.router.client.Client;
 import gash.router.client.CommConnection;
 import gash.router.client.CommListener;
-import gash.router.client.Client;
-import gash.router.client.discovery.ClientSideDiscoveryServer;
-import gash.router.server.Node;
-import gash.router.server.discovery.InternalDiscoveryClient;
-import gash.router.server.discovery.InternalDiscoveryServer;
 import routing.Pipe.Route;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class ClientApp implements CommListener {
@@ -177,7 +171,7 @@ public class ClientApp implements CommListener {
      * @param args
      */
     public static void main(String[] args) {
-        String host = "10.0.0.50";
+        String host = "10.0.0.49";
         int port = 4443;
 
         Scanner input = new Scanner(System.in);

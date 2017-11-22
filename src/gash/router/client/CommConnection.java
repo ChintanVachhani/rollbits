@@ -186,6 +186,62 @@ public class CommConnection {
         return true;
     }
 
+
+    private ChannelFuture init(Route route, String hostParam, Integer portParam) {
+        System.out.println("--> initializing connection to " + hostParam + ":" + portParam);
+
+        // the queue to support client-side surging
+        outbound = new LinkedBlockingDeque<Route>();
+
+        try {
+            group = new NioEventLoopGroup();
+        }catch (ChannelException e){
+            e.printStackTrace();
+            return null;
+        }
+
+
+        try {
+            //ServerInit si = new ServerInit(null, false);
+            CommInit ci = new CommInit(false);  // edited by Chintan Vachhani
+            Bootstrap b = new Bootstrap();
+            //b.group(group).channel(NioSocketChannel.class).handler(si);
+            b.group(group).channel(NioSocketChannel.class).handler(ci); // edited by Chintan Vachhani
+            //b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000);
+            //b.option(ChannelOption.TCP_NODELAY, true);
+            //b.option(ChannelOption.SO_KEEPALIVE, true);
+
+            // Make the connection attempt.
+            ChannelFuture channelFuture = b.connect(hostParam, portParam).sync();
+
+            // want to monitor the connection to the server s.t. if we loose the
+            // connection, we can try to re-establish it.
+            ClientClosedListener ccl = new ClientClosedListener(this);
+            channelFuture.channel().closeFuture().addListener(ccl);
+
+            System.out.println(channelFuture.channel().localAddress() + " -> open: " + channelFuture.channel().isOpen()
+                    + ", write: " + channelFuture.channel().isWritable() + ", reg: " + channelFuture.channel().isRegistered());
+
+            // start outbound message processor
+            worker = new CommWorker(this);
+            worker.setDaemon(true);
+            worker.start();
+            return channelFuture;
+
+        } catch (Throwable ex) {
+            logger.error("failed to initialize the client connection", ex);
+            // if lost, try to re-establish the connection
+            CommConnection.initConnection(hostParam, portParam);
+            ex.printStackTrace();
+            return null;
+        }
+
+        /*// start outbound message processor
+        worker = new CommWorker(this);
+        worker.setDaemon(true);
+        worker.start();*/
+    }
+
     /**
      * create connection to remote server
      *
