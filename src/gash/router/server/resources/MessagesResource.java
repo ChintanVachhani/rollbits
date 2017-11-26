@@ -94,10 +94,10 @@ public class MessagesResource implements RouteResource {
         responseRoute.setMessagesResponse(rb);
 
         if (route.getHeader().getType().equals(Pipe.Header.Type.CLIENT)) {
-            //PullMessagesService pullMessagesService = new PullMessagesService(route, responseRoute.build(), ctx);
-            for (Node node : RoutingMap.getInstance().getExternalServers().values()) {
+            PullMessagesService pullMessagesService = new PullMessagesService(route, responseRoute.build(), ctx);
+            /*for (Node node : RoutingMap.getInstance().getExternalServers().values()) {
                 node.serverSideClient.pullMessages(route);
-            }
+            }*/
         }
 
         if (route.getHeader().getType().equals(Pipe.Header.Type.INTER_CLUSTER)) {

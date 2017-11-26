@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="NIO-based (Netty) communication pipeline" basedir="." default="build">
+<project name="Rollbits" basedir="." default="build">
 
 	<target name="init">
 		<property name="src.dir" location="${basedir}/src" />
@@ -51,22 +51,22 @@
 		</javac>
 	</target>
 
-	<target name="test.hello" depends="build.test">
-		<junit>
-			<classpath refid="project.classpath" />
-			<test name="gash.router.client.ClientTest" haltonfailure="no">
-			</test>
-		</junit>
-	</target>
+	<!--<target name="test.hello" depends="build.test">-->
+		<!--<junit>-->
+			<!--<classpath refid="project.classpath" />-->
+			<!--<test name="gash.router.client.ClientTest" haltonfailure="no">-->
+			<!--</test>-->
+		<!--</junit>-->
+	<!--</target>-->
 
-	<target name="hello" depends="build">
-		<java fork="yes" classname="gash.router.app.DemoApp">
+	<target name="client" depends="build">
+		<java fork="yes" classname="gash.router.app.ClientApp">
 			<classpath refid="project.classpath" />
 		</java>
 	</target>
 
 	<target name="server" depends="build">
-		<java fork="yes" classname="gash.router.server.MessageApp">
+		<java fork="yes" classname="gash.router.server.ServerApp">
 			<classpath refid="project.classpath" />
 			<arg value="resources/routing.conf" />
 		</java>

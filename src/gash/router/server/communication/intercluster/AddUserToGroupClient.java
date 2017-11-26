@@ -22,18 +22,18 @@ import routing.Pipe.Route;
 
 public class AddUserToGroupClient implements CommListener {
     private ServerSideClient ssc;
-    String host;
-    int port;
 
     AddUserToGroupService addUserToGroupService;
 
     public AddUserToGroupClient(String host, int port, Route route, AddUserToGroupService addUserToGroupService) {
-        this.host = host;
-        this.port = port;
         this.addUserToGroupService = addUserToGroupService;
         ServerSideClient ssc = new ServerSideClient(host, port);
         init(ssc);
         addUserToGroup(route);
+    }
+
+    public AddUserToGroupClient(ServerSideClient ssc) {
+        init(ssc);
     }
 
     private void init(ServerSideClient ssc) {

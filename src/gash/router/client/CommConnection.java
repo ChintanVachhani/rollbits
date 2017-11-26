@@ -19,10 +19,12 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import routing.Pipe.Route;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -35,6 +37,8 @@ public class CommConnection {
     protected static Logger logger = LoggerFactory.getLogger("connect");
 
     protected static AtomicReference<CommConnection> instance = new AtomicReference<CommConnection>();
+
+    static ConcurrentHashMap<Pair<String, Integer>, CommConnection> instances = new ConcurrentHashMap<>();
 
     private String host;
     private int port;
@@ -62,10 +66,20 @@ public class CommConnection {
         init();
     }
 
+    //By Chintan Vachhani
     public static CommConnection initConnection(String host, int port) {
+        if (instances.containsKey(new Pair<>(host, port))) {
+            return instances.get(new Pair<>(host, port));
+        }
         instance.compareAndSet(null, new CommConnection(host, port));
+        instances.put(new Pair<>(host, port), instance.get());
         return instance.get();
     }
+
+    /*public static CommConnection initConnection(String host, int port) {
+        instance.compareAndSet(null, new CommConnection(host, port));
+        return instance.get();
+    }*/
 
     public static CommConnection getInstance() {
         // TODO throw exception if not initialized!
@@ -140,7 +154,7 @@ public class CommConnection {
 
         try {
             group = new NioEventLoopGroup();
-        }catch (ChannelException e){
+        } catch (ChannelException e) {
             e.printStackTrace();
             return false;
         }
@@ -186,7 +200,7 @@ public class CommConnection {
         return true;
     }
 
-
+/*
     private ChannelFuture init(Route route, String hostParam, Integer portParam) {
         System.out.println("--> initializing connection to " + hostParam + ":" + portParam);
 
@@ -235,12 +249,7 @@ public class CommConnection {
             ex.printStackTrace();
             return null;
         }
-
-        /*// start outbound message processor
-        worker = new CommWorker(this);
-        worker.setDaemon(true);
-        worker.start();*/
-    }
+    }*/
 
     /**
      * create connection to remote server
@@ -282,7 +291,7 @@ public class CommConnection {
             System.out.flush();
             //cc.release();
             // if lost, try to re-establish the connection
-                CommConnection.initConnection(cc.host, cc.port);
+            CommConnection.initConnection(cc.host, cc.port);
         }
     }
 }

@@ -35,6 +35,10 @@ public class PostMessageToGroupClient implements CommListener {
         postMessageToGroup(route);
     }
 
+    public PostMessageToGroupClient(ServerSideClient ssc) {
+        init(ssc);
+    }
+
     private void init(ServerSideClient ssc) {
         this.ssc = ssc;
         this.ssc.addListener(this);
@@ -48,7 +52,7 @@ public class PostMessageToGroupClient implements CommListener {
     @Override
     public void onMessage(Route msg) {
         System.out.println(msg);
-        if(msg.getResponse().getSuccess()){
+        if (msg.getResponse().getSuccess()) {
             postMessageToGroupService.sendToClient();
         }
     }

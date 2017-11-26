@@ -28,13 +28,7 @@ import java.util.Scanner;
 public class HeartbeatClient implements CommListener {
     private ServerSideClient ssc;
 
-    String host;
-    int port;
-
     public HeartbeatClient(ServerSideClient ssc) {
-        this.host = host;
-        this.port = port;
-        this.ssc = ssc;
         init(ssc);
     }
 

@@ -35,7 +35,6 @@ public class Raft {
 
     }
 
-
     public void setConf(RoutingConf conf) {
         this.conf = conf;
         myIP = conf.getNodeAddress();

@@ -127,12 +127,12 @@ public class Client {
     }
 
     public void message(String type, String receiverId, String payload, String senderId) {
-        for(int i=0; i<10;++i) {
+        //for(int i=0; i<10;++i) {
             // construct the message to send
             Pipe.Message.Builder message = Pipe.Message.newBuilder();
             message.setSenderId(senderId);
             message.setReceiverId(receiverId);
-            message.setPayload(payload+i);
+            message.setPayload(payload);
             message.setAction(Pipe.Message.ActionType.POST);
 
             switch (type) {
@@ -152,13 +152,11 @@ public class Client {
 
             try {
                 // using queue
-
-
                 CommConnection.getInstance().enqueue(rb.build());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        //}
     }
 
     public void getMessages(String uname){

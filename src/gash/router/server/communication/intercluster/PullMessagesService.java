@@ -23,6 +23,10 @@ public class PullMessagesService {
 
     public void init() {
         System.out.println("Pulling Messages...");
+        if (RoutingMap.getInstance().getExternalServers().size() == 0) {
+            sendToClient();
+            return;
+        }
         for (Node node : RoutingMap.getInstance().getExternalServers().values()) {
             PullMessagesClient pullMessagesClient = new PullMessagesClient(node.getNodeAddress(), node.getNodePort(), route, this);
         }
@@ -32,7 +36,7 @@ public class PullMessagesService {
         Pipe.MessagesResponse.Builder mrb = Pipe.MessagesResponse.newBuilder(collatedResponse.getMessagesResponse());
         mrb.addAllMessages(response.getMessagesResponse().getMessagesList());
         collatedResponse.setMessagesResponse(mrb.build());
-        if (responseCount == RoutingMap.getInstance().getExternalServers().size()){
+        if (responseCount == RoutingMap.getInstance().getExternalServers().size()) {
             sendToClient();
         }
     }

@@ -1,7 +1,10 @@
 package gash.router.server;
 
 import gash.router.server.communication.ServerSideClient;
+import gash.router.server.communication.intercluster.AddUserToGroupClient;
+import gash.router.server.communication.intercluster.PostMessageToGroupClient;
 import gash.router.server.communication.intercluster.PullMessagesClient;
+import gash.router.server.communication.intracluster.HeartbeatClient;
 import gash.router.server.communication.intracluster.ReplicationClient;
 
 public class Node {
@@ -29,8 +32,12 @@ public class Node {
         this.nodeAddress = nodeAddress;
         this.nodePort = nodePort;
         ServerSideClient ssc = new ServerSideClient(nodeAddress, nodePort);
-        //ReplicationClient replicationClient = new ReplicationClient(ssc);
+        HeartbeatClient heartbeatClient = new HeartbeatClient(ssc);
+        ReplicationClient replicationClient = new ReplicationClient(ssc);
         PullMessagesClient pullMessagesClient = new PullMessagesClient(ssc);
+        AddUserToGroupClient addUserToGroupClient = new AddUserToGroupClient(ssc);
+        PostMessageToGroupClient postMessageToGroupClient = new PostMessageToGroupClient(ssc);
+
         this.serverSideClient = ssc;
     }
 

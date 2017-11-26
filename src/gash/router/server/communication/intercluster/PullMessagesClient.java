@@ -37,7 +37,6 @@ public class PullMessagesClient implements CommListener {
     }
 
     public PullMessagesClient(ServerSideClient ssc){
-        this.ssc = ssc;
         init(ssc);
     }
 
